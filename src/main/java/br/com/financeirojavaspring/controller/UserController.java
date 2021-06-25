@@ -38,4 +38,11 @@ public class UserController {
     public void deleteUser(@PathVariable String uuid) {
         userService.delete(uuid);
     }
+
+    @ResponseStatus(HttpStatus.CREATED)
+    @PostMapping(path = "/invitation/{invitationCode}")
+    @ApiOperation(value = "Cria usuário a partir de um codigo de convite.", authorizations = {@Authorization(value = "Bearer")})
+    public UserDTO createUserByInvitation(@RequestBody UserDTO userDTO, @PathVariable String invitationCode) {
+        return userService.saveWithInvitation(userDTO, invitationCode);
+    }
 }

@@ -6,7 +6,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.util.Collection;
-import java.util.UUID;
 
 @lombok.Getter
 @lombok.Setter
@@ -18,12 +17,16 @@ import java.util.UUID;
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_seq")
+    @Column(name = "id_user")
     private Long id;
     @Column(unique = true)
     private String uuid;
     private String username;
     private String passwd;
     private String name;
+    @ManyToOne
+    @JoinColumn(name = "id_account")
+    private Account account;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

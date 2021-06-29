@@ -7,6 +7,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.Authorization;
 import java.util.List;
+import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -34,7 +35,7 @@ public class RecordController {
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping
   @ApiOperation(value = "Salva um registro ou varios registros se houver mais de 1 parcela.", authorizations = {@Authorization(value = "Bearer")})
-  public List<RecordDTO> createRecord(@RequestBody RecordDTO recordDTO) {
+  public List<RecordDTO> createRecord(@RequestBody @Valid RecordDTO recordDTO) {
     return recordService.save(recordDTO);
   }
 

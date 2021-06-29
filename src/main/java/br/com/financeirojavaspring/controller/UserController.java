@@ -5,6 +5,7 @@ import br.com.financeirojavaspring.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.Authorization;
+import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +22,7 @@ public class UserController {
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     @ApiOperation(value = "Salva um usuário", authorizations = {@Authorization(value = "Bearer")})
-    public UserDTO createUser(@RequestBody UserDTO userDTO) {
+    public UserDTO createUser(@RequestBody @Valid UserDTO userDTO) {
         return userService.save(userDTO);
     }
 
@@ -42,7 +43,7 @@ public class UserController {
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(path = "/invitation/{invitationCode}")
     @ApiOperation(value = "Cria usuário a partir de um codigo de convite.", authorizations = {@Authorization(value = "Bearer")})
-    public UserDTO createUserByInvitation(@RequestBody UserDTO userDTO, @PathVariable String invitationCode) {
+    public UserDTO createUserByInvitation(@RequestBody @Valid UserDTO userDTO, @PathVariable String invitationCode) {
         return userService.saveWithInvitation(userDTO, invitationCode);
     }
 }

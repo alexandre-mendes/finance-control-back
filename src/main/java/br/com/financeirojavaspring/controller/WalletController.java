@@ -7,6 +7,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.Authorization;
 import java.util.List;
+import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -35,14 +36,14 @@ public class WalletController {
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping
   @ApiOperation(value = "Salva uma carteira", authorizations = {@Authorization(value = "Bearer")})
-  public WalletDTO createWallet(@RequestBody WalletDTO walletDTO) {
+  public WalletDTO createWallet(@RequestBody @Valid WalletDTO walletDTO) {
     return walletService.save(walletDTO);
   }
 
   @ResponseStatus(HttpStatus.CREATED)
   @PutMapping
   @ApiOperation(value = "Atualiza uma carteira", authorizations = {@Authorization(value = "Bearer")})
-  public WalletDTO updateWallet(@RequestBody WalletDTO walletDTO) {
+  public WalletDTO updateWallet(@RequestBody @Valid WalletDTO walletDTO) {
     return walletService.update(walletDTO);
   }
 

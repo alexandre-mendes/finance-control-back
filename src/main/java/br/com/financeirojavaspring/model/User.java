@@ -12,6 +12,7 @@ import java.util.Collection;
 @lombok.NoArgsConstructor
 @lombok.EqualsAndHashCode
 @lombok.AllArgsConstructor
+@lombok.Builder
 @Entity
 @Table(name = "financeiro_user")
 public class User implements UserDetails {

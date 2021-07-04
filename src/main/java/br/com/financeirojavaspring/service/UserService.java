@@ -1,9 +1,10 @@
 package br.com.financeirojavaspring.service;
 
-import br.com.financeirojavaspring.dto.InvitationDTO;
 import br.com.financeirojavaspring.dto.UserDTO;
+import br.com.financeirojavaspring.exception.EntityNotFoundException;
 import br.com.financeirojavaspring.exception.InvalidInvitationException;
 import br.com.financeirojavaspring.model.Account;
+import br.com.financeirojavaspring.model.Invitation;
 import br.com.financeirojavaspring.model.User;
 import br.com.financeirojavaspring.repository.AccountRepository;
 import br.com.financeirojavaspring.repository.InvitationRepository;
@@ -11,16 +12,17 @@ import br.com.financeirojavaspring.repository.UserRepository;
 import java.util.UUID;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UserService {
 
-    private AccountRepository accountRepository;
-    private InvitationRepository invitationRepository;
-    private UserRepository userRepository;
-    private ModelMapper modelMapper;
+    private final AccountRepository accountRepository;
+    private final InvitationRepository invitationRepository;
+    private final UserRepository userRepository;
+    private final ModelMapper modelMapper;
 
     @Autowired
     public UserService(AccountRepository accountRepository,
@@ -47,7 +49,11 @@ public class UserService {
     }
 
     public UserDTO saveWithInvitation(UserDTO userDTO, String invitationCode) {
-        var invitationOpt = invitationRepository.findByUuid(invitationCode);
+        var invitationOpt = invitationRepository.findOne(
+            Example.of(
+                Invitation.builder()
+                    .uuid(invitationCode)
+                    .build()));
         if (invitationOpt.isEmpty()) {
             throw new InvalidInvitationException(invitationCode);
         }
@@ -59,12 +65,20 @@ public class UserService {
     }
 
     public UserDTO find(String uuid) {
-        var user = userRepository.findByUuid(uuid);
+        var user = userRepository.findOne(
+            Example.of(
+                User.builder()
+                    .uuid(uuid)
+                    .build())).orElseThrow(EntityNotFoundException::new);
         return modelMapper.map(user, UserDTO.class);
     }
 
     public void delete(String uuid) {
-        var user = userRepository.findByUuid(uuid);
+        var user = userRepository.findOne(
+            Example.of(
+                User.builder()
+                    .uuid(uuid)
+                    .build())).orElseThrow(EntityNotFoundException::new);
         userRepository.deleteById(user.getId());
     }
 }

@@ -3,6 +3,7 @@ package br.com.financeirojavaspring.service;
 import br.com.financeirojavaspring.model.User;
 import br.com.financeirojavaspring.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -18,7 +19,10 @@ public class UserAuthenticationService implements UserDetailsService {
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		user = userRepository.findByUsername(username)
+		user = userRepository.findOne(Example.of(
+				User.builder()
+						.username(username)
+						.build()))
 				.orElseThrow(() -> new UsernameNotFoundException(String.format("User %s not found.", username)));
 		return user;
 	}

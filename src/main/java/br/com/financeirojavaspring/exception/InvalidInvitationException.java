@@ -1,6 +1,5 @@
 package br.com.financeirojavaspring.exception;
 
-import java.util.ArrayList;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 

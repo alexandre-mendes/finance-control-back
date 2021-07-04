@@ -9,6 +9,8 @@ import io.swagger.annotations.Authorization;
 import java.util.List;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -42,7 +44,14 @@ public class RecordController {
   @ResponseStatus(HttpStatus.OK)
   @GetMapping(path = "/{uuidWallet}")
   @ApiOperation(value = "Obtem os registros de uma carteira a partir de seu UUID.", authorizations = {@Authorization(value = "Bearer")})
-  public List<RecordDTO> findAllRecords(@PathVariable String uuidWallet) {
-    return recordService.findAllByUuidWallet(uuidWallet);
+  public Page<RecordDTO> findAllRecords(@PathVariable String uuidWallet, Pageable pageable) {
+    return recordService.findAllByUuidWallet(uuidWallet, pageable);
+  }
+
+  @ResponseStatus
+  @GetMapping(path = "/{uuidWallet}/mes/{mes}")
+  @ApiOperation(value = "Obtem os registros de uma carteira a partir de seu UUID e um mês.", authorizations = {@Authorization(value = "Bearer")})
+  public Page<RecordDTO> findAllRecordsByMonth(String uuidWallet, Integer mes, Pageable pageable) {
+    return recordService.findAllByUuidWalletAndDeadlineBetween(uuidWallet, mes, pageable);
   }
 }

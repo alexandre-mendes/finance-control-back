@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Api(value = "Record Controller")
 public class RecordController {
 
-  private RecordService recordService;
+  private final RecordService recordService;
 
   @Autowired
   public RecordController(RecordService recordService) {

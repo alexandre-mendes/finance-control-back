@@ -1,7 +1,6 @@
 package br.com.financeirojavaspring.controller;
 
 import br.com.financeirojavaspring.dto.WalletDTO;
-import br.com.financeirojavaspring.model.Wallet;
 import br.com.financeirojavaspring.service.WalletService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -16,7 +15,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -26,7 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Api(value = "Wallet Controller")
 public class WalletController {
 
-  private WalletService walletService;
+  private final WalletService walletService;
 
   @Autowired
   public WalletController(WalletService walletService) {

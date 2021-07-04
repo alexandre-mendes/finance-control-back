@@ -3,19 +3,17 @@ package br.com.financeirojavaspring.security;
 import br.com.financeirojavaspring.dto.AccountCredentialsDTO;
 import br.com.financeirojavaspring.service.TokenAuthenticationService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.IOException;
+import java.util.Collections;
+import javax.servlet.FilterChain;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.util.Collections;
 
 public class JWTLoginFilter extends AbstractAuthenticationProcessingFilter {
 
@@ -26,7 +24,7 @@ public class JWTLoginFilter extends AbstractAuthenticationProcessingFilter {
 
 	@Override
 	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
-			throws AuthenticationException, IOException, ServletException {
+			throws AuthenticationException, IOException {
 		
 		AccountCredentialsDTO credentials = new ObjectMapper()
 				.readValue(request.getInputStream(), AccountCredentialsDTO.class);
@@ -45,7 +43,7 @@ public class JWTLoginFilter extends AbstractAuthenticationProcessingFilter {
 			HttpServletRequest request, 
 			HttpServletResponse response,
 			FilterChain filterChain,
-			Authentication auth) throws IOException, ServletException {
+			Authentication auth) throws IOException {
 		
 		TokenAuthenticationService.addAuthentication(response, auth.getName());
 	}

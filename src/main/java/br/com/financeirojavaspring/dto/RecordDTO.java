@@ -17,19 +17,15 @@ public class RecordDTO {
   @NotNull
   @NotBlank
   private String title;
-  @NotNull
-  @NotBlank
+
   private LocalDate deadline;
-  @NotNull
-  @NotBlank
+
   private Boolean paid;
   @NotNull
-  @NotBlank
   private BigDecimal valor;
   @NotNull
   @NotBlank
   private String walletUuid;
   @NotNull
-  @NotBlank
   private BigDecimal parcelas;
 }

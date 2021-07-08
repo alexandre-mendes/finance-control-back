@@ -13,19 +13,24 @@ import javax.validation.constraints.NotNull;
 public class RecordDTO {
 
   private String uuid;
+
   private String registrationCode;
+
   @NotNull
   @NotBlank
   private String title;
 
+  @NotNull
   private LocalDate deadline;
 
   private Boolean paid;
+
   @NotNull
-  private BigDecimal valor;
+  private BigDecimal value;
+
   @NotNull
-  @NotBlank
   private String walletUuid;
+
   @NotNull
-  private BigDecimal parcelas;
+  private BigDecimal installments;
 }

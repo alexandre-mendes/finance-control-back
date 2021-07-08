@@ -35,7 +35,7 @@ public class Record {
 
   private LocalDate deadline;
 
-  private BigDecimal valor;
+  private BigDecimal value;
 
   private Boolean paid;
 

@@ -25,12 +25,12 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin(origins = "*")
 @RequestMapping("/record")
 @Api(value = "Record Controller")
-public class RecordController {
+public class RecordDebtorController {
 
   private final RecordService recordService;
 
   @Autowired
-  public RecordController(RecordService recordService) {
+  public RecordDebtorController(RecordService recordService) {
     this.recordService = recordService;
   }
 
@@ -42,16 +42,16 @@ public class RecordController {
   }
 
   @ResponseStatus(HttpStatus.OK)
-  @GetMapping(path = "/{uuidWallet}")
+  @GetMapping(path = "/wallet/{uuidWallet}")
   @ApiOperation(value = "Obtem os registros de uma carteira a partir de seu UUID.", authorizations = {@Authorization(value = "Bearer")})
   public Page<RecordDTO> findAllRecords(@PathVariable String uuidWallet, Pageable pageable) {
     return recordService.findAllByUuidWallet(uuidWallet, pageable);
   }
 
-  @ResponseStatus
-  @GetMapping(path = "/{uuidWallet}/mes/{mes}")
+  @ResponseStatus(HttpStatus.OK)
+  @GetMapping(path = "/wallet/{uuidWallet}/month/{month}")
   @ApiOperation(value = "Obtem os registros de uma carteira a partir de seu UUID e um mês.", authorizations = {@Authorization(value = "Bearer")})
-  public Page<RecordDTO> findAllRecordsByMonth(String uuidWallet, Integer mes, Pageable pageable) {
-    return recordService.findAllByUuidWalletAndDeadlineBetween(uuidWallet, mes, pageable);
+  public Page<RecordDTO> findAllRecordsByMonth(@PathVariable String uuidWallet, @PathVariable Integer month, Pageable pageable) {
+    return recordService.findAllByUuidWalletAndDeadlineBetween(uuidWallet, month, pageable);
   }
 }

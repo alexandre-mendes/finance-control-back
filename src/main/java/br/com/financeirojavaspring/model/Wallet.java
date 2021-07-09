@@ -3,6 +3,7 @@ package br.com.financeirojavaspring.model;
 import br.com.financeirojavaspring.builder.entity.WalletBuilder;
 import br.com.financeirojavaspring.enums.TypeWallet;
 
+import java.io.Serializable;
 import javax.persistence.*;
 import java.util.List;
 
@@ -13,7 +14,7 @@ import java.util.List;
 @lombok.AllArgsConstructor
 @Entity
 @Table(name = "financeiro_wallet")
-public class Wallet {
+public class Wallet implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "wallet_seq")

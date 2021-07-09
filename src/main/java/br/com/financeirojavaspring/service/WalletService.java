@@ -1,11 +1,11 @@
 package br.com.financeirojavaspring.service;
 
-import br.com.financeirojavaspring.builder.entity.WalletBuilder;
 import br.com.financeirojavaspring.dto.WalletDTO;
 import br.com.financeirojavaspring.dto.WalletSummaryDTO;
 import br.com.financeirojavaspring.enums.TypeWallet;
 import br.com.financeirojavaspring.exception.EntityNotFoundException;
 import br.com.financeirojavaspring.model.Wallet;
+import br.com.financeirojavaspring.repository.RecordCreditorRepository;
 import br.com.financeirojavaspring.repository.RecordDebtorRepository;
 import br.com.financeirojavaspring.repository.WalletRepository;
 import java.math.BigDecimal;
@@ -27,16 +27,19 @@ public class WalletService {
   private final ModelMapper modelMapper;
   private final UserAuthenticationService authenticationService;
   private final RecordDebtorRepository recordDebtorRepository;
+  private final RecordCreditorRepository recordCreditorRepository;
 
   @Autowired
   public WalletService(WalletRepository walletRepository,
       ModelMapper modelMapper,
       UserAuthenticationService authenticationService,
-      RecordDebtorRepository recordDebtorRepository) {
+      RecordDebtorRepository recordDebtorRepository,
+      RecordCreditorRepository recordCreditorRepository) {
     this.walletRepository = walletRepository;
     this.modelMapper = modelMapper;
     this.authenticationService = authenticationService;
     this.recordDebtorRepository = recordDebtorRepository;
+    this.recordCreditorRepository = recordCreditorRepository;
   }
 
   public WalletDTO save(WalletDTO walletDTO) {
@@ -80,9 +83,9 @@ public class WalletService {
     var totalPaid = recordDebtorRepository.findTotalPaidByMonth(firstMonth, lastMonth);
 
     var totalDebtor = recordDebtorRepository
-        .findTotalByTypeWalletAndMonth(TypeWallet.DEBTOR, firstMonth, lastMonth);
-    var totalCreditor = recordDebtorRepository
-        .findTotalByTypeWalletAndMonth(TypeWallet.CREDITOR, firstMonth, lastMonth);
+        .findTotalByTypeWalletAndMonth(firstMonth, lastMonth);
+    var totalCreditor = recordCreditorRepository
+        .findTotalByTypeWalletAndMonth(firstMonth, lastMonth);
     BigDecimal percentageCommitted;
     BigDecimal porcentagePaid;
 

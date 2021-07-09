@@ -22,11 +22,10 @@ public interface RecordDebtorRepository extends JpaRepository<RecordDebtor, Long
       + "from "
       + "   RecordDebtor r "
       + "where "
-      + "   r.wallet.typeWallet = :typeWallet "
+      + "   r.wallet.typeWallet = 'DEBTOR' "
       + "and "
       + "   r.dateDeadline between :firstDate and :lastDate")
   BigDecimal findTotalByTypeWalletAndMonth(
-      @Param(value = "typeWallet") TypeWallet typeWallet,
       @Param(value = "firstDate") LocalDate firstDate,
       @Param(value = "lastDate") LocalDate lastDate
   );

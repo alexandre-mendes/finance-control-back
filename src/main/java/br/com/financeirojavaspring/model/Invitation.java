@@ -7,7 +7,6 @@ import javax.persistence.*;
 @lombok.NoArgsConstructor
 @lombok.EqualsAndHashCode
 @lombok.AllArgsConstructor
-@lombok.Builder
 @Entity
 @Table(name = "financeiro_invitation")
 public class Invitation {

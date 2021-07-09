@@ -1,13 +1,15 @@
 package br.com.financeirojavaspring.controller;
 
 import br.com.financeirojavaspring.dto.WalletDTO;
+import br.com.financeirojavaspring.dto.WalletSummaryDTO;
+import br.com.financeirojavaspring.enums.TypeWallet;
 import br.com.financeirojavaspring.service.WalletService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.Authorization;
-import java.util.List;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -48,7 +51,14 @@ public class WalletController {
   @ResponseStatus(HttpStatus.OK)
   @GetMapping
   @ApiOperation(value = "Obtem todas as carteiras vinculadas a conta do usuário", authorizations = {@Authorization(value = "Bearer")})
-  public List<WalletDTO> findAllWallets() {
-    return walletService.findAll();
+  public Page<WalletDTO> findAllWallets(@RequestParam(required = false) final TypeWallet typeWallet) {
+    return walletService.findAll(typeWallet);
+  }
+
+  @ResponseStatus(HttpStatus.OK)
+  @GetMapping(path = "/summary")
+  @ApiOperation(value = "Obtem um resumo das carteiras no mês atual", authorizations = {@Authorization(value = "Bearer")})
+  public WalletSummaryDTO findWalletsSummary() {
+    return walletService.findWalletsSummary();
   }
 }

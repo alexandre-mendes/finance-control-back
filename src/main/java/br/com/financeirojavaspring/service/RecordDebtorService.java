@@ -1,10 +1,10 @@
 package br.com.financeirojavaspring.service;
 
-import br.com.financeirojavaspring.dto.RecordDTO;
+import br.com.financeirojavaspring.dto.RecordDebtorDTO;
 import br.com.financeirojavaspring.exception.EntityNotFoundException;
 import br.com.financeirojavaspring.model.RecordDebtor;
 import br.com.financeirojavaspring.model.Wallet;
-import br.com.financeirojavaspring.repository.RecordRepository;
+import br.com.financeirojavaspring.repository.RecordDebtorRepository;
 import br.com.financeirojavaspring.repository.WalletRepository;
 import java.math.RoundingMode;
 import java.time.LocalDate;
@@ -21,64 +21,70 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
-public class RecordService {
+public class RecordDebtorService {
 
-  private final RecordRepository recordRepository;
+  private final RecordDebtorRepository recordDebtorRepository;
   private final WalletRepository walletRepository;
   private final ModelMapper modelMapper;
 
-  public RecordService(RecordRepository recordRepository,
+  public RecordDebtorService(RecordDebtorRepository recordDebtorRepository,
       WalletRepository walletRepository,
       ModelMapper modelMapper) {
-    this.recordRepository = recordRepository;
+    this.recordDebtorRepository = recordDebtorRepository;
     this.walletRepository = walletRepository;
     this.modelMapper = modelMapper;
   }
 
-  public List<RecordDTO> save(RecordDTO recordDTO) {
+  public List<RecordDebtorDTO> create(RecordDebtorDTO recordDebtorDTO) {
+    var example = new Wallet();
+    example.setUuid(recordDebtorDTO.getWalletUuid());
+
     List<RecordDebtor> recordDebtors = new ArrayList<>();
     var wallet = walletRepository.findOne(
-        Example.of(
-            Wallet.builder()
-                .uuid(recordDTO.getWalletUuid())
-                .build())).orElseThrow(EntityNotFoundException::new);
+        Example.of(example)).orElseThrow(EntityNotFoundException::new);
     var registrationCode = UUID.randomUUID().toString();
 
-    for (int i = 0; i < recordDTO.getInstallments().intValue(); i++) {
-      recordDebtors.add(
-        RecordDebtor.builder()
-            .value(recordDTO.getValue().divide(recordDTO.getInstallments(), RoundingMode.DOWN))
-            .title(recordDTO.getTitle())
-            .deadline(i > 0 ? recordDTO.getDeadline().plusMonths(i) : recordDTO.getDeadline())
-            .registrationCode(registrationCode)
-            .wallet(wallet)
-            .paid(false)
-            .uuid(UUID.randomUUID().toString())
-            .build()
-      );
+    for (int i = 0; i < recordDebtorDTO.getInstallments().intValue(); i++) {
+      var exampleRecord = new RecordDebtor();
+      exampleRecord.setValue(recordDebtorDTO.getValue().divide(recordDebtorDTO.getInstallments(), RoundingMode.DOWN));
+      exampleRecord.setTitle(recordDebtorDTO.getTitle());
+      exampleRecord.setDateDeadline(i > 0 ? recordDebtorDTO.getDeadline().plusMonths(i) : recordDebtorDTO.getDeadline());
+      exampleRecord.setRegistrationCode(registrationCode);
+      exampleRecord.setWallet(wallet);
+      exampleRecord.setPaid(false);
+      exampleRecord.setUuid(UUID.randomUUID().toString());
+
+      recordDebtors.add(exampleRecord);
     }
-    return recordRepository.saveAll(recordDebtors).stream().map(r -> modelMapper.map(r, RecordDTO.class))
+    return recordDebtorRepository
+        .saveAll(recordDebtors).stream().map(r -> modelMapper.map(r, RecordDebtorDTO.class))
         .collect(Collectors.toList());
   }
 
-  public Page<RecordDTO> findAllByUuidWallet(String uuidWallet, Pageable pageable) {
-    var records = recordRepository.findAll(
-        Example.of(
-            RecordDebtor.builder().uuid(uuidWallet).build()),
+  public Page<RecordDebtorDTO> findAllByUuidWallet(String uuidWallet, Pageable pageable) {
+    var example = new Wallet();
+    example.setUuid(uuidWallet);
+
+    var exampleRecord = new RecordDebtor();
+    exampleRecord.setWallet(example);
+
+    var records = recordDebtorRepository.findAll(
+        Example.of(exampleRecord),
         pageable
     ).stream()
-        .map(r -> modelMapper.map(r, RecordDTO.class))
+        .map(r -> modelMapper.map(r, RecordDebtorDTO.class))
         .collect(Collectors.toList());
     return new PageImpl<>(records);
   }
 
-  public Page<RecordDTO> findAllByUuidWalletAndDeadlineBetween(String uuidWallet, Integer mes, Pageable pageable) {
+  public Page<RecordDebtorDTO> findAllByUuidWalletAndDeadlineBetween(String uuidWallet, Integer mes, Pageable pageable) {
     var firstMonth = LocalDate.now().withMonth(mes).withDayOfMonth(1);
     var lastMonth = LocalDate.now().withMonth(mes).withDayOfMonth(firstMonth.lengthOfMonth());
-    var records = recordRepository.findAllfindAllByWalletUuidAndDeadlineBetween(uuidWallet, firstMonth, lastMonth, pageable)
+    var records = recordDebtorRepository
+        .findAllfindAllByWalletUuidAndDateDeadlineBetween(uuidWallet, firstMonth, lastMonth, pageable)
         .stream()
-        .map(r -> modelMapper.map(r, RecordDTO.class))
-        .sorted(Comparator.comparing(RecordDTO::getDeadline))
+        .map(r -> modelMapper.map(r, RecordDebtorDTO.class))
+        .sorted(Comparator.comparing(RecordDebtorDTO::getDeadline))
         .collect(Collectors.toList());
     return new PageImpl<>(records);
   }

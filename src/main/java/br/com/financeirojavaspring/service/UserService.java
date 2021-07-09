@@ -49,11 +49,11 @@ public class UserService {
     }
 
     public UserDTO saveWithInvitation(UserDTO userDTO, String invitationCode) {
+        var example = new Invitation();
+        example.setUuid(invitationCode);
+
         var invitationOpt = invitationRepository.findOne(
-            Example.of(
-                Invitation.builder()
-                    .uuid(invitationCode)
-                    .build()));
+            Example.of(example));
         if (invitationOpt.isEmpty()) {
             throw new InvalidInvitationException(invitationCode);
         }
@@ -65,20 +65,20 @@ public class UserService {
     }
 
     public UserDTO find(String uuid) {
+        var example = new User();
+        example.setUuid(uuid);
+
         var user = userRepository.findOne(
-            Example.of(
-                User.builder()
-                    .uuid(uuid)
-                    .build())).orElseThrow(EntityNotFoundException::new);
+            Example.of(example)).orElseThrow(EntityNotFoundException::new);
         return modelMapper.map(user, UserDTO.class);
     }
 
     public void delete(String uuid) {
+        var example = new User();
+        example.setUuid(uuid);
+
         var user = userRepository.findOne(
-            Example.of(
-                User.builder()
-                    .uuid(uuid)
-                    .build())).orElseThrow(EntityNotFoundException::new);
+            Example.of(example)).orElseThrow(EntityNotFoundException::new);
         userRepository.deleteById(user.getId());
     }
 }

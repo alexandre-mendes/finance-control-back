@@ -12,7 +12,6 @@ import java.util.Collection;
 @lombok.NoArgsConstructor
 @lombok.EqualsAndHashCode
 @lombok.AllArgsConstructor
-@lombok.Builder
 @Entity
 @Table(name = "financeiro_user")
 public class User implements UserDetails {
@@ -28,6 +27,10 @@ public class User implements UserDetails {
     @ManyToOne
     @JoinColumn(name = "id_account")
     private Account account;
+
+    public User(String username) {
+        this.username = username;
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

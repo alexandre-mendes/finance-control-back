@@ -10,7 +10,6 @@ import java.util.List;
 @lombok.NoArgsConstructor
 @lombok.EqualsAndHashCode
 @lombok.AllArgsConstructor
-@lombok.Builder
 @Entity
 @Table(name = "financeiro_wallet")
 public class Wallet {
@@ -29,7 +28,10 @@ public class Wallet {
     private TypeWallet typeWallet;
 
     @OneToMany(mappedBy = "wallet")
-    private List<Record> record;
+    private List<RecordDebtor> recordDebtor;
+
+    @OneToMany(mappedBy = "wallet")
+    private List<RecordDebtor> recordCreditor;
 
     @ManyToOne
     @JoinColumn(name = "id_account")

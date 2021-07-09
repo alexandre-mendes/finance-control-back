@@ -1,8 +1,8 @@
 package br.com.financeirojavaspring.controller;
 
 
-import br.com.financeirojavaspring.dto.RecordDTO;
-import br.com.financeirojavaspring.service.RecordService;
+import br.com.financeirojavaspring.dto.RecordDebtorDTO;
+import br.com.financeirojavaspring.service.RecordDebtorService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.Authorization;
@@ -23,35 +23,38 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @CrossOrigin(origins = "*")
-@RequestMapping("/record")
-@Api(value = "Record Controller")
+@RequestMapping("/record-debtor")
+@Api(value = "Record Debtor Controller")
 public class RecordDebtorController {
 
-  private final RecordService recordService;
+  private final RecordDebtorService recordService;
 
   @Autowired
-  public RecordDebtorController(RecordService recordService) {
-    this.recordService = recordService;
+  public RecordDebtorController(RecordDebtorService recordDebtorService) {
+    this.recordService = recordDebtorService;
   }
 
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping
   @ApiOperation(value = "Salva um registro ou varios registros se houver mais de 1 parcela.", authorizations = {@Authorization(value = "Bearer")})
-  public List<RecordDTO> createRecord(@RequestBody @Valid RecordDTO recordDTO) {
-    return recordService.save(recordDTO);
+  public List<RecordDebtorDTO> create(@RequestBody @Valid RecordDebtorDTO recordDebtorDTO) {
+    return recordService.create(recordDebtorDTO);
   }
 
   @ResponseStatus(HttpStatus.OK)
   @GetMapping(path = "/wallet/{uuidWallet}")
   @ApiOperation(value = "Obtem os registros de uma carteira a partir de seu UUID.", authorizations = {@Authorization(value = "Bearer")})
-  public Page<RecordDTO> findAllRecords(@PathVariable String uuidWallet, Pageable pageable) {
+  public Page<RecordDebtorDTO> findAllRecords(@PathVariable String uuidWallet, Pageable pageable) {
     return recordService.findAllByUuidWallet(uuidWallet, pageable);
   }
 
   @ResponseStatus(HttpStatus.OK)
   @GetMapping(path = "/wallet/{uuidWallet}/month/{month}")
   @ApiOperation(value = "Obtem os registros de uma carteira a partir de seu UUID e um mês.", authorizations = {@Authorization(value = "Bearer")})
-  public Page<RecordDTO> findAllRecordsByMonth(@PathVariable String uuidWallet, @PathVariable Integer month, Pageable pageable) {
+  public Page<RecordDebtorDTO> findAllByMonth(
+      @PathVariable String uuidWallet,
+      @PathVariable Integer month,
+      Pageable pageable) {
     return recordService.findAllByUuidWalletAndDeadlineBetween(uuidWallet, month, pageable);
   }
 }

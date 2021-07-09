@@ -10,9 +10,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-public interface RecordRepository extends JpaRepository<RecordDebtor, Long> {
+public interface RecordDebtorRepository extends JpaRepository<RecordDebtor, Long> {
 
-  Page<RecordDebtor> findAllfindAllByWalletUuidAndDeadlineBetween(String uuidWallet,
+  Page<RecordDebtor> findAllfindAllByWalletUuidAndDateDeadlineBetween(String uuidWallet,
       LocalDate firstMonth,
       LocalDate lastMonth,
       Pageable pageable);
@@ -20,11 +20,11 @@ public interface RecordRepository extends JpaRepository<RecordDebtor, Long> {
   @Query("select "
       + "   SUM(r.value) "
       + "from "
-      + "   Record r "
+      + "   RecordDebtor r "
       + "where "
       + "   r.wallet.typeWallet = :typeWallet "
       + "and "
-      + "   r.deadline between :firstDate and :lastDate")
+      + "   r.dateDeadline between :firstDate and :lastDate")
   BigDecimal findTotalByTypeWalletAndMonth(
       @Param(value = "typeWallet") TypeWallet typeWallet,
       @Param(value = "firstDate") LocalDate firstDate,
@@ -34,13 +34,13 @@ public interface RecordRepository extends JpaRepository<RecordDebtor, Long> {
   @Query("select "
       + "   SUM(r.value) "
       + "from "
-      + "   Record r "
+      + "   RecordDebtor r "
       + "where "
       + "   r.wallet.typeWallet = 'DEBTOR' "
       + "and "
       + "   r.paid = true "
       + "and "
-      + "   r.deadline between :firstDate and :lastDate")
+      + "   r.dateDeadline between :firstDate and :lastDate")
   BigDecimal findTotalPaidByMonth(
       @Param(value = "firstDate") LocalDate firstDate,
       @Param(value = "lastDate") LocalDate lastDate

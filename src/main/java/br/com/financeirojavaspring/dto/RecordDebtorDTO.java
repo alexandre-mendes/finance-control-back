@@ -10,7 +10,7 @@ import javax.validation.constraints.NotNull;
 @lombok.NoArgsConstructor
 @lombok.EqualsAndHashCode
 @lombok.AllArgsConstructor
-public class RecordDTO {
+public class RecordDebtorDTO {
 
   private String uuid;
 

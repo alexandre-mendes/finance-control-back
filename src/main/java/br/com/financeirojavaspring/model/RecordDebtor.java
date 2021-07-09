@@ -16,14 +16,13 @@ import javax.persistence.Table;
 @lombok.NoArgsConstructor
 @lombok.EqualsAndHashCode
 @lombok.AllArgsConstructor
-@lombok.Builder
 @Entity
-@Table(name = "financeiro_record")
-public class Record {
+@Table(name = "financeiro_record_debtor")
+public class RecordDebtor {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "record_seq")
-  @Column(name = "id_record")
+  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "record_debtor_seq")
+  @Column(name = "id_record_debtor")
   private Long id;
 
   @Column(unique = true)
@@ -33,7 +32,7 @@ public class Record {
 
   private String title;
 
-  private LocalDate deadline;
+  private LocalDate dateDeadline;
 
   private BigDecimal value;
 

@@ -29,11 +29,11 @@ public class InvitationService {
     }
 
     public InvitationDTO createInvitation(String idUser) {
+        var example = new User();
+        example.setUuid(idUser);
+
         var user = userRepository.findOne(
-            Example.of(
-                User.builder()
-                    .uuid(idUser)
-                    .build())).orElseThrow(EntityNotFoundException::new);
+            Example.of(example)).orElseThrow(EntityNotFoundException::new);
         var invitation = new Invitation();
         invitation.setUuid(UUID.randomUUID().toString());
         invitation.setUserInvited(user);

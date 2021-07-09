@@ -8,7 +8,7 @@ import lombok.Setter;
 @Setter
 @EqualsAndHashCode
 public class AccountCredentialsDTO {
-	
+
 	private String username;
 	private String password;
 

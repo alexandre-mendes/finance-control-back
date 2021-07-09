@@ -1,5 +1,7 @@
 package br.com.financeirojavaspring.dto;
 
+import br.com.financeirojavaspring.builder.dto.RecordCreditorDTOBuilder;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import javax.validation.constraints.NotBlank;
@@ -10,7 +12,7 @@ import javax.validation.constraints.NotNull;
 @lombok.NoArgsConstructor
 @lombok.EqualsAndHashCode
 @lombok.AllArgsConstructor
-public class RecordCreditorDTO {
+public class RecordCreditorDTO implements Serializable {
 
   private String uuid;
 
@@ -26,4 +28,8 @@ public class RecordCreditorDTO {
 
   @NotNull
   private String walletUuid;
+
+  public static RecordCreditorDTOBuilder builder() {
+     return new RecordCreditorDTOBuilder();
+  }
 }

@@ -1,5 +1,6 @@
 package br.com.financeirojavaspring.model;
 
+import br.com.financeirojavaspring.builder.entity.WalletBuilder;
 import br.com.financeirojavaspring.enums.TypeWallet;
 
 import javax.persistence.*;
@@ -36,4 +37,8 @@ public class Wallet {
     @ManyToOne
     @JoinColumn(name = "id_account")
     private Account account;
+
+    public static WalletBuilder builder() {
+        return new WalletBuilder();
+    }
 }

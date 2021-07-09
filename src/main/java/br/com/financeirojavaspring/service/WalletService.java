@@ -1,5 +1,6 @@
 package br.com.financeirojavaspring.service;
 
+import br.com.financeirojavaspring.builder.entity.WalletBuilder;
 import br.com.financeirojavaspring.dto.WalletDTO;
 import br.com.financeirojavaspring.dto.WalletSummaryDTO;
 import br.com.financeirojavaspring.enums.TypeWallet;
@@ -48,11 +49,12 @@ public class WalletService {
   }
 
   public WalletDTO update(WalletDTO walletDTO) {
-    var example = new Wallet();
-    example.setUuid(walletDTO.getUuid());
-
     var walletSaved = walletRepository.findOne(
-        Example.of(example)).orElseThrow(EntityNotFoundException::new);
+        Example.of(
+            Wallet.builder()
+                .uuid(walletDTO.getUuid())
+                .build())
+    ).orElseThrow(EntityNotFoundException::new);
     walletSaved.setTitle(walletDTO.getTitle());
     walletSaved.setTypeWallet(walletDTO.getTypeWallet());
     walletSaved = walletRepository.save(walletSaved);
@@ -61,12 +63,13 @@ public class WalletService {
 
   public Page<WalletDTO> findAll(TypeWallet typeWallet) {
     var account = authenticationService.getUser().getAccount();
-    var example = new Wallet();
-    example.setAccount(account);
-    example.setTypeWallet(typeWallet);
 
     var wallets = walletRepository.findAll(
-        Example.of(example));
+        Example.of(
+            Wallet.builder()
+                .account(account)
+                .typeWallet(typeWallet)
+                .build()));
     var walletsDTO = wallets.stream().map(w -> modelMapper.map(w, WalletDTO.class)).collect(Collectors.toList());
     return new PageImpl<>(walletsDTO);
   }
@@ -95,12 +98,11 @@ public class WalletService {
       porcentagePaid = BigDecimal.ZERO;
     }
 
-    var summary = new WalletSummaryDTO();
-    summary.setTotalDebtor(totalDebtor != null ? totalDebtor : BigDecimal.ZERO);
-    summary.setTotalCreditor(totalCreditor != null ? totalCreditor : BigDecimal.ZERO);
-    summary.setPercentageCommitted(percentageCommitted);
-    summary.setPercentagePaid(porcentagePaid);
-
-    return summary;
+    return WalletSummaryDTO.builder()
+        .totalDebtor(totalDebtor != null ? totalDebtor : BigDecimal.ZERO)
+        .totalCreditor(totalCreditor != null ? totalCreditor : BigDecimal.ZERO)
+        .percentageCommitted(percentageCommitted)
+        .percentagePaid(porcentagePaid)
+        .build();
   }
 }

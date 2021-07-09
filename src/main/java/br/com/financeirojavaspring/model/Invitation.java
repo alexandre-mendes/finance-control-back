@@ -1,5 +1,6 @@
 package br.com.financeirojavaspring.model;
 
+import br.com.financeirojavaspring.builder.entity.InvitationBuilder;
 import javax.persistence.*;
 
 @lombok.Getter
@@ -20,4 +21,8 @@ public class Invitation {
     @ManyToOne
     @JoinColumn(name = "id_user")
     private User userInvited;
+
+    public static InvitationBuilder builder() {
+        return new InvitationBuilder();
+    }
 }

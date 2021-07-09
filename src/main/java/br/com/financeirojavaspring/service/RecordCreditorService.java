@@ -38,11 +38,14 @@ public class RecordCreditorService {
   }
 
   public RecordCreditorDTO create(RecordCreditorDTO dto) {
-    var example = new Wallet();
-    example.setUuid(dto.getWalletUuid());
 
     var wallet = walletRepository.findOne(
-        Example.of(example)).orElseThrow(EntityNotFoundException::new);
+        Example.of(
+            Wallet.builder()
+                .uuid(dto.getWalletUuid())
+                .build())
+    ).orElseThrow(EntityNotFoundException::new);
+
     var entity = modelMapper.map(dto, RecordCreditor.class);
     entity.setUuid(UUID.randomUUID().toString());
     entity.setWallet(wallet);

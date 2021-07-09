@@ -1,5 +1,6 @@
 package br.com.financeirojavaspring.model;
 
+import br.com.financeirojavaspring.builder.entity.RecordDebtorBuilder;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import javax.persistence.Column;
@@ -41,4 +42,8 @@ public class RecordDebtor {
   @ManyToOne
   @JoinColumn(name = "id_wallet")
   private Wallet wallet;
+
+  public static RecordDebtorBuilder builder() {
+    return new RecordDebtorBuilder();
+  }
 }

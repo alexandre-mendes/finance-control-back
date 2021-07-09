@@ -36,9 +36,11 @@ public class UserService {
     }
 
     public UserDTO save(UserDTO userDTO) {
-        var account = new Account();
-        account.setUuid(UUID.randomUUID().toString());
-        account = accountRepository.save(account);
+        var account = accountRepository.save(
+            Account.builder()
+                .uuid(UUID.randomUUID().toString())
+                .build()
+        );
 
         var user = modelMapper.map(userDTO, User.class);
         user.setUuid(UUID.randomUUID().toString());
@@ -49,11 +51,12 @@ public class UserService {
     }
 
     public UserDTO saveWithInvitation(UserDTO userDTO, String invitationCode) {
-        var example = new Invitation();
-        example.setUuid(invitationCode);
-
         var invitationOpt = invitationRepository.findOne(
-            Example.of(example));
+            Example.of(
+                Invitation.builder()
+                    .uuid(invitationCode)
+                    .build()));
+
         if (invitationOpt.isEmpty()) {
             throw new InvalidInvitationException(invitationCode);
         }
@@ -65,20 +68,22 @@ public class UserService {
     }
 
     public UserDTO find(String uuid) {
-        var example = new User();
-        example.setUuid(uuid);
-
         var user = userRepository.findOne(
-            Example.of(example)).orElseThrow(EntityNotFoundException::new);
+            Example.of(
+                User.builder()
+                    .uuid(uuid)
+                    .build())
+        ).orElseThrow(EntityNotFoundException::new);
         return modelMapper.map(user, UserDTO.class);
     }
 
     public void delete(String uuid) {
-        var example = new User();
-        example.setUuid(uuid);
-
         var user = userRepository.findOne(
-            Example.of(example)).orElseThrow(EntityNotFoundException::new);
+            Example.of(
+                User.builder()
+                    .uuid(uuid)
+                    .build())
+        ).orElseThrow(EntityNotFoundException::new);
         userRepository.deleteById(user.getId());
     }
 }

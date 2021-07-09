@@ -1,5 +1,7 @@
 package br.com.financeirojavaspring.service;
 
+import br.com.financeirojavaspring.builder.entity.InvitationBuilder;
+import br.com.financeirojavaspring.builder.entity.UserBuilder;
 import br.com.financeirojavaspring.dto.InvitationDTO;
 import br.com.financeirojavaspring.exception.EntityNotFoundException;
 import br.com.financeirojavaspring.model.Invitation;
@@ -29,15 +31,17 @@ public class InvitationService {
     }
 
     public InvitationDTO createInvitation(String idUser) {
-        var example = new User();
-        example.setUuid(idUser);
-
         var user = userRepository.findOne(
-            Example.of(example)).orElseThrow(EntityNotFoundException::new);
-        var invitation = new Invitation();
-        invitation.setUuid(UUID.randomUUID().toString());
-        invitation.setUserInvited(user);
-        invitation = invitationRepository.save(invitation);
+            Example.of(
+                User.builder()
+                    .uuid(idUser)
+                    .build())
+        ).orElseThrow(EntityNotFoundException::new);
+        var invitation = invitationRepository.save(
+            Invitation.builder()
+                .uuid(UUID.randomUUID().toString())
+                .userInvited(user)
+                .build());
         return modelMapper.map(invitation, InvitationDTO.class);
     }
 }

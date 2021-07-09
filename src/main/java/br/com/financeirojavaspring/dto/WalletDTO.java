@@ -1,6 +1,8 @@
 package br.com.financeirojavaspring.dto;
 
+import br.com.financeirojavaspring.builder.dto.WalletDTOBuilder;
 import br.com.financeirojavaspring.enums.TypeWallet;
+import java.io.Serializable;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
@@ -9,7 +11,7 @@ import javax.validation.constraints.NotNull;
 @lombok.NoArgsConstructor
 @lombok.EqualsAndHashCode
 @lombok.AllArgsConstructor
-public class WalletDTO {
+public class WalletDTO implements Serializable {
 
   private String uuid;
   @NotNull
@@ -18,4 +20,8 @@ public class WalletDTO {
   @NotNull
   @NotBlank
   private TypeWallet typeWallet;
+
+  public static WalletDTOBuilder builder() {
+    return new WalletDTOBuilder();
+  }
 }

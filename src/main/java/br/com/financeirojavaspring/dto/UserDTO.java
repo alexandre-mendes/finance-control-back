@@ -1,5 +1,7 @@
 package br.com.financeirojavaspring.dto;
 
+import br.com.financeirojavaspring.builder.dto.UserDTOBuilder;
+import java.io.Serializable;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
@@ -8,7 +10,7 @@ import javax.validation.constraints.NotNull;
 @lombok.NoArgsConstructor
 @lombok.EqualsAndHashCode
 @lombok.AllArgsConstructor
-public class UserDTO {
+public class UserDTO implements Serializable {
     private String uuid;
     @NotNull
     @NotBlank
@@ -19,4 +21,8 @@ public class UserDTO {
     @NotNull
     @NotBlank
     private String name;
+
+    public static UserDTOBuilder builder() {
+        return new UserDTOBuilder();
+    }
 }

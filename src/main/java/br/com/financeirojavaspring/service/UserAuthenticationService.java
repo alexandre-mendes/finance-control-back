@@ -25,8 +25,10 @@ public class UserAuthenticationService implements UserDetailsService {
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		user = userRepository.findOne(Example.of(
-				new User(username)))
-				.orElseThrow(() -> new UsernameNotFoundException(String.format("User %s not found.", username)));
+        User.builder()
+						.username(username)
+						.build())
+		).orElseThrow(() -> new UsernameNotFoundException(String.format("User %s not found.", username)));
 		return user;
 	}
 

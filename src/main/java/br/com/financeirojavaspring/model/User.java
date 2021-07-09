@@ -1,5 +1,6 @@
 package br.com.financeirojavaspring.model;
 
+import br.com.financeirojavaspring.builder.entity.UserBuilder;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -65,5 +66,9 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public static UserBuilder builder() {
+        return new UserBuilder();
     }
 }

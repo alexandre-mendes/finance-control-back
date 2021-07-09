@@ -1,5 +1,6 @@
 package br.com.financeirojavaspring.model;
 
+import br.com.financeirojavaspring.builder.entity.AccountBuilder;
 import javax.persistence.*;
 
 @lombok.Getter
@@ -17,4 +18,8 @@ public class Account {
     private Long id;
     @Column(unique = true)
     private String uuid;
+
+    public static AccountBuilder builder() {
+        return new AccountBuilder();
+    }
 }

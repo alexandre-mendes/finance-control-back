@@ -1,5 +1,6 @@
 package br.com.financeirojavaspring.model;
 
+import br.com.financeirojavaspring.builder.entity.RecordCreditorBuilder;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import javax.persistence.Column;
@@ -37,4 +38,8 @@ public class RecordCreditor {
   @ManyToOne
   @JoinColumn(name = "id_wallet")
   private Wallet wallet;
+
+  public static RecordCreditorBuilder builder() {
+    return new RecordCreditorBuilder();
+  }
 }

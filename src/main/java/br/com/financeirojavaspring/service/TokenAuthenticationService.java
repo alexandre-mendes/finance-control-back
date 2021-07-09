@@ -14,8 +14,8 @@ import java.util.UUID;
 
 public class TokenAuthenticationService {
 	
-	// EXPIRATION_TIME = 30 MINUTOS
-	static final long EXPIRATION_TIME = 1800000;
+	// EXPIRATION_TIME = 2 horas
+	static final long EXPIRATION_TIME = 7200000;
 	static final String SECRET = "53d0bb9de7c0860675a13873722759c0fb3245e5154e51e133bf6ab6ade88a80";
 	static final String TOKEN_PREFIX = "Bearer";
 	static final String HEADER_STRING = "Authorization";

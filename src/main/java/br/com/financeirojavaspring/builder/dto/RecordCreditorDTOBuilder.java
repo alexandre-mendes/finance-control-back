@@ -11,6 +11,7 @@ public class RecordCreditorDTOBuilder implements Builder {
   private String title;
   private LocalDate dateReceivement;
   private BigDecimal value;
+  private boolean received;
   private String walletUuid;
 
   public RecordCreditorDTOBuilder uuid(String uuid) {
@@ -33,6 +34,11 @@ public class RecordCreditorDTOBuilder implements Builder {
     return this;
   }
 
+  public RecordCreditorDTOBuilder received(boolean received) {
+    this.received = received;
+    return this;
+  }
+
   public RecordCreditorDTOBuilder walletUuid(String walletUuid) {
     this.walletUuid = walletUuid;
     return this;
@@ -40,6 +46,6 @@ public class RecordCreditorDTOBuilder implements Builder {
 
   @Override
   public RecordCreditorDTO build() {
-    return new RecordCreditorDTO(uuid, title, dateReceivement, value, walletUuid);
+    return new RecordCreditorDTO(uuid, title, dateReceivement, value, walletUuid, received);
   }
 }

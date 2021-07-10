@@ -7,6 +7,7 @@ import br.com.financeirojavaspring.model.Wallet;
 import br.com.financeirojavaspring.repository.RecordCreditorRepository;
 import br.com.financeirojavaspring.repository.WalletRepository;
 import java.time.LocalDate;
+import java.util.Comparator;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import org.modelmapper.ModelMapper;
@@ -59,11 +60,15 @@ public class RecordCreditorService {
       Pageable pageable) {
     var firstMonth = LocalDate.now().withMonth(month).withDayOfMonth(1);
     var lastMonth = LocalDate.now().withMonth(month).withDayOfMonth(firstMonth.lengthOfMonth());
-    var entitys = repository.findAllfindAllByWalletUuidAndDateReceivementBetween(
+    var dtos = repository.findAllfindAllByWalletUuidAndDateReceivementBetween(
         uuidWallet, firstMonth, lastMonth, pageable)
         .stream()
         .map(entity -> modelMapper.map(entity, RecordCreditorDTO.class))
-        .collect(Collectors.toList());
-    return new PageImpl<>(entitys);
+        .peek(dto -> {
+          if(!dto.getDateReceivement().isAfter(LocalDate.now())) {
+            dto.setReceived(true);
+          }
+        }).sorted(Comparator.comparing(RecordCreditorDTO::getDateReceivement)).collect(Collectors.toList());
+    return new PageImpl<>(dtos);
   }
 }

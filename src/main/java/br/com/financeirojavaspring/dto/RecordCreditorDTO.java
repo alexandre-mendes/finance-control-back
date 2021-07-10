@@ -29,6 +29,8 @@ public class RecordCreditorDTO implements Serializable {
   @NotNull
   private String walletUuid;
 
+  private boolean received;
+
   public static RecordCreditorDTOBuilder builder() {
      return new RecordCreditorDTOBuilder();
   }

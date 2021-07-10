@@ -26,6 +26,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.authorizeRequests()
 				.antMatchers("/login",
 						"/user",
+						"/user/activation",
 						"/v2/api-docs",
 						"/configuration/ui",
 						"/swagger-resources/**",

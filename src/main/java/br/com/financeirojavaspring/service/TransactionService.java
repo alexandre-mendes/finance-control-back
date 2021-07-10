@@ -72,7 +72,7 @@ public class TransactionService {
                 .build())
     ).orElseThrow(EntityNotFoundException::new);
 
-    Preconditions.checkTrue(recordOrigin.getValue().equals(dto.getValueTransfer())
+    Preconditions.checkTrue(recordOrigin.getValue().compareTo(dto.getValueTransfer()) == 0
           || recordOrigin.getValue().compareTo(dto.getValueTransfer()) > 0)
         .orElseThrow(InsufficientFundsException::new);
 

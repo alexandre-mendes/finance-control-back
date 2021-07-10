@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @CrossOrigin(origins = "*")
-@RequestMapping("/payment")
+@RequestMapping("/transaction")
 @Api(value = "Payment Controller")
 public class TransactionController {
 
@@ -29,12 +29,15 @@ public class TransactionController {
   }
 
   @ResponseStatus(HttpStatus.ACCEPTED)
-  @PostMapping
+  @PostMapping(path = "/pay")
   @ApiOperation(value = "Realiza um pagamento.", authorizations = {@Authorization(value = "Bearer")})
   public void pay(@RequestBody final PaymentDTO dto) {
     service.pay(dto);
   }
 
+  @ResponseStatus(HttpStatus.ACCEPTED)
+  @PostMapping(path = "/transfer")
+  @ApiOperation(value = "Realiza uma transferência.", authorizations = {@Authorization(value = "Bearer")})
   public void transfer(@RequestBody final TransferDTO dto) {
     service.transfer(dto);
   }

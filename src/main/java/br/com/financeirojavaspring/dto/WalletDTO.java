@@ -18,7 +18,6 @@ public class WalletDTO implements Serializable {
   @NotBlank
   private String title;
   @NotNull
-  @NotBlank
   private TypeWallet typeWallet;
 
   public static WalletDTOBuilder builder() {

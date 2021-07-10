@@ -24,7 +24,10 @@ public class User implements UserDetails {
     private String uuid;
     private String username;
     private String passwd;
+    @Column(unique = true)
     private String name;
+    private String activationCode;
+    private boolean active;
     @ManyToOne
     @JoinColumn(name = "id_account")
     private Account account;

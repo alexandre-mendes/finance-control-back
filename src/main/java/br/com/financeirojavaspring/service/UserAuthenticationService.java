@@ -27,6 +27,7 @@ public class UserAuthenticationService implements UserDetailsService {
 		user = userRepository.findOne(Example.of(
         User.builder()
 						.username(username)
+						.active(true)
 						.build())
 		).orElseThrow(() -> new UsernameNotFoundException(String.format("User %s not found.", username)));
 		return user;

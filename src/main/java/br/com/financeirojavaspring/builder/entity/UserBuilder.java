@@ -11,6 +11,8 @@ public class UserBuilder implements Builder {
   private String uuid;
   private String passwd;
   private String name;
+  private String activationCode;
+  private boolean active;
   private Account account;
 
   public UserBuilder username(String username) {
@@ -38,6 +40,16 @@ public class UserBuilder implements Builder {
     return this;
   }
 
+  public UserBuilder activationCode(String activationCode) {
+    this.activationCode = activationCode;
+    return this;
+  }
+
+  public UserBuilder active(boolean active) {
+    this.active = active;
+    return this;
+  }
+
   public UserBuilder account(Account account) {
     this.account = account;
     return this;
@@ -45,6 +57,6 @@ public class UserBuilder implements Builder {
 
   @Override
   public User build() {
-    return new User(username);
+    return new User(id, uuid, username, passwd, name, activationCode, active, account);
   }
 }

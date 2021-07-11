@@ -4,12 +4,15 @@ import br.com.financeirojavaspring.builder.Builder;
 import br.com.financeirojavaspring.dto.WalletDTO;
 import br.com.financeirojavaspring.enums.TypeWallet;
 import java.lang.annotation.Annotation;
+import java.time.LocalDate;
+import org.hibernate.persister.entity.Loadable;
 
 public class WalletDTOBuilder implements Builder {
 
   private String uuid;
   private String title;
   private TypeWallet typeWallet;
+  private LocalDate dateWallet;
 
   public WalletDTOBuilder uuid(String uuid) {
     this.uuid = uuid;
@@ -26,8 +29,13 @@ public class WalletDTOBuilder implements Builder {
     return this;
   }
 
+  public WalletDTOBuilder dateWallet(LocalDate dateWallet) {
+    this.dateWallet = dateWallet;
+    return this;
+  }
+
   @Override
   public WalletDTO build() {
-    return new WalletDTO(uuid, title, typeWallet);
+    return new WalletDTO(uuid, title, typeWallet, dateWallet);
   }
 }

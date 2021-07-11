@@ -4,6 +4,7 @@ import br.com.financeirojavaspring.builder.entity.WalletBuilder;
 import br.com.financeirojavaspring.enums.TypeWallet;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import javax.persistence.*;
 import java.util.List;
 
@@ -34,6 +35,8 @@ public class Wallet implements Serializable {
 
     @OneToMany(mappedBy = "wallet")
     private List<RecordDebtor> recordCreditor;
+
+    private LocalDate dateWallet;
 
     @ManyToOne
     @JoinColumn(name = "id_account")

@@ -5,6 +5,7 @@ import br.com.financeirojavaspring.enums.TypeWallet;
 import br.com.financeirojavaspring.model.Account;
 import br.com.financeirojavaspring.model.RecordDebtor;
 import br.com.financeirojavaspring.model.Wallet;
+import java.time.LocalDate;
 import java.util.List;
 
 public class WalletBuilder implements Builder {
@@ -14,6 +15,7 @@ public class WalletBuilder implements Builder {
   private TypeWallet typeWallet;
   private List<RecordDebtor> recordDebtor;
   private List<RecordDebtor> recordCreditor;
+  private LocalDate dateWallet;
   private Account account;
 
   public WalletBuilder id(Long id) {
@@ -51,8 +53,13 @@ public class WalletBuilder implements Builder {
     return this;
   }
 
+  public WalletBuilder dateWallet(LocalDate dateWallet) {
+    this.dateWallet = dateWallet;
+    return this;
+  }
+
   @Override
   public Wallet build() {
-    return new Wallet(id, uuid, title, typeWallet, recordDebtor, recordCreditor, account);
+    return new Wallet(id, uuid, title, typeWallet, recordDebtor, recordCreditor, dateWallet, account);
   }
 }

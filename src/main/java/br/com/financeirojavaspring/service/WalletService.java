@@ -80,12 +80,12 @@ public class WalletService {
   public WalletSummaryDTO findWalletsSummary() {
     var firstMonth = LocalDate.now().withDayOfMonth(1);
     var lastMonth = LocalDate.now().withDayOfMonth(firstMonth.lengthOfMonth());
-    var totalPaid = recordDebtorRepository.findTotalPaidByMonth(firstMonth, lastMonth);
+    var totalPaid = recordDebtorRepository.findTotalPaidByMonth(firstMonth, lastMonth, authenticationService.getUser().getAccount());
 
     var totalDebtor = recordDebtorRepository
-        .findTotalByTypeWalletAndMonth(firstMonth, lastMonth);
+        .findTotalByTypeWalletAndMonth(firstMonth, lastMonth, authenticationService.getUser().getAccount());
     var totalCreditor = recordCreditorRepository
-        .findTotalByTypeWalletAndMonth(firstMonth, lastMonth);
+        .findTotalByTypeWalletAndMonth(firstMonth, lastMonth, authenticationService.getUser().getAccount());
     BigDecimal percentageCommitted;
     BigDecimal porcentagePaid;
 

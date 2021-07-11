@@ -1,6 +1,6 @@
 package br.com.financeirojavaspring.repository;
 
-import br.com.financeirojavaspring.enums.TypeWallet;
+import br.com.financeirojavaspring.model.Account;
 import br.com.financeirojavaspring.model.RecordDebtor;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -24,10 +24,13 @@ public interface RecordDebtorRepository extends JpaRepository<RecordDebtor, Long
       + "where "
       + "   r.wallet.typeWallet = 'DEBTOR' "
       + "and "
+      + "   r.wallet.account = :account "
+      + "and "
       + "   r.dateDeadline between :firstDate and :lastDate")
   BigDecimal findTotalByTypeWalletAndMonth(
       @Param(value = "firstDate") LocalDate firstDate,
-      @Param(value = "lastDate") LocalDate lastDate
+      @Param(value = "lastDate") LocalDate lastDate,
+      @Param(value = "account") Account account
   );
 
   @Query("select "
@@ -39,9 +42,12 @@ public interface RecordDebtorRepository extends JpaRepository<RecordDebtor, Long
       + "and "
       + "   r.paid = true "
       + "and "
+      + "   r.wallet.account = :account "
+      + "and "
       + "   r.dateDeadline between :firstDate and :lastDate")
   BigDecimal findTotalPaidByMonth(
       @Param(value = "firstDate") LocalDate firstDate,
-      @Param(value = "lastDate") LocalDate lastDate
+      @Param(value = "lastDate") LocalDate lastDate,
+      @Param(value = "account") Account account
   );
 }

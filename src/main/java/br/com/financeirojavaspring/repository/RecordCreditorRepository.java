@@ -1,6 +1,6 @@
 package br.com.financeirojavaspring.repository;
 
-import br.com.financeirojavaspring.enums.TypeWallet;
+import br.com.financeirojavaspring.model.Account;
 import br.com.financeirojavaspring.model.RecordCreditor;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -24,9 +24,12 @@ public interface RecordCreditorRepository extends JpaRepository<RecordCreditor, 
       + "where "
       + "   r.wallet.typeWallet = 'CREDITOR' "
       + "and "
+      + "   r.wallet.account = :account "
+      + "and "
       + "   r.dateReceivement between :firstDate and :lastDate")
   BigDecimal findTotalByTypeWalletAndMonth(
       @Param(value = "firstDate") LocalDate firstDate,
-      @Param(value = "lastDate") LocalDate lastDate
+      @Param(value = "lastDate") LocalDate lastDate,
+      @Param(value = "account") Account account
   );
 }

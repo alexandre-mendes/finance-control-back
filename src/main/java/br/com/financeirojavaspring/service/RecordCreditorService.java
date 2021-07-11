@@ -24,7 +24,6 @@ public class RecordCreditorService {
   private final RecordCreditorRepository repository;
   private final WalletRepository walletRepository;
   private final ModelMapper modelMapper;
-  private final UserAuthenticationService userAuthenticationService;
 
   @Autowired
   public RecordCreditorService(
@@ -35,7 +34,6 @@ public class RecordCreditorService {
     this.repository = repository;
     this.walletRepository = walletRepository;
     this.modelMapper = modelMapper;
-    this.userAuthenticationService = userAuthenticationService;
   }
 
   public RecordCreditorDTO create(RecordCreditorDTO dto) {

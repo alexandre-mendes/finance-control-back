@@ -23,7 +23,7 @@ public class RecordDebtorDTO implements Serializable {
   private String title;
 
   @NotNull
-  private LocalDate deadline;
+  private LocalDate dateDeadline;
 
   private Boolean paid;
 

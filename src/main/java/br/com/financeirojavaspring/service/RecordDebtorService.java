@@ -52,7 +52,7 @@ public class RecordDebtorService {
           RecordDebtor.builder()
               .value(recordDebtorDTO.getValue().divide(recordDebtorDTO.getInstallments(), RoundingMode.DOWN))
               .title(recordDebtorDTO.getTitle())
-              .dateDeadline(i > 0 ? recordDebtorDTO.getDeadline().plusMonths(i) : recordDebtorDTO.getDeadline())
+              .dateDeadline(i > 0 ? recordDebtorDTO.getDateDeadline().plusMonths(i) : recordDebtorDTO.getDateDeadline())
               .registrationCode(registrationCode)
               .wallet(wallet)
               .paid(false)
@@ -89,7 +89,7 @@ public class RecordDebtorService {
         .findAllfindAllByWalletUuidAndDateDeadlineBetween(uuidWallet, firstMonth, lastMonth, pageable)
         .stream()
         .map(r -> modelMapper.map(r, RecordDebtorDTO.class))
-        .sorted(Comparator.comparing(RecordDebtorDTO::getDeadline))
+        .sorted(Comparator.comparing(RecordDebtorDTO::getDateDeadline))
         .collect(Collectors.toList());
     return new PageImpl<>(records);
   }

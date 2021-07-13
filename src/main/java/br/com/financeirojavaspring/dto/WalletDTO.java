@@ -21,7 +21,7 @@ public class WalletDTO implements Serializable {
   @NotNull
   private TypeWallet typeWallet;
 
-  private LocalDate dateWallet;
+  private Integer dayWallet;
 
   public static WalletDTOBuilder builder() {
     return new WalletDTOBuilder();

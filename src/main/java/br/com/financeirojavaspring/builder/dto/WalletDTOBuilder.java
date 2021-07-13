@@ -12,7 +12,7 @@ public class WalletDTOBuilder implements Builder {
   private String uuid;
   private String title;
   private TypeWallet typeWallet;
-  private LocalDate dateWallet;
+  private Integer dayWallet;
 
   public WalletDTOBuilder uuid(String uuid) {
     this.uuid = uuid;
@@ -29,13 +29,13 @@ public class WalletDTOBuilder implements Builder {
     return this;
   }
 
-  public WalletDTOBuilder dateWallet(LocalDate dateWallet) {
-    this.dateWallet = dateWallet;
+  public WalletDTOBuilder dateWallet(Integer dayWallet) {
+    this.dayWallet = dayWallet;
     return this;
   }
 
   @Override
   public WalletDTO build() {
-    return new WalletDTO(uuid, title, typeWallet, dateWallet);
+    return new WalletDTO(uuid, title, typeWallet, dayWallet);
   }
 }

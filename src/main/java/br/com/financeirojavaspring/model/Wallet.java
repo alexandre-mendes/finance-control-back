@@ -36,7 +36,7 @@ public class Wallet implements Serializable {
     @OneToMany(mappedBy = "wallet")
     private List<RecordDebtor> recordCreditor;
 
-    private LocalDate dateWallet;
+    private Integer dayWallet;
 
     @ManyToOne
     @JoinColumn(name = "id_account")

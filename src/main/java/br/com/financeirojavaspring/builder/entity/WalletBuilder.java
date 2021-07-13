@@ -15,7 +15,7 @@ public class WalletBuilder implements Builder {
   private TypeWallet typeWallet;
   private List<RecordDebtor> recordDebtor;
   private List<RecordDebtor> recordCreditor;
-  private LocalDate dateWallet;
+  private Integer dayWallet;
   private Account account;
 
   public WalletBuilder id(Long id) {
@@ -53,13 +53,13 @@ public class WalletBuilder implements Builder {
     return this;
   }
 
-  public WalletBuilder dateWallet(LocalDate dateWallet) {
-    this.dateWallet = dateWallet;
+  public WalletBuilder dateWallet(Integer dayWallet) {
+    this.dayWallet = dayWallet;
     return this;
   }
 
   @Override
   public Wallet build() {
-    return new Wallet(id, uuid, title, typeWallet, recordDebtor, recordCreditor, dateWallet, account);
+    return new Wallet(id, uuid, title, typeWallet, recordDebtor, recordCreditor, dayWallet, account);
   }
 }

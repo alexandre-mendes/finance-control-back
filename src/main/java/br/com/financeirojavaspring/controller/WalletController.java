@@ -10,6 +10,7 @@ import io.swagger.annotations.Authorization;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -51,8 +52,10 @@ public class WalletController {
   @ResponseStatus(HttpStatus.OK)
   @GetMapping
   @ApiOperation(value = "Obtem todas as carteiras vinculadas a conta do usuário", authorizations = {@Authorization(value = "Bearer")})
-  public Page<WalletDTO> findAllWallets(@RequestParam(required = false) final TypeWallet typeWallet) {
-    return walletService.findAll(typeWallet);
+  public Page<WalletDTO> findAllWallets(
+      @RequestParam(required = false) final TypeWallet typeWallet,
+      final Pageable pageable) {
+    return walletService.findAll(typeWallet, pageable);
   }
 
   @ResponseStatus(HttpStatus.OK)

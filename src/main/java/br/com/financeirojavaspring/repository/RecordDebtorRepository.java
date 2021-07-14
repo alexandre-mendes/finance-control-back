@@ -2,6 +2,7 @@ package br.com.financeirojavaspring.repository;
 
 import br.com.financeirojavaspring.model.Account;
 import br.com.financeirojavaspring.model.RecordDebtor;
+import br.com.financeirojavaspring.model.Wallet;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import org.springframework.data.domain.Page;
@@ -27,10 +28,10 @@ public interface RecordDebtorRepository extends JpaRepository<RecordDebtor, Long
       + "   r.wallet.account = :account "
       + "and "
       + "   r.dateDeadline between :firstDate and :lastDate")
-  BigDecimal findTotalByTypeWalletAndMonth(
-      @Param(value = "firstDate") LocalDate firstDate,
-      @Param(value = "lastDate") LocalDate lastDate,
-      @Param(value = "account") Account account
+  BigDecimal findTotalByMonth(
+      final @Param(value = "firstDate") LocalDate firstDate,
+      final @Param(value = "lastDate") LocalDate lastDate,
+      final @Param(value = "account") Account account
   );
 
   @Query("select "
@@ -46,8 +47,21 @@ public interface RecordDebtorRepository extends JpaRepository<RecordDebtor, Long
       + "and "
       + "   r.dateDeadline between :firstDate and :lastDate")
   BigDecimal findTotalPaidByMonth(
-      @Param(value = "firstDate") LocalDate firstDate,
-      @Param(value = "lastDate") LocalDate lastDate,
-      @Param(value = "account") Account account
+      final @Param(value = "firstDate") LocalDate firstDate,
+      final @Param(value = "lastDate") LocalDate lastDate,
+      final @Param(value = "account") Account account
   );
+
+  @Query("select "
+      + "   SUM(r.value) "
+      + "from "
+      + "   RecordDebtor r "
+      + "where "
+      + "   r.wallet = :wallet "
+      + "and "
+      + "   r.dateDeadline between :firstDate and :lastDate")
+  BigDecimal findTotalByWalletAndMonth(
+      final @Param(value = "wallet") Wallet wallet,
+      final @Param(value = "firstDate") LocalDate firstDate,
+      final @Param(value = "lastDate") LocalDate lastDate);
 }

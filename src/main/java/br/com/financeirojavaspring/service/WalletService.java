@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -64,7 +65,9 @@ public class WalletService {
     return modelMapper.map(walletSaved, WalletDTO.class);
   }
 
-  public Page<WalletDTO> findAll(TypeWallet typeWallet) {
+  public Page<WalletDTO> findAll(final TypeWallet typeWallet, final Pageable pageable) {
+    var firstMonth = LocalDate.now().withDayOfMonth(1);
+    var lastMonth = LocalDate.now().withDayOfMonth(firstMonth.lengthOfMonth());
     var account = authenticationService.getUser().getAccount();
 
     var wallets = walletRepository.findAll(
@@ -72,7 +75,15 @@ public class WalletService {
             Wallet.builder()
                 .account(account)
                 .typeWallet(typeWallet)
-                .build()));
+                .build()), pageable);
+
+    wallets.forEach(w -> {
+      if (TypeWallet.CREDITOR.equals(w.getTypeWallet()))
+        w.setTotal(recordCreditorRepository.findTotalByWalletAndMonth(w, firstMonth, lastMonth));
+      else
+        w.setTotal(recordDebtorRepository.findTotalByWalletAndMonth(w, firstMonth, lastMonth));
+    });
+
     var walletsDTO = wallets.stream().map(w -> modelMapper.map(w, WalletDTO.class)).collect(Collectors.toList());
     return new PageImpl<>(walletsDTO);
   }
@@ -83,7 +94,7 @@ public class WalletService {
     var totalPaid = recordDebtorRepository.findTotalPaidByMonth(firstMonth, lastMonth, authenticationService.getUser().getAccount());
 
     var totalDebtor = recordDebtorRepository
-        .findTotalByTypeWalletAndMonth(firstMonth, lastMonth, authenticationService.getUser().getAccount());
+        .findTotalByMonth(firstMonth, lastMonth, authenticationService.getUser().getAccount());
     var totalCreditor = recordCreditorRepository
         .findTotalByTypeWalletAndMonth(firstMonth, lastMonth, authenticationService.getUser().getAccount());
     BigDecimal percentageCommitted;

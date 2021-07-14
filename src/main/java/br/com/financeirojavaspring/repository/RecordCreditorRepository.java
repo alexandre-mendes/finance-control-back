@@ -2,6 +2,7 @@ package br.com.financeirojavaspring.repository;
 
 import br.com.financeirojavaspring.model.Account;
 import br.com.financeirojavaspring.model.RecordCreditor;
+import br.com.financeirojavaspring.model.Wallet;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import org.springframework.data.domain.Page;
@@ -32,4 +33,17 @@ public interface RecordCreditorRepository extends JpaRepository<RecordCreditor, 
       @Param(value = "lastDate") LocalDate lastDate,
       @Param(value = "account") Account account
   );
+
+  @Query("select "
+      + "   SUM(r.value) "
+      + "from "
+      + "   RecordCreditor r "
+      + "where "
+      + "   r.wallet = :wallet "
+      + "and "
+      + "   r.dateReceivement between :firstDate and :lastDate")
+  BigDecimal findTotalByWalletAndMonth(
+      final @Param(value = "wallet") Wallet wallet,
+      final @Param(value = "firstDate") LocalDate firstDate,
+      final @Param(value = "lastDate") LocalDate lastDate);
 }

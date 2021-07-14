@@ -5,6 +5,7 @@ import br.com.financeirojavaspring.enums.TypeWallet;
 import br.com.financeirojavaspring.model.Account;
 import br.com.financeirojavaspring.model.RecordDebtor;
 import br.com.financeirojavaspring.model.Wallet;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -17,6 +18,7 @@ public class WalletBuilder implements Builder {
   private List<RecordDebtor> recordCreditor;
   private Integer dayWallet;
   private Account account;
+  private BigDecimal total;
 
   public WalletBuilder id(Long id) {
     this.id = id;
@@ -58,8 +60,13 @@ public class WalletBuilder implements Builder {
     return this;
   }
 
+  public WalletBuilder total(BigDecimal total) {
+    this.total = total;
+    return this;
+  }
+
   @Override
   public Wallet build() {
-    return new Wallet(id, uuid, title, typeWallet, recordDebtor, recordCreditor, dayWallet, account);
+    return new Wallet(id, uuid, title, typeWallet, recordDebtor, recordCreditor, dayWallet, account, total);
   }
 }

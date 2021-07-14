@@ -1,9 +1,8 @@
 package br.com.financeirojavaspring.dto;
 
-import br.com.financeirojavaspring.builder.dto.WalletDTOBuilder;
 import br.com.financeirojavaspring.enums.TypeWallet;
 import java.io.Serializable;
-import java.time.LocalDate;
+import java.math.BigDecimal;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
@@ -23,7 +22,5 @@ public class WalletDTO implements Serializable {
 
   private Integer dayWallet;
 
-  public static WalletDTOBuilder builder() {
-    return new WalletDTOBuilder();
-  }
+  private BigDecimal total;
 }

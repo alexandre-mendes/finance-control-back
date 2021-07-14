@@ -1,7 +1,5 @@
 package br.com.financeirojavaspring.service;
 
-import br.com.financeirojavaspring.builder.entity.RecordDebtorBuilder;
-import br.com.financeirojavaspring.builder.entity.WalletBuilder;
 import br.com.financeirojavaspring.dto.RecordDebtorDTO;
 import br.com.financeirojavaspring.exception.EntityNotFoundException;
 import br.com.financeirojavaspring.model.RecordDebtor;

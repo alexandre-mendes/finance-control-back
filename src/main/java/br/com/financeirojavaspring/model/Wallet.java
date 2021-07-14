@@ -4,6 +4,7 @@ import br.com.financeirojavaspring.builder.entity.WalletBuilder;
 import br.com.financeirojavaspring.enums.TypeWallet;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import javax.persistence.*;
 import java.util.List;
@@ -41,6 +42,9 @@ public class Wallet implements Serializable {
     @ManyToOne
     @JoinColumn(name = "id_account")
     private Account account;
+
+    @Transient
+    private BigDecimal total;
 
     public static WalletBuilder builder() {
         return new WalletBuilder();

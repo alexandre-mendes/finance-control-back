@@ -40,6 +40,10 @@ public class RecordDebtor {
   private Boolean paid;
 
   @ManyToOne
+  @JoinColumn(name = "id_record_creditor")
+  private RecordCreditor payerRecord;
+
+  @ManyToOne
   @JoinColumn(name = "id_wallet")
   private Wallet wallet;
 

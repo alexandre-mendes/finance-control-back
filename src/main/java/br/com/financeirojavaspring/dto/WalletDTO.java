@@ -22,5 +22,7 @@ public class WalletDTO implements Serializable {
 
   private Integer dayWallet;
 
-  private BigDecimal total;
+  private BigDecimal value;
+
+  private BigDecimal valuePaid;
 }

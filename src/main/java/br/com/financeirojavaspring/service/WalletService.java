@@ -1,5 +1,6 @@
 package br.com.financeirojavaspring.service;
 
+import br.com.financeirojavaspring.projection.WalletProjection;
 import br.com.financeirojavaspring.dto.WalletDTO;
 import br.com.financeirojavaspring.dto.WalletSummaryDTO;
 import br.com.financeirojavaspring.enums.TypeWallet;
@@ -11,6 +12,7 @@ import br.com.financeirojavaspring.repository.WalletRepository;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import org.modelmapper.ModelMapper;
@@ -70,22 +72,12 @@ public class WalletService {
     var lastMonth = LocalDate.now().withDayOfMonth(firstMonth.lengthOfMonth());
     var account = authenticationService.getUser().getAccount();
 
-    var wallets = walletRepository.findAll(
-        Example.of(
-            Wallet.builder()
-                .account(account)
-                .typeWallet(typeWallet)
-                .build()), pageable);
+    var wallets = new ArrayList<WalletProjection>();
+    wallets.addAll(walletRepository.findAllTypeCreditorWithTotalValueByMonthAndAccount(firstMonth, lastMonth, account.getId()));
+    wallets.addAll(walletRepository.findAllTypeDebtorWithTotalValueAndTotalPaidByMonthAndAccount(firstMonth, lastMonth, account.getId()));
 
-    wallets.forEach(w -> {
-      if (TypeWallet.CREDITOR.equals(w.getTypeWallet()))
-        w.setTotal(recordCreditorRepository.findTotalByWalletAndMonth(w, firstMonth, lastMonth));
-      else
-        w.setTotal(recordDebtorRepository.findTotalByWalletAndMonth(w, firstMonth, lastMonth));
-    });
-
-    var walletsDTO = wallets.stream().map(w -> modelMapper.map(w, WalletDTO.class)).collect(Collectors.toList());
-    return new PageImpl<>(walletsDTO);
+    return new PageImpl<>(wallets.stream().map(w -> modelMapper.map(w, WalletDTO.class)).collect(
+        Collectors.toList()));
   }
 
   public WalletSummaryDTO findWalletsSummary() {

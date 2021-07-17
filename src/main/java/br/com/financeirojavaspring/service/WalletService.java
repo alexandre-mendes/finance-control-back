@@ -13,6 +13,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.NoSuchElementException;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import org.modelmapper.ModelMapper;
@@ -73,8 +74,10 @@ public class WalletService {
     var account = authenticationService.getUser().getAccount();
 
     var wallets = new ArrayList<WalletProjection>();
-    wallets.addAll(walletRepository.findAllTypeCreditorWithTotalValueByMonthAndAccount(firstMonth, lastMonth, account.getId()));
-    wallets.addAll(walletRepository.findAllTypeDebtorWithTotalValueAndTotalPaidByMonthAndAccount(firstMonth, lastMonth, account.getId()));
+    if (typeWallet == null || TypeWallet.CREDITOR.equals(typeWallet))
+      wallets.addAll(walletRepository.findAllTypeCreditorWithTotalValueByMonthAndAccount(firstMonth, lastMonth, account.getId()));
+    if (typeWallet == null || TypeWallet.DEBTOR.equals(typeWallet))
+      wallets.addAll(walletRepository.findAllTypeDebtorWithTotalValueAndTotalPaidByMonthAndAccount(firstMonth, lastMonth, account.getId()));
 
     return new PageImpl<>(wallets.stream().map(w -> modelMapper.map(w, WalletDTO.class)).collect(
         Collectors.toList()));
@@ -93,20 +96,20 @@ public class WalletService {
     BigDecimal porcentagePaid;
 
     try {
-      percentageCommitted = totalDebtor.divide(totalCreditor, RoundingMode.DOWN);
-    } catch (ArithmeticException | NullPointerException ex) {
+      percentageCommitted = totalDebtor.get().divide(totalCreditor.get(), RoundingMode.DOWN);
+    } catch (ArithmeticException | NullPointerException | NoSuchElementException ex) {
       percentageCommitted = BigDecimal.ZERO;
     }
 
     try {
-      porcentagePaid = totalPaid.divide(totalDebtor, RoundingMode.DOWN);
-    } catch (ArithmeticException | NullPointerException ex) {
+      porcentagePaid = totalPaid.get().divide(totalDebtor.get(), RoundingMode.DOWN);
+    } catch (ArithmeticException | NullPointerException | NoSuchElementException ex) {
       porcentagePaid = BigDecimal.ZERO;
     }
 
     return WalletSummaryDTO.builder()
-        .totalDebtor(totalDebtor != null ? totalDebtor : BigDecimal.ZERO)
-        .totalCreditor(totalCreditor != null ? totalCreditor : BigDecimal.ZERO)
+        .debitBalance(totalDebtor.orElse(BigDecimal.ZERO).subtract(totalPaid.orElse(BigDecimal.ZERO)))
+        .totalCreditor(totalCreditor.orElse(BigDecimal.ZERO))
         .percentageCommitted(percentageCommitted)
         .percentagePaid(porcentagePaid)
         .build();

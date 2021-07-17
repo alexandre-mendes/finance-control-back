@@ -5,13 +5,13 @@ import java.math.BigDecimal;
 
 public class WalletSummaryDTOBuilder {
 
-  private BigDecimal totalDebtor;
+  private BigDecimal debitBalance;
   private BigDecimal totalCreditor;
   private BigDecimal percentageCommitted;
   private BigDecimal percentagePaid;
 
-  public WalletSummaryDTOBuilder totalDebtor(BigDecimal totalDebtor) {
-    this.totalDebtor = totalDebtor;
+  public WalletSummaryDTOBuilder debitBalance(BigDecimal debitBalance) {
+    this.debitBalance = debitBalance;
     return this;
   }
 
@@ -31,6 +31,6 @@ public class WalletSummaryDTOBuilder {
   }
 
   public WalletSummaryDTO build() {
-    return new WalletSummaryDTO(totalDebtor, totalCreditor, percentageCommitted, percentagePaid);
+    return new WalletSummaryDTO(debitBalance, totalCreditor, percentageCommitted, percentagePaid);
   }
 }

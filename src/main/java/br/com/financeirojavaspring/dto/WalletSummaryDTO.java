@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 @lombok.AllArgsConstructor
 public class WalletSummaryDTO implements Serializable {
 
-  private BigDecimal totalDebtor;
+  private BigDecimal debitBalance;
   private BigDecimal totalCreditor;
   private BigDecimal percentageCommitted;
   private BigDecimal percentagePaid;

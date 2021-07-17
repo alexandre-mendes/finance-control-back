@@ -60,7 +60,7 @@ public interface WalletRepository extends JpaRepository<Wallet, Long> {
       + "           financeiro_record_debtor  record                "
       + "       where                                               "
       + "           record.date_deadline                            "
-      + "       between :firtDate and :lastDate )                   ", nativeQuery = true)
+      + "       between :firstDate and :lastDate )                   ", nativeQuery = true)
   List<WalletProjection> findAllTypeDebtorWithTotalValueAndTotalPaidByMonthAndAccount(
       final @Param(value = "firstDate") LocalDate firstDate,
       final @Param(value = "lastDate") LocalDate lastDate,

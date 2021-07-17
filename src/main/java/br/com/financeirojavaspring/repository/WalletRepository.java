@@ -24,7 +24,9 @@ public interface WalletRepository extends JpaRepository<Wallet, Long> {
       + "       where                                               "
       + "           paid = true                                     "
       + "       and                                                 "
-      + "           id_wallet = wallet.id_wallet  ) as valuePaid    "
+      + "           id_wallet = wallet.id_wallet                    "
+      + "       and date_deadline                                   "
+      + "       between :firstDate and :lastDate ) as valuePaid     "
       + "FROM                                                       "
       + "     financeiro_wallet wallet                              "
       + "inner join                                                 "
@@ -60,7 +62,7 @@ public interface WalletRepository extends JpaRepository<Wallet, Long> {
       + "           financeiro_record_debtor  record                "
       + "       where                                               "
       + "           record.date_deadline                            "
-      + "       between :firstDate and :lastDate )                   ", nativeQuery = true)
+      + "       between :firstDate and :lastDate )                  ", nativeQuery = true)
   List<WalletProjection> findAllTypeDebtorWithTotalValueAndTotalPaidByMonthAndAccount(
       final @Param(value = "firstDate") LocalDate firstDate,
       final @Param(value = "lastDate") LocalDate lastDate,
@@ -108,7 +110,7 @@ public interface WalletRepository extends JpaRepository<Wallet, Long> {
       + "       from                                                    "
       + "           financeiro_record_creditor record                   "
       + "       where                                                   "
-      + "           record.date_receivement                                "
+      + "           record.date_receivement                             "
       + "       between :firstDate and :lastDate )                      ", nativeQuery = true)
   List<WalletProjection> findAllTypeCreditorWithTotalValueByMonthAndAccount(
       final @Param(value = "firstDate") LocalDate firstDate,

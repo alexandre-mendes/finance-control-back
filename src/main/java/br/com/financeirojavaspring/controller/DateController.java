@@ -13,12 +13,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @CrossOrigin(origins = "*")
-@RequestMapping("/month")
+@RequestMapping("/date")
 @Api(value = "Mes Controller")
-public class MonthController {
+public class DateController {
 
   @ResponseStatus(HttpStatus.OK)
-  @GetMapping(path = "/current")
+  @GetMapping(path = "/month/current")
   @ApiOperation(value = "Retorna o mês atual.", authorizations = {@Authorization(value = "Bearer")})
   public Integer findCurrentMonth() {
     return LocalDate.now().getMonthValue();

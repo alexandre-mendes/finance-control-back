@@ -14,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -50,18 +51,19 @@ public class WalletController {
   }
 
   @ResponseStatus(HttpStatus.OK)
-  @GetMapping
+  @GetMapping(path = "/{month}")
   @ApiOperation(value = "Obtem todas as carteiras vinculadas a conta do usuário", authorizations = {@Authorization(value = "Bearer")})
   public Page<WalletDTO> findAllWallets(
       @RequestParam(required = false) final TypeWallet typeWallet,
+      @PathVariable final Integer month,
       final Pageable pageable) {
-    return walletService.findAll(typeWallet, pageable);
+    return walletService.findAll(typeWallet, month, pageable);
   }
 
   @ResponseStatus(HttpStatus.OK)
-  @GetMapping(path = "/summary")
+  @GetMapping(path = "/summary/{month}")
   @ApiOperation(value = "Obtem um resumo das carteiras no mês atual", authorizations = {@Authorization(value = "Bearer")})
-  public WalletSummaryDTO findWalletsSummary() {
-    return walletService.findWalletsSummary();
+  public WalletSummaryDTO findWalletsSummary(@PathVariable final Integer month) {
+    return walletService.findWalletsSummary(month);
   }
 }

@@ -96,13 +96,13 @@ public class WalletService {
     BigDecimal porcentagePaid;
 
     try {
-      percentageCommitted = totalDebtor.get().divide(totalCreditor.get(), RoundingMode.DOWN);
+      percentageCommitted = totalDebtor.orElse(BigDecimal.ZERO).divide(totalCreditor.orElse(BigDecimal.ZERO), RoundingMode.DOWN);
     } catch (ArithmeticException | NullPointerException | NoSuchElementException ex) {
       percentageCommitted = BigDecimal.ZERO;
     }
 
     try {
-      porcentagePaid = totalPaid.get().divide(totalDebtor.get(), RoundingMode.DOWN);
+      porcentagePaid = totalPaid.orElse(BigDecimal.ZERO).divide(totalDebtor.orElse(BigDecimal.ZERO), RoundingMode.DOWN);
     } catch (ArithmeticException | NullPointerException | NoSuchElementException ex) {
       porcentagePaid = BigDecimal.ZERO;
     }
@@ -110,6 +110,8 @@ public class WalletService {
     return WalletSummaryDTO.builder()
         .debitBalance(totalDebtor.orElse(BigDecimal.ZERO).subtract(totalPaid.orElse(BigDecimal.ZERO)))
         .totalCreditor(totalCreditor.orElse(BigDecimal.ZERO))
+        .totalDebtor(totalDebtor.orElse(BigDecimal.ZERO))
+        .totalPaid(totalPaid.orElse(BigDecimal.ZERO))
         .percentageCommitted(percentageCommitted)
         .percentagePaid(porcentagePaid)
         .build();

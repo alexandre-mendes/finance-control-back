@@ -7,6 +7,8 @@ public class WalletSummaryDTOBuilder {
 
   private BigDecimal debitBalance;
   private BigDecimal totalCreditor;
+  private BigDecimal totalDebtor;
+  private BigDecimal totalPaid;
   private BigDecimal percentageCommitted;
   private BigDecimal percentagePaid;
 
@@ -17,6 +19,16 @@ public class WalletSummaryDTOBuilder {
 
   public WalletSummaryDTOBuilder totalCreditor(BigDecimal totalCreditor) {
     this.totalCreditor = totalCreditor;
+    return this;
+  }
+
+  public WalletSummaryDTOBuilder totalDebtor(BigDecimal totalDebtor) {
+    this.totalDebtor = totalDebtor;
+    return this;
+  }
+
+  public WalletSummaryDTOBuilder totalPaid(BigDecimal totalPaid) {
+    this.totalPaid = totalPaid;
     return this;
   }
 
@@ -31,6 +43,6 @@ public class WalletSummaryDTOBuilder {
   }
 
   public WalletSummaryDTO build() {
-    return new WalletSummaryDTO(debitBalance, totalCreditor, percentageCommitted, percentagePaid);
+    return new WalletSummaryDTO(debitBalance, totalCreditor, totalDebtor, totalPaid, percentageCommitted, percentagePaid);
   }
 }

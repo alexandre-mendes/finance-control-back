@@ -13,6 +13,8 @@ public class WalletSummaryDTO implements Serializable {
 
   private BigDecimal debitBalance;
   private BigDecimal totalCreditor;
+  private BigDecimal totalDebtor;
+  private BigDecimal totalPaid;
   private BigDecimal percentageCommitted;
   private BigDecimal percentagePaid;
 

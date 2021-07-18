@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @CrossOrigin(origins = "*")
-@RequestMapping("/wallet")
+@RequestMapping("/wallets")
 @Api(value = "Wallet Controller")
 public class WalletController {
 
@@ -51,19 +51,20 @@ public class WalletController {
   }
 
   @ResponseStatus(HttpStatus.OK)
-  @GetMapping(path = "/{month}")
+  @GetMapping(path = "/months/{month}/years/{year}")
   @ApiOperation(value = "Obtem todas as carteiras vinculadas a conta do usuário", authorizations = {@Authorization(value = "Bearer")})
   public Page<WalletDTO> findAllWallets(
       @RequestParam(required = false) final TypeWallet typeWallet,
       @PathVariable final Integer month,
+      @PathVariable final Integer year,
       final Pageable pageable) {
-    return walletService.findAll(typeWallet, month, pageable);
+    return walletService.findAll(typeWallet, month, year, pageable);
   }
 
   @ResponseStatus(HttpStatus.OK)
-  @GetMapping(path = "/summary/{month}")
+  @GetMapping(path = "/summarys/months/{month}/years/{year}")
   @ApiOperation(value = "Obtem um resumo das carteiras no mês atual", authorizations = {@Authorization(value = "Bearer")})
-  public WalletSummaryDTO findWalletsSummary(@PathVariable final Integer month) {
-    return walletService.findWalletsSummary(month);
+  public WalletSummaryDTO findWalletsSummary(@PathVariable final Integer month, @PathVariable final Integer year) {
+    return walletService.findWalletsSummary(month, year);
   }
 }

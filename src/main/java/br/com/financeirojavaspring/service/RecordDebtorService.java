@@ -35,7 +35,7 @@ public class RecordDebtorService {
     this.modelMapper = modelMapper;
   }
 
-  public List<RecordDebtorDTO> create(RecordDebtorDTO recordDebtorDTO) {
+  public List<RecordDebtorDTO> create(final RecordDebtorDTO recordDebtorDTO) {
     List<RecordDebtor> recordDebtors = new ArrayList<>();
     var wallet = walletRepository.findOne(
         Example.of(
@@ -63,7 +63,7 @@ public class RecordDebtorService {
         .collect(Collectors.toList());
   }
 
-  public Page<RecordDebtorDTO> findAllByUuidWallet(String uuidWallet, Pageable pageable) {
+  public Page<RecordDebtorDTO> findAllByUuidWallet(final String uuidWallet, final Pageable pageable) {
     var record = RecordDebtor.builder()
         .wallet(
             Wallet.builder()
@@ -80,9 +80,13 @@ public class RecordDebtorService {
     return new PageImpl<>(records);
   }
 
-  public Page<RecordDebtorDTO> findAllByUuidWalletAndDeadlineBetween(String uuidWallet, Integer mes, Pageable pageable) {
-    var firstMonth = LocalDate.now().withMonth(mes).withDayOfMonth(1);
-    var lastMonth = LocalDate.now().withMonth(mes).withDayOfMonth(firstMonth.lengthOfMonth());
+  public Page<RecordDebtorDTO> findAllByUuidWalletAndDeadlineBetween(
+      final String uuidWallet,
+      final Integer month,
+      final Integer year,
+      final Pageable pageable) {
+    var firstMonth = LocalDate.now().withMonth(month).withYear(year).withDayOfMonth(1);
+    var lastMonth = LocalDate.now().withMonth(month).withYear(year).withDayOfMonth(firstMonth.lengthOfMonth());
     var records = recordDebtorRepository
         .findAllfindAllByWalletUuidAndDateDeadlineBetween(uuidWallet, firstMonth, lastMonth, pageable)
         .stream()

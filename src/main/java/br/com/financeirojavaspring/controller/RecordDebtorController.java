@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @CrossOrigin(origins = "*")
-@RequestMapping("/record-debtor")
+@RequestMapping("/records-debtor")
 @Api(value = "Record Debtor Controller")
 public class RecordDebtorController {
 
@@ -37,24 +37,25 @@ public class RecordDebtorController {
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping
   @ApiOperation(value = "Salva um registro ou varios registros se houver mais de 1 parcela.", authorizations = {@Authorization(value = "Bearer")})
-  public List<RecordDebtorDTO> create(@RequestBody @Valid RecordDebtorDTO recordDebtorDTO) {
+  public List<RecordDebtorDTO> create(@RequestBody @Valid final RecordDebtorDTO recordDebtorDTO) {
     return recordService.create(recordDebtorDTO);
   }
 
   @ResponseStatus(HttpStatus.OK)
-  @GetMapping(path = "/wallet/{uuidWallet}")
+  @GetMapping(path = "/wallets/{uuidWallet}")
   @ApiOperation(value = "Obtem os registros de uma carteira a partir de seu UUID.", authorizations = {@Authorization(value = "Bearer")})
-  public Page<RecordDebtorDTO> findAllRecords(@PathVariable String uuidWallet, Pageable pageable) {
+  public Page<RecordDebtorDTO> findAllRecords(@PathVariable final String uuidWallet, final Pageable pageable) {
     return recordService.findAllByUuidWallet(uuidWallet, pageable);
   }
 
   @ResponseStatus(HttpStatus.OK)
-  @GetMapping(path = "/wallet/{uuidWallet}/month/{month}")
-  @ApiOperation(value = "Obtem os registros de uma carteira a partir de seu UUID e um mês.", authorizations = {@Authorization(value = "Bearer")})
+  @GetMapping(path = "/wallets/{uuidWallet}/months/{month}/years/{year}")
+  @ApiOperation(value = "Obtem os registros de uma carteira a partir de seu UUID, mês e ano.", authorizations = {@Authorization(value = "Bearer")})
   public Page<RecordDebtorDTO> findAllByMonth(
-      @PathVariable String uuidWallet,
-      @PathVariable Integer month,
-      Pageable pageable) {
-    return recordService.findAllByUuidWalletAndDeadlineBetween(uuidWallet, month, pageable);
+      @PathVariable final String uuidWallet,
+      @PathVariable final Integer month,
+      @PathVariable final Integer year,
+      final Pageable pageable) {
+    return recordService.findAllByUuidWalletAndDeadlineBetween(uuidWallet, month, year, pageable);
   }
 }

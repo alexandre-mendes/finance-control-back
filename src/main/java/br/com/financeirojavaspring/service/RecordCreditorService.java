@@ -53,11 +53,12 @@ public class RecordCreditorService {
   }
 
   public Page<RecordCreditorDTO> findAllByMonth(
-      String uuidWallet,
-      Integer month,
-      Pageable pageable) {
-    var firstMonth = LocalDate.now().withMonth(month).withDayOfMonth(1);
-    var lastMonth = LocalDate.now().withMonth(month).withDayOfMonth(firstMonth.lengthOfMonth());
+      final String uuidWallet,
+      final Integer month,
+      final Integer year,
+      final Pageable pageable) {
+    var firstMonth = LocalDate.now().withMonth(month).withYear(year).withDayOfMonth(1);
+    var lastMonth = LocalDate.now().withMonth(month).withYear(year).withDayOfMonth(firstMonth.lengthOfMonth());
     var dtos = repository.findAllfindAllByWalletUuidAndDateReceivementBetween(
         uuidWallet, firstMonth, lastMonth, pageable)
         .stream()

@@ -68,9 +68,13 @@ public class WalletService {
     return modelMapper.map(walletSaved, WalletDTO.class);
   }
 
-  public Page<WalletDTO> findAll(final TypeWallet typeWallet, final Integer month, final Pageable pageable) {
-    var firstMonth = LocalDate.now().withMonth(month).withDayOfMonth(1);
-    var lastMonth = LocalDate.now().withMonth(month).withDayOfMonth(firstMonth.lengthOfMonth());
+  public Page<WalletDTO> findAll(
+      final TypeWallet typeWallet,
+      final Integer month,
+      final Integer year,
+      final Pageable pageable) {
+    var firstMonth = LocalDate.now().withMonth(month).withYear(year).withDayOfMonth(1);
+    var lastMonth = LocalDate.now().withMonth(month).withYear(year).withDayOfMonth(firstMonth.lengthOfMonth());
     var account = authenticationService.getUser().getAccount();
 
     var wallets = new ArrayList<WalletProjection>();
@@ -83,9 +87,9 @@ public class WalletService {
         Collectors.toList()));
   }
 
-  public WalletSummaryDTO findWalletsSummary(final Integer month) {
-    var firstMonth = LocalDate.now().withMonth(month).withDayOfMonth(1);
-    var lastMonth = LocalDate.now().withMonth(month).withDayOfMonth(firstMonth.lengthOfMonth());
+  public WalletSummaryDTO findWalletsSummary(final Integer month, final Integer year) {
+    var firstMonth = LocalDate.now().withMonth(month).withYear(year).withDayOfMonth(1);
+    var lastMonth = LocalDate.now().withMonth(month).withYear(year).withDayOfMonth(firstMonth.lengthOfMonth());
     var totalPaid = recordDebtorRepository.findTotalPaidByMonth(firstMonth, lastMonth, authenticationService.getUser().getAccount());
 
     var totalDebtor = recordDebtorRepository
@@ -96,7 +100,9 @@ public class WalletService {
     BigDecimal porcentagePaid;
 
     try {
-      percentageCommitted = totalDebtor.orElse(BigDecimal.ZERO).divide(totalCreditor.orElse(BigDecimal.ZERO), RoundingMode.DOWN);
+      percentageCommitted = totalDebtor.orElse(BigDecimal.ZERO)
+          .subtract(totalPaid.orElse(BigDecimal.ZERO))
+          .divide(totalCreditor.orElse(BigDecimal.ZERO), RoundingMode.DOWN);
     } catch (ArithmeticException | NullPointerException | NoSuchElementException ex) {
       percentageCommitted = BigDecimal.ZERO;
     }

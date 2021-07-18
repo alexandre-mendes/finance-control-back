@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @CrossOrigin(origins = "*")
-@RequestMapping("/record-creditor")
+@RequestMapping("/records-creditor")
 @Api(value = "Record Creditor Controller")
 public class RecordCreditorCotroller {
 
@@ -34,17 +34,18 @@ public class RecordCreditorCotroller {
   @ResponseStatus(HttpStatus.OK)
   @PostMapping
   @ApiOperation(value = "Obtem os registros de uma carteira a partir de seu UUID.", authorizations = {@Authorization(value = "Bearer")})
-  public RecordCreditorDTO create(@RequestBody  RecordCreditorDTO dto) {
+  public RecordCreditorDTO create(@RequestBody final RecordCreditorDTO dto) {
     return service.create(dto);
   }
 
   @ResponseStatus(HttpStatus.OK)
-  @GetMapping(path = "/wallet/{uuidWallet}/month/{month}")
-  @ApiOperation(value = "Obtem os registros de uma carteira a partir de seu UUID e um mês.", authorizations = {@Authorization(value = "Bearer")})
+  @GetMapping(path = "/wallets/{uuidWallet}/months/{month}/years/{year}")
+  @ApiOperation(value = "Obtem os registros de uma carteira a partir de seu UUID, mês e ano.", authorizations = {@Authorization(value = "Bearer")})
   public Page<RecordCreditorDTO> findAllByMonth(
-      @PathVariable String uuidWallet,
-      @PathVariable Integer month,
-      Pageable pageable) {
-    return service.findAllByMonth(uuidWallet, month, pageable);
+      @PathVariable final String uuidWallet,
+      @PathVariable final Integer month,
+      @PathVariable final Integer year,
+      final Pageable pageable) {
+    return service.findAllByMonth(uuidWallet, month, year, pageable);
   }
 }

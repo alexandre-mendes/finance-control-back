@@ -51,4 +51,11 @@ public interface RecordDebtorRepository extends JpaRepository<RecordDebtor, Long
       final @Param(value = "lastDate") LocalDate lastDate,
       final @Param(value = "account") Account account
   );
+
+  @Query(value =
+        "select distinct "
+      + "   extract(year from record.date_deadline) as yearRecord "
+      + "FROM "
+      + "   financeiro_record_debtor record", nativeQuery = true)
+  Page<Integer> findAllYears(final Pageable pageable);
 }

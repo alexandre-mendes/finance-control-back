@@ -1,7 +1,7 @@
 package br.com.financeirojavaspring.repository;
 
-import br.com.financeirojavaspring.model.Account;
-import br.com.financeirojavaspring.model.RecordDebtor;
+import br.com.financeirojavaspring.entity.Account;
+import br.com.financeirojavaspring.entity.RecordDebtor;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Optional;

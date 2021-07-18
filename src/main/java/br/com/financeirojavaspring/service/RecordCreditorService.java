@@ -2,8 +2,8 @@ package br.com.financeirojavaspring.service;
 
 import br.com.financeirojavaspring.dto.RecordCreditorDTO;
 import br.com.financeirojavaspring.exception.EntityNotFoundException;
-import br.com.financeirojavaspring.model.RecordCreditor;
-import br.com.financeirojavaspring.model.Wallet;
+import br.com.financeirojavaspring.entity.RecordCreditor;
+import br.com.financeirojavaspring.entity.Wallet;
 import br.com.financeirojavaspring.repository.RecordCreditorRepository;
 import br.com.financeirojavaspring.repository.WalletRepository;
 import java.time.LocalDate;

@@ -1,7 +1,7 @@
 package br.com.financeirojavaspring.repository;
 
 import br.com.financeirojavaspring.projection.WalletProjection;
-import br.com.financeirojavaspring.model.Wallet;
+import br.com.financeirojavaspring.entity.Wallet;
 import java.time.LocalDate;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;

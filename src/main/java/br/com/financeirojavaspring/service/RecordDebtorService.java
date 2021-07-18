@@ -2,8 +2,8 @@ package br.com.financeirojavaspring.service;
 
 import br.com.financeirojavaspring.dto.RecordDebtorDTO;
 import br.com.financeirojavaspring.exception.EntityNotFoundException;
-import br.com.financeirojavaspring.model.RecordDebtor;
-import br.com.financeirojavaspring.model.Wallet;
+import br.com.financeirojavaspring.entity.RecordDebtor;
+import br.com.financeirojavaspring.entity.Wallet;
 import br.com.financeirojavaspring.repository.RecordDebtorRepository;
 import br.com.financeirojavaspring.repository.WalletRepository;
 import java.math.RoundingMode;

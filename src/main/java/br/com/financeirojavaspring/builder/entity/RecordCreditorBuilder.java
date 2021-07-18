@@ -1,8 +1,8 @@
 package br.com.financeirojavaspring.builder.entity;
 
 import br.com.financeirojavaspring.builder.Builder;
-import br.com.financeirojavaspring.model.RecordCreditor;
-import br.com.financeirojavaspring.model.Wallet;
+import br.com.financeirojavaspring.entity.RecordCreditor;
+import br.com.financeirojavaspring.entity.Wallet;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 

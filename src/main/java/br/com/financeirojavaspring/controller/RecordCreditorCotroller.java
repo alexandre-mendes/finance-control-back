@@ -1,14 +1,10 @@
 package br.com.financeirojavaspring.controller;
 
 import br.com.financeirojavaspring.dto.RecordCreditorDTO;
-import br.com.financeirojavaspring.dto.RecordDebtorDTO;
-import br.com.financeirojavaspring.model.RecordCreditor;
 import br.com.financeirojavaspring.service.RecordCreditorService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.Authorization;
-import java.util.List;
-import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

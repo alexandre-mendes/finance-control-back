@@ -5,7 +5,7 @@ import br.com.financeirojavaspring.dto.WalletDTO;
 import br.com.financeirojavaspring.dto.WalletSummaryDTO;
 import br.com.financeirojavaspring.enums.TypeWallet;
 import br.com.financeirojavaspring.exception.EntityNotFoundException;
-import br.com.financeirojavaspring.model.Wallet;
+import br.com.financeirojavaspring.entity.Wallet;
 import br.com.financeirojavaspring.repository.RecordCreditorRepository;
 import br.com.financeirojavaspring.repository.RecordDebtorRepository;
 import br.com.financeirojavaspring.repository.WalletRepository;

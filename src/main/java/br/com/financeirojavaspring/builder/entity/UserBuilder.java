@@ -1,8 +1,8 @@
 package br.com.financeirojavaspring.builder.entity;
 
 import br.com.financeirojavaspring.builder.Builder;
-import br.com.financeirojavaspring.model.Account;
-import br.com.financeirojavaspring.model.User;
+import br.com.financeirojavaspring.entity.Account;
+import br.com.financeirojavaspring.entity.User;
 
 public class UserBuilder implements Builder {
 

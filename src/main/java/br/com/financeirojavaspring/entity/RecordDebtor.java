@@ -1,4 +1,4 @@
-package br.com.financeirojavaspring.model;
+package br.com.financeirojavaspring.entity;
 
 import br.com.financeirojavaspring.builder.entity.RecordDebtorBuilder;
 import java.math.BigDecimal;

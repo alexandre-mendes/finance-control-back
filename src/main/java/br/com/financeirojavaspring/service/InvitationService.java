@@ -1,11 +1,9 @@
 package br.com.financeirojavaspring.service;
 
-import br.com.financeirojavaspring.builder.entity.InvitationBuilder;
-import br.com.financeirojavaspring.builder.entity.UserBuilder;
 import br.com.financeirojavaspring.dto.InvitationDTO;
 import br.com.financeirojavaspring.exception.EntityNotFoundException;
-import br.com.financeirojavaspring.model.Invitation;
-import br.com.financeirojavaspring.model.User;
+import br.com.financeirojavaspring.entity.Invitation;
+import br.com.financeirojavaspring.entity.User;
 import br.com.financeirojavaspring.repository.InvitationRepository;
 import br.com.financeirojavaspring.repository.UserRepository;
 import org.modelmapper.ModelMapper;

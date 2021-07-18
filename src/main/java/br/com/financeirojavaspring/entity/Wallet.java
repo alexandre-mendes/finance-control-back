@@ -1,11 +1,10 @@
-package br.com.financeirojavaspring.model;
+package br.com.financeirojavaspring.entity;
 
 import br.com.financeirojavaspring.builder.entity.WalletBuilder;
 import br.com.financeirojavaspring.enums.TypeWallet;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import javax.persistence.*;
 import java.util.List;
 

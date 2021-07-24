@@ -91,7 +91,7 @@ public class RecordDebtorService {
         .findAllfindAllByWalletUuidAndDateDeadlineBetween(uuidWallet, firstMonth, lastMonth, pageable)
         .stream()
         .map(r -> modelMapper.map(r, RecordDebtorDTO.class))
-        .sorted(Comparator.comparing(RecordDebtorDTO::getDateDeadline))
+        .sorted(Comparator.comparing(RecordDebtorDTO::getDateDeadline).reversed())
         .collect(Collectors.toList());
     return new PageImpl<>(records);
   }

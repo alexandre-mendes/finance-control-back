@@ -67,7 +67,7 @@ public class RecordCreditorService {
           if(!dto.getDateReceivement().isAfter(LocalDate.now())) {
             dto.setReceived(true);
           }
-        }).sorted(Comparator.comparing(RecordCreditorDTO::getDateReceivement)).collect(Collectors.toList());
+        }).sorted(Comparator.comparing(RecordCreditorDTO::getDateReceivement).reversed()).collect(Collectors.toList());
     return new PageImpl<>(dtos);
   }
 }

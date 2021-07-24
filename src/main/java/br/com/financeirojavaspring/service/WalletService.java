@@ -77,14 +77,25 @@ public class WalletService {
     var lastMonth = LocalDate.now().withMonth(month).withYear(year).withDayOfMonth(firstMonth.lengthOfMonth());
     var account = authenticationService.getUser().getAccount();
 
-    var wallets = new ArrayList<WalletProjection>();
-    if (typeWallet == null || TypeWallet.CREDITOR.equals(typeWallet))
-      wallets.addAll(walletRepository.findAllTypeCreditorWithTotalValueByMonthAndAccount(firstMonth, lastMonth, account.getId()));
-    if (typeWallet == null || TypeWallet.DEBTOR.equals(typeWallet))
-      wallets.addAll(walletRepository.findAllTypeDebtorWithTotalValueAndTotalPaidByMonthAndAccount(firstMonth, lastMonth, account.getId()));
+    var wallets = new ArrayList<WalletDTO>();
+    if (typeWallet == null || TypeWallet.CREDITOR.equals(typeWallet)) {
+      wallets.addAll(
+          walletRepository.findAllTypeCreditorWithTotalValueByMonthAndAccount(account.getId())
+              .stream()
+              .map(w -> modelMapper.map(w, WalletDTO.class))
+              .collect(Collectors.toList())
+      );
+    }
+    if (typeWallet == null || TypeWallet.DEBTOR.equals(typeWallet)) {
+      wallets.addAll(
+          walletRepository.findAllTypeDebtorWithTotalValueAndTotalPaidByMonthAndAccount(firstMonth, lastMonth, account.getId())
+              .stream()
+              .map(w -> modelMapper.map(w, WalletDTO.class))
+              .collect(Collectors.toList())
+      );
+    }
 
-    return new PageImpl<>(wallets.stream().map(w -> modelMapper.map(w, WalletDTO.class)).collect(
-        Collectors.toList()));
+    return new PageImpl<>(wallets);
   }
 
   public WalletSummaryDTO findWalletsSummary(final Integer month, final Integer year) {
@@ -95,7 +106,7 @@ public class WalletService {
     var totalDebtor = recordDebtorRepository
         .findTotalByMonth(firstMonth, lastMonth, authenticationService.getUser().getAccount());
     var totalCreditor = recordCreditorRepository
-        .findTotalByTypeWalletAndMonth(firstMonth, lastMonth, authenticationService.getUser().getAccount());
+        .findTotalByTypeWalletAndMonth(authenticationService.getUser().getAccount());
     BigDecimal percentageCommitted;
     BigDecimal porcentagePaid;
 

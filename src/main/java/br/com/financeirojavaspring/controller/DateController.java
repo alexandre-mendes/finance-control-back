@@ -48,7 +48,7 @@ public class DateController {
   @GetMapping(path = "/years/current")
   @ApiOperation(value = "Retorna o ano atual.",
       authorizations = {@Authorization(value = "Bearer")})
-  public  Integer findCurrentYaer() {
+  public Integer findCurrentYaer() {
     return LocalDate.now().getYear();
   }
 }

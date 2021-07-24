@@ -9,8 +9,8 @@ import java.io.Serializable;
 @lombok.EqualsAndHashCode
 @lombok.AllArgsConstructor
 public class PaymentDTO implements Serializable {
-  private String uuidDebtor;
-  private String uuidCreditor;
+  private String uuidRecordDebtor;
+  private String uuidWalletCreditor;
 
   public static PaymentDTOBuilder builder() {
     return new PaymentDTOBuilder();

@@ -27,10 +27,8 @@ public interface RecordCreditorRepository extends JpaRepository<RecordCreditor, 
       + "and "
       + "   r.wallet.account = :account "
       + "and "
-      + "   r.dateReceivement between :firstDate and :lastDate")
+      + "   r.dateReceivement <= now()")
   Optional<BigDecimal> findTotalByTypeWalletAndMonth(
-      @Param(value = "firstDate") LocalDate firstDate,
-      @Param(value = "lastDate") LocalDate lastDate,
-      @Param(value = "account") Account account
+      @Param(value = "account") final Account account
   );
 }

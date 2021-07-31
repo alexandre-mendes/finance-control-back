@@ -48,7 +48,7 @@ public class RecordDebtorService {
     for (int i = 0; i < recordDebtorDTO.getInstallments().intValue(); i++) {
       recordDebtors.add(
           RecordDebtor.builder()
-              .value(recordDebtorDTO.getValue().divide(recordDebtorDTO.getInstallments(), RoundingMode.DOWN))
+              .value(recordDebtorDTO.getValue())
               .title(recordDebtorDTO.getTitle())
               .dateDeadline(i > 0 ? recordDebtorDTO.getDateDeadline().plusMonths(i) : recordDebtorDTO.getDateDeadline())
               .registrationCode(registrationCode)

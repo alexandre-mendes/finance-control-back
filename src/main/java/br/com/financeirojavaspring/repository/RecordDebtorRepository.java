@@ -4,6 +4,7 @@ import br.com.financeirojavaspring.entity.Account;
 import br.com.financeirojavaspring.entity.RecordDebtor;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -57,5 +58,5 @@ public interface RecordDebtorRepository extends JpaRepository<RecordDebtor, Long
       + "   extract(year from record.date_deadline) as yearRecord "
       + "FROM "
       + "   financeiro_record_debtor record", nativeQuery = true)
-  Page<Integer> findAllYears(final Pageable pageable);
+  List<Integer> findAllYears(final Pageable pageable);
 }

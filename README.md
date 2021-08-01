@@ -2,7 +2,7 @@
 
 ## Repositório de front-end do projeto
 
-<a href="https://github.com/alexandre-mendes/financeiro-angular"></a>
+<a href="https://github.com/alexandre-mendes/financeiro-angular">financeiro-angular</a>
 
 ## 📝 Licença
 

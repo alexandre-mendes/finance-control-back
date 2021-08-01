@@ -2,7 +2,7 @@
 
 ## :octocat: Repositório
 
- O repositorio de front-end do projeto pode ser encontrado clicando <a href="https://github.com/alexandre-mendes/financeiro-angular">aqui.</a>
+ O repositorio de front-end do projeto pode ser encontrado clicando <a href="https://github.com/alexandre-mendes/financeiro-angular" target="_blank">aqui.</a>
 
 ## 📝 Licença
 

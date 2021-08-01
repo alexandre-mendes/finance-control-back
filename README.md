@@ -1,6 +1,6 @@
 # financeiro-java-spring
 
-## Repositório de front-end do projeto
+## :octocat: Repositório de front-end do projeto
 
 <a href="https://github.com/alexandre-mendes/financeiro-angular">financeiro-angular</a>
 

@@ -13,7 +13,7 @@ import org.springframework.data.repository.query.Param;
 
 public interface RecordCreditorRepository extends JpaRepository<RecordCreditor, Long> {
 
-  Page<RecordCreditor> findAllfindAllByWalletUuidAndDateReceivementBetween(String uuidWallet,
+  Page<RecordCreditor> findAllfindAllByWalletUuidAndDateTransactionBetween(String uuidWallet,
       LocalDate firstMonth,
       LocalDate lastMonth,
       Pageable pageable);
@@ -27,7 +27,7 @@ public interface RecordCreditorRepository extends JpaRepository<RecordCreditor, 
       + "and "
       + "   r.wallet.account = :account "
       + "and "
-      + "   r.dateReceivement <= now()")
+      + "   r.dateTransaction <= now()")
   Optional<BigDecimal> findTotalByTypeWalletAndMonth(
       @Param(value = "account") final Account account
   );

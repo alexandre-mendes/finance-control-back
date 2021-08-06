@@ -1,6 +1,8 @@
 package br.com.financeirojavaspring.service;
 
 import br.com.financeirojavaspring.dto.RecordCreditorDTO;
+import br.com.financeirojavaspring.entity.Transaction;
+import br.com.financeirojavaspring.enums.TypeTransaction;
 import br.com.financeirojavaspring.exception.EntityNotFoundException;
 import br.com.financeirojavaspring.entity.RecordCreditor;
 import br.com.financeirojavaspring.entity.Wallet;
@@ -48,6 +50,13 @@ public class RecordCreditorService {
     var entity = modelMapper.map(dto, RecordCreditor.class);
     entity.setUuid(UUID.randomUUID().toString());
     entity.setWallet(wallet);
+    entity.setTransaction(
+            Transaction.builder()
+                    .uuid(UUID.randomUUID().toString())
+                    .typeTransaction(TypeTransaction.DEPOSIT)
+                    .codeTransaction(UUID.randomUUID().toString())
+                    .build()
+    );
     entity = repository.save(entity);
     return modelMapper.map(entity, RecordCreditorDTO.class);
   }
@@ -59,15 +68,15 @@ public class RecordCreditorService {
       final Pageable pageable) {
     var firstMonth = LocalDate.now().withMonth(month).withYear(year).withDayOfMonth(1);
     var lastMonth = LocalDate.now().withMonth(month).withYear(year).withDayOfMonth(firstMonth.lengthOfMonth());
-    var dtos = repository.findAllfindAllByWalletUuidAndDateReceivementBetween(
+    var dtos = repository.findAllfindAllByWalletUuidAndDateTransactionBetween(
         uuidWallet, firstMonth, lastMonth, pageable)
         .stream()
         .map(entity -> modelMapper.map(entity, RecordCreditorDTO.class))
         .peek(dto -> {
-          if(!dto.getDateReceivement().isAfter(LocalDate.now())) {
+          if(!dto.getDateTransaction().isAfter(LocalDate.now())) {
             dto.setReceived(true);
           }
-        }).sorted(Comparator.comparing(RecordCreditorDTO::getDateReceivement).reversed()).collect(Collectors.toList());
+        }).sorted(Comparator.comparing(RecordCreditorDTO::getDateTransaction).reversed()).collect(Collectors.toList());
     return new PageImpl<>(dtos);
   }
 }

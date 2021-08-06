@@ -31,9 +31,9 @@ public class RecordCreditorCotroller {
     this.service = service;
   }
 
-  @ResponseStatus(HttpStatus.OK)
+  @ResponseStatus(HttpStatus.CREATED)
   @PostMapping
-  @ApiOperation(value = "Obtem os registros de uma carteira a partir de seu UUID.", authorizations = {@Authorization(value = "Bearer")})
+  @ApiOperation(value = "Salva um registro de crédito.", authorizations = {@Authorization(value = "Bearer")})
   public RecordCreditorDTO create(@RequestBody final RecordCreditorDTO dto) {
     return service.create(dto);
   }

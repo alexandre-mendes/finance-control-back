@@ -2,17 +2,22 @@ package br.com.financeirojavaspring.builder.entity;
 
 import br.com.financeirojavaspring.builder.Builder;
 import br.com.financeirojavaspring.entity.RecordCreditor;
+import br.com.financeirojavaspring.entity.RecordDebtor;
+import br.com.financeirojavaspring.entity.Transaction;
 import br.com.financeirojavaspring.entity.Wallet;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 
 public class RecordCreditorBuilder implements Builder {
 
   private Long id;
   private String uuid;
   private String title;
-  private LocalDate dateReceivement;
+  private LocalDate dateTransaction;
   private BigDecimal value;
+  private Transaction transaction;
+  private List<RecordDebtor> debtorsPayd;
   private Wallet wallet;
 
   public RecordCreditorBuilder id(Long id) {
@@ -30,13 +35,23 @@ public class RecordCreditorBuilder implements Builder {
     return this;
   }
 
-  public RecordCreditorBuilder dateReceivement(LocalDate dateReceivement) {
-    this.dateReceivement = dateReceivement;
+  public RecordCreditorBuilder dateTransaction(LocalDate dateTransaction) {
+    this.dateTransaction = dateTransaction;
     return this;
   }
 
   public RecordCreditorBuilder value(BigDecimal value) {
     this.value = value;
+    return this;
+  }
+
+  public RecordCreditorBuilder transaction(Transaction transaction) {
+    this.transaction = transaction;
+    return this;
+  }
+
+  public RecordCreditorBuilder debtorsPayd(List<RecordDebtor> debtorsPayd) {
+    this.debtorsPayd = debtorsPayd;
     return this;
   }
 
@@ -47,6 +62,6 @@ public class RecordCreditorBuilder implements Builder {
 
   @Override
   public RecordCreditor build() {
-    return new RecordCreditor(id, uuid, title, dateReceivement, value, wallet);
+    return new RecordCreditor(id, uuid, title, dateTransaction, value, transaction, debtorsPayd, wallet);
   }
 }

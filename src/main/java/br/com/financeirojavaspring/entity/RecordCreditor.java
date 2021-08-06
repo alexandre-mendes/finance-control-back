@@ -1,16 +1,12 @@
 package br.com.financeirojavaspring.entity;
 
 import br.com.financeirojavaspring.builder.entity.RecordCreditorBuilder;
+import br.com.financeirojavaspring.enums.TypeTransaction;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import java.util.List;
+import javax.persistence.*;
 
 @lombok.Getter
 @lombok.Setter
@@ -31,9 +27,16 @@ public class RecordCreditor {
 
   private String title;
 
-  private LocalDate dateReceivement;
+  private LocalDate dateTransaction;
 
   private BigDecimal value;
+
+  @ManyToOne(cascade = CascadeType.PERSIST)
+  @JoinColumn(name = "id_transaction")
+  private Transaction transaction;
+
+  @OneToMany(mappedBy = "payerRecord", cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+  private List<RecordDebtor> debtorsPayd;
 
   @ManyToOne
   @JoinColumn(name = "id_wallet")

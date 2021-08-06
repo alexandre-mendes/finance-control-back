@@ -21,7 +21,7 @@ public class RecordCreditorDTO implements Serializable {
   private String title;
 
   @NotNull
-  private LocalDate dateReceivement;
+  private LocalDate dateTransaction;
 
   @NotNull
   private BigDecimal value;

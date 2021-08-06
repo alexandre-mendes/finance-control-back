@@ -71,12 +71,13 @@ public class RecordCreditorService {
     var dtos = repository.findAllfindAllByWalletUuidAndDateTransactionBetween(
         uuidWallet, firstMonth, lastMonth, pageable)
         .stream()
+        .sorted(Comparator.comparing(RecordCreditor::getId).reversed())
         .map(entity -> modelMapper.map(entity, RecordCreditorDTO.class))
         .peek(dto -> {
           if(!dto.getDateTransaction().isAfter(LocalDate.now())) {
             dto.setReceived(true);
           }
-        }).sorted(Comparator.comparing(RecordCreditorDTO::getDateTransaction).reversed()).collect(Collectors.toList());
+        }).collect(Collectors.toList());
     return new PageImpl<>(dtos);
   }
 }

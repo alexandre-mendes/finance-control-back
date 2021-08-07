@@ -1,6 +1,8 @@
 package br.com.financeirojavaspring.entity;
 
 import br.com.financeirojavaspring.builder.RecordDebtorBuilder;
+
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import javax.persistence.Column;
@@ -19,7 +21,9 @@ import javax.persistence.Table;
 @lombok.AllArgsConstructor
 @Entity
 @Table(name = "financeiro_record_debtor")
-public class RecordDebtor {
+public class RecordDebtor implements Serializable {
+
+  private static final long serialVersionUID = -4643213106340314847L;
 
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "record_debtor_seq")

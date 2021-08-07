@@ -11,6 +11,9 @@ import javax.validation.constraints.NotNull;
 @lombok.EqualsAndHashCode
 @lombok.AllArgsConstructor
 public class UserDTO implements Serializable {
+
+    private static final long serialVersionUID = 8095027604824735394L;
+
     private String uuid;
     @NotNull
     @NotBlank

@@ -14,6 +14,8 @@ import javax.validation.constraints.NotNull;
 @lombok.AllArgsConstructor
 public class RecordCreditorDTO implements Serializable {
 
+  private static final long serialVersionUID = -1627812282904815159L;
+
   private String uuid;
 
   @NotNull

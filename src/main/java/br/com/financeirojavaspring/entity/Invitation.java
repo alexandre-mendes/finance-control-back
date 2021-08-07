@@ -2,6 +2,7 @@ package br.com.financeirojavaspring.entity;
 
 import br.com.financeirojavaspring.builder.InvitationBuilder;
 import javax.persistence.*;
+import java.io.Serializable;
 
 @lombok.Getter
 @lombok.Setter
@@ -10,7 +11,9 @@ import javax.persistence.*;
 @lombok.AllArgsConstructor
 @Entity
 @Table(name = "financeiro_invitation")
-public class Invitation {
+public class Invitation implements Serializable {
+
+    private static final long serialVersionUID = -986073004038590811L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "invitation_seq")

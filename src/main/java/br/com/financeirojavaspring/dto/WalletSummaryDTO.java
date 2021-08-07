@@ -11,6 +11,8 @@ import java.math.BigDecimal;
 @lombok.AllArgsConstructor
 public class WalletSummaryDTO implements Serializable {
 
+  private static final long serialVersionUID = -2260833294875353894L;
+
   private BigDecimal debitBalance;
   private BigDecimal totalCreditor;
   private BigDecimal totalDebtor;

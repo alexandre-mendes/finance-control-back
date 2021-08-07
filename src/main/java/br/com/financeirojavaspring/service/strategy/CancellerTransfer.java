@@ -7,13 +7,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Component;
 
-@Component("TRANSFER_SENT")
-public class CancellerTransferSent implements Canceller {
+@Component("TRANSFER")
+public class CancellerTransfer implements Canceller {
 
     private final RecordCreditorRepository repository;
 
     @Autowired
-    public CancellerTransferSent(RecordCreditorRepository repository) {
+    public CancellerTransfer(RecordCreditorRepository repository) {
         this.repository = repository;
     }
 
@@ -21,12 +21,12 @@ public class CancellerTransferSent implements Canceller {
     public void cancel(final RecordCreditor recordCreditor) {
         final var records = repository.findAll(
                 Example.of(
-                    RecordCreditor.builder()
-                        .transaction(
-                                Transaction.builder()
-                                        .codeTransaction(recordCreditor.getTransaction().getCodeTransaction())
-                                        .build()
-                        ).build()));
+                        RecordCreditor.builder()
+                                .transaction(
+                                        Transaction.builder()
+                                                .codeTransaction(recordCreditor.getTransaction().getCodeTransaction())
+                                                .build()
+                                ).build()));
 
         repository.deleteAll(records);
     }

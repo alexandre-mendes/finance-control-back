@@ -53,6 +53,7 @@ public class RecordDebtorController {
   }
 
   @DeleteMapping(path = "/{registrationCode}")
+  @ApiOperation(value = "Remove todas as parcelas de um débito.", authorizations = {@Authorization(value = "Bearer")})
   public void delete(@PathVariable(name = "registrationCode") String registrationCode) {
     recordService.delete(registrationCode);
   }

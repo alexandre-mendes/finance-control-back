@@ -14,6 +14,8 @@ import javax.validation.constraints.NotNull;
 @lombok.AllArgsConstructor
 public class RecordDebtorDTO implements Serializable {
 
+  private static final long serialVersionUID = 7287342681482925095L;
+
   private String uuid;
 
   private String registrationCode;

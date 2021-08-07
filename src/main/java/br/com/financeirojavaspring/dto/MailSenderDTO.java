@@ -9,6 +9,9 @@ import java.io.Serializable;
 @lombok.EqualsAndHashCode
 @lombok.AllArgsConstructor
 public class MailSenderDTO implements Serializable {
+
+  private static final long serialVersionUID = -6922906849046479398L;
+
   private String emailDestiny;
   private String subject;
   private String message;

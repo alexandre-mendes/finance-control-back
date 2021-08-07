@@ -2,6 +2,7 @@ package br.com.financeirojavaspring.entity;
 
 import br.com.financeirojavaspring.builder.RecordCreditorBuilder;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
@@ -14,7 +15,9 @@ import javax.persistence.*;
 @lombok.AllArgsConstructor
 @Entity
 @Table(name = "financeiro_record_creditor")
-public class RecordCreditor {
+public class RecordCreditor implements Serializable {
+
+  private static final long serialVersionUID = -5587978344103430294L;
 
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "record_creditor_seq")

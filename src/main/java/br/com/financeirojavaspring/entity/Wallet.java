@@ -17,6 +17,8 @@ import java.util.List;
 @Table(name = "financeiro_wallet")
 public class Wallet implements Serializable {
 
+    private static final long serialVersionUID = -747807130742436193L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "wallet_seq")
     @Column(name = "id_wallet")

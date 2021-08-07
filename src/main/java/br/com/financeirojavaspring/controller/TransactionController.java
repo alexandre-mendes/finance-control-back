@@ -1,5 +1,6 @@
 package br.com.financeirojavaspring.controller;
 
+import br.com.financeirojavaspring.dto.PaymentAllDTO;
 import br.com.financeirojavaspring.dto.PaymentDTO;
 import br.com.financeirojavaspring.dto.TransferDTO;
 import br.com.financeirojavaspring.service.TransactionService;
@@ -9,6 +10,7 @@ import io.swagger.annotations.Authorization;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import javax.validation.Valid;
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -42,5 +44,12 @@ public class TransactionController {
   @ApiOperation(value = "Cancela uma transação.", authorizations = {@Authorization(value = "Bearer")})
   public void cancelPayment(@PathVariable(name = "uuidCreditor") final String uuidCreditor) {
     service.calcelPayment(uuidCreditor);
+  }
+
+  @ResponseStatus(HttpStatus.ACCEPTED)
+  @PostMapping(path = "/pay-all")
+  @ApiOperation(value = "Realiza o pagamento de todos os registros de um determinado mês..", authorizations = {@Authorization(value = "Bearer")})
+  public void payAll(@RequestBody @Valid final PaymentAllDTO dto) {
+    service.payAll(dto.getUuidWalletDebtor(), dto.getUuidWalletCreditor(), dto.getMonth(), dto.getYear());
   }
 }

@@ -15,6 +15,8 @@ import java.io.Serializable;
 @Table(name = "financeiro_transaction")
 public class Transaction implements Serializable {
 
+    private static final long serialVersionUID = 864739280148743163L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "transaction_seq")
     @Column(name = "id_transaction")

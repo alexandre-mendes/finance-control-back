@@ -1,14 +1,12 @@
 package br.com.financeirojavaspring.exception;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.ResponseStatus;
 
-@ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
-public class InsufficientFundsException extends RuntimeException {
+public class InsufficientFundsException extends ApplicationException {
 
   private static final long serialVersionUID = -3554292784965558127L;
 
   public InsufficientFundsException() {
-    super("Saldo insuficiente para realizar o pagamento.");
+    super("Saldo insuficiente para realizar o pagamento.", HttpStatus.UNPROCESSABLE_ENTITY);
   }
 }

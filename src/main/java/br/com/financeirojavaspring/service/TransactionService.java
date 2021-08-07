@@ -8,8 +8,8 @@ import br.com.financeirojavaspring.entity.Transaction;
 import br.com.financeirojavaspring.entity.Wallet;
 import br.com.financeirojavaspring.enums.TypeTransaction;
 import br.com.financeirojavaspring.exception.EntityNotFoundException;
-import br.com.financeirojavaspring.exception.GenericException;
 import br.com.financeirojavaspring.exception.InsufficientFundsException;
+import br.com.financeirojavaspring.exception.NonExistentDebtorException;
 import br.com.financeirojavaspring.repository.RecordCreditorRepository;
 import br.com.financeirojavaspring.repository.RecordDebtorRepository;
 import br.com.financeirojavaspring.repository.WalletRepository;
@@ -148,7 +148,7 @@ public class TransactionService {
     final var totalDebtor = recordsDebtor.stream().map(RecordDebtor::getValue).reduce(BigDecimal.ZERO, BigDecimal::add);
 
     Preconditions.checkTrue(totalDebtor.compareTo(BigDecimal.ZERO) > 0)
-            .orElseThrow(() -> new GenericException("O débito não pode ser pago pois seu valor não é maior que 0."));
+            .orElseThrow(NonExistentDebtorException::new);
 
     Preconditions.checkTrue(walletCreditor.getValue().compareTo(totalDebtor) == 0
                     || walletCreditor.getValue().compareTo(totalDebtor) > 0)

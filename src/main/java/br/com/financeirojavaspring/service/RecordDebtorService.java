@@ -1,6 +1,7 @@
 package br.com.financeirojavaspring.service;
 
 import br.com.financeirojavaspring.dto.RecordDebtorDTO;
+import br.com.financeirojavaspring.exception.CancellationNotAllowed;
 import br.com.financeirojavaspring.exception.EntityNotFoundException;
 import br.com.financeirojavaspring.entity.RecordDebtor;
 import br.com.financeirojavaspring.entity.Wallet;
@@ -95,4 +96,14 @@ public class RecordDebtorService {
         .collect(Collectors.toList());
     return new PageImpl<>(records);
   }
+
+    public void delete(String registrationCode) {
+      final var records = recordDebtorRepository.findAll(Example.of(RecordDebtor.builder().registrationCode(registrationCode).build()));
+      records.forEach(record -> {
+        if (record.getPaid()) {
+          throw new CancellationNotAllowed("Não é possível remover um débito com parcelas pagas.");
+        }
+      });
+      recordDebtorRepository.deleteAll(records);
+    }
 }

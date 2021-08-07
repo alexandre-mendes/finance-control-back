@@ -1,6 +1,5 @@
-package br.com.financeirojavaspring.builder.entity;
+package br.com.financeirojavaspring.builder;
 
-import br.com.financeirojavaspring.builder.Builder;
 import br.com.financeirojavaspring.entity.Account;
 
 public class AccountBuilder implements Builder {

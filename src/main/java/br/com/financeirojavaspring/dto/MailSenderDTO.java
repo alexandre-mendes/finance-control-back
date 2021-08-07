@@ -1,6 +1,6 @@
 package br.com.financeirojavaspring.dto;
 
-import br.com.financeirojavaspring.builder.dto.MailSenderDTOBuilder;
+import br.com.financeirojavaspring.builder.MailSenderDTOBuilder;
 import java.io.Serializable;
 
 @lombok.Setter

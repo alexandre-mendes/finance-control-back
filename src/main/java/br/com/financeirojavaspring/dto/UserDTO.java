@@ -1,6 +1,6 @@
 package br.com.financeirojavaspring.dto;
 
-import br.com.financeirojavaspring.builder.dto.UserDTOBuilder;
+import br.com.financeirojavaspring.builder.UserDTOBuilder;
 import java.io.Serializable;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;

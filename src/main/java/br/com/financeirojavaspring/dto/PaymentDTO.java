@@ -1,6 +1,6 @@
 package br.com.financeirojavaspring.dto;
 
-import br.com.financeirojavaspring.builder.dto.PaymentDTOBuilder;
+import br.com.financeirojavaspring.builder.PaymentDTOBuilder;
 import java.io.Serializable;
 
 @lombok.Setter

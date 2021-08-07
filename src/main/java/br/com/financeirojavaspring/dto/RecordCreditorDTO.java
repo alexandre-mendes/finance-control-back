@@ -1,6 +1,6 @@
 package br.com.financeirojavaspring.dto;
 
-import br.com.financeirojavaspring.builder.dto.RecordCreditorDTOBuilder;
+import br.com.financeirojavaspring.builder.RecordCreditorDTOBuilder;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;

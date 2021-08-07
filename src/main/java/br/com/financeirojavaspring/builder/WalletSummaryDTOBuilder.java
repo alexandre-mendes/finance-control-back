@@ -1,4 +1,4 @@
-package br.com.financeirojavaspring.builder.dto;
+package br.com.financeirojavaspring.builder;
 
 import br.com.financeirojavaspring.dto.WalletSummaryDTO;
 import java.math.BigDecimal;

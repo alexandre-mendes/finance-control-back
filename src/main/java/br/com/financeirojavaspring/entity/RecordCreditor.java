@@ -1,7 +1,6 @@
 package br.com.financeirojavaspring.entity;
 
-import br.com.financeirojavaspring.builder.entity.RecordCreditorBuilder;
-import br.com.financeirojavaspring.enums.TypeTransaction;
+import br.com.financeirojavaspring.builder.RecordCreditorBuilder;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;

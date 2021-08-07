@@ -1,6 +1,6 @@
 package br.com.financeirojavaspring.dto;
 
-import br.com.financeirojavaspring.builder.dto.InvitationDTOBuilder;
+import br.com.financeirojavaspring.builder.InvitationDTOBuilder;
 
 @lombok.Setter
 @lombok.Getter

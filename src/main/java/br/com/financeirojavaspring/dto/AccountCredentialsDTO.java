@@ -1,9 +1,6 @@
 package br.com.financeirojavaspring.dto;
 
-import br.com.financeirojavaspring.builder.dto.AccountCredentialsDTOBuilder;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
+import br.com.financeirojavaspring.builder.AccountCredentialsDTOBuilder;
 
 @lombok.Setter
 @lombok.Getter

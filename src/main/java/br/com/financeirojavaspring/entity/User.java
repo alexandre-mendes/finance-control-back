@@ -1,6 +1,6 @@
 package br.com.financeirojavaspring.entity;
 
-import br.com.financeirojavaspring.builder.entity.UserBuilder;
+import br.com.financeirojavaspring.builder.UserBuilder;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;

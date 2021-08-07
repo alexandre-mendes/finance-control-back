@@ -1,6 +1,5 @@
-package br.com.financeirojavaspring.builder.dto;
+package br.com.financeirojavaspring.builder;
 
-import br.com.financeirojavaspring.builder.Builder;
 import br.com.financeirojavaspring.dto.RecordDebtorDTO;
 import java.math.BigDecimal;
 import java.time.LocalDate;

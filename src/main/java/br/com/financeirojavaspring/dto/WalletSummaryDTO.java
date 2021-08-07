@@ -1,6 +1,6 @@
 package br.com.financeirojavaspring.dto;
 
-import br.com.financeirojavaspring.builder.dto.WalletSummaryDTOBuilder;
+import br.com.financeirojavaspring.builder.WalletSummaryDTOBuilder;
 import java.io.Serializable;
 import java.math.BigDecimal;
 

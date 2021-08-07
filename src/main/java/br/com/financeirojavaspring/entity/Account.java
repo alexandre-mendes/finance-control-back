@@ -1,6 +1,6 @@
 package br.com.financeirojavaspring.entity;
 
-import br.com.financeirojavaspring.builder.entity.AccountBuilder;
+import br.com.financeirojavaspring.builder.AccountBuilder;
 import javax.persistence.*;
 
 @lombok.Getter

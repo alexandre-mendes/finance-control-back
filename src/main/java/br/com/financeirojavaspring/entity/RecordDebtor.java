@@ -1,6 +1,6 @@
 package br.com.financeirojavaspring.entity;
 
-import br.com.financeirojavaspring.builder.entity.RecordDebtorBuilder;
+import br.com.financeirojavaspring.builder.RecordDebtorBuilder;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import javax.persistence.Column;

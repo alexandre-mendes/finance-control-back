@@ -1,6 +1,6 @@
 package br.com.financeirojavaspring.entity;
 
-import br.com.financeirojavaspring.builder.entity.TransactionBuilder;
+import br.com.financeirojavaspring.builder.TransactionBuilder;
 import br.com.financeirojavaspring.enums.TypeTransaction;
 
 import javax.persistence.*;

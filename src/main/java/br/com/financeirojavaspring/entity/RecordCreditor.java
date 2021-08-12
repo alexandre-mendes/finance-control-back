@@ -33,8 +33,7 @@ public class RecordCreditor implements Serializable {
 
   private BigDecimal value;
 
-  @ManyToOne(cascade = CascadeType.PERSIST)
-  @JoinColumn(name = "id_transaction")
+  @OneToOne(mappedBy = "recordCreditor")
   private Transaction transaction;
 
   @OneToMany(mappedBy = "payerRecord", cascade = {CascadeType.MERGE, CascadeType.PERSIST})

@@ -31,6 +31,8 @@ public class AplicationExceptionHandler extends ResponseEntityExceptionHandler {
                 "Ocorreu um erro inesperado!",
                 request.getRequestURI());
 
+        e.printStackTrace();
+
         return ResponseEntity.status(standardError.getStatus()).body(standardError);
     }
 }

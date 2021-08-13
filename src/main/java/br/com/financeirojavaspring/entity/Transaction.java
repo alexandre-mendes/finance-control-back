@@ -30,10 +30,6 @@ public class Transaction implements Serializable {
     @Enumerated(EnumType.STRING)
     private TypeTransaction typeTransaction;
 
-    @OneToOne
-    @JoinColumn(name = "id_record_creditor")
-    private RecordCreditor recordCreditor;
-
     public static TransactionBuilder builder() {
         return new TransactionBuilder();
     }

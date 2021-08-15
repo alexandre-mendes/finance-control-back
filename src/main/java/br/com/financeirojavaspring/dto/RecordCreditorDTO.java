@@ -1,11 +1,12 @@
 package br.com.financeirojavaspring.dto;
 
 import br.com.financeirojavaspring.builder.RecordCreditorDTOBuilder;
+
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 
 @lombok.Setter
 @lombok.Getter
@@ -29,11 +30,17 @@ public class RecordCreditorDTO implements Serializable {
   private BigDecimal value;
 
   @NotNull
-  private String walletUuid;
+  private RecordCreditorDTO._WalletDTO wallet;
 
   private boolean received;
 
   public static RecordCreditorDTOBuilder builder() {
      return new RecordCreditorDTOBuilder();
+  }
+
+  @lombok.Getter
+  @lombok.Setter
+  public static class _WalletDTO {
+    private String uuid;
   }
 }

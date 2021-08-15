@@ -12,8 +12,8 @@ public class RecordDebtorDTOBuilder implements Builder {
   private LocalDate deadline;
   private Boolean paid;
   private BigDecimal value;
-  private String walletUuid;
-  private BigDecimal installments;
+  private RecordDebtorDTO._WalletDTO wallet;
+  private Integer installments;
 
   public RecordDebtorDTOBuilder setUuid(String uuid) {
     this.uuid = uuid;
@@ -45,18 +45,18 @@ public class RecordDebtorDTOBuilder implements Builder {
     return this;
   }
 
-  public RecordDebtorDTOBuilder walletUuid(String walletUuid) {
-    this.walletUuid = walletUuid;
+  public RecordDebtorDTOBuilder wallet(RecordDebtorDTO._WalletDTO wallet) {
+    this.wallet = wallet;
     return this;
   }
 
-  public RecordDebtorDTOBuilder installments(BigDecimal installments) {
+  public RecordDebtorDTOBuilder installments(Integer installments) {
     this.installments = installments;
     return this;
   }
 
   public RecordDebtorDTO build() {
-    return new RecordDebtorDTO(uuid, registrationCode, title, deadline, paid, value, walletUuid,
+    return new RecordDebtorDTO(uuid, registrationCode, title, deadline, paid, value, wallet,
         installments);
   }
 }

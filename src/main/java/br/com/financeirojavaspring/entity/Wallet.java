@@ -33,10 +33,10 @@ public class Wallet implements Serializable {
     private TypeWallet typeWallet;
 
     @OneToMany(mappedBy = "wallet")
-    private List<RecordDebtor> recordDebtor;
+    private List<RecordDebtor> recordsDebtor;
 
     @OneToMany(mappedBy = "wallet")
-    private List<RecordDebtor> recordCreditor;
+    private List<RecordDebtor> recordsCreditor;
 
     private Integer dayWallet;
 

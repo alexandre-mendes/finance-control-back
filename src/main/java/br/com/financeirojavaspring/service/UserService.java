@@ -41,31 +41,30 @@ public class UserService {
         this.modelMapper = modelMapper;
     }
 
-    public UserDTO save(UserDTO userDTO) {
+    public User save(User user) {
         var account = accountRepository.save(
             Account.builder()
                 .uuid(UUID.randomUUID().toString())
                 .build()
         );
 
-        var user = modelMapper.map(userDTO, User.class);
         user.setUuid(UUID.randomUUID().toString());
-        user.setPasswd(new BCryptPasswordEncoder().encode(userDTO.getPasswd()));
+        user.setPasswd(new BCryptPasswordEncoder().encode(user.getPasswd()));
         user.setAccount(account);
         user.setActivationCode(String.valueOf(ThreadLocalRandom.current().nextInt(12345678, 87654321)));
         user = userRepository.save(user);
 
         senderMailService.submit(
             MailSenderDTO.builder()
-                .emailDestiny(userDTO.getUsername())
+                .emailDestiny(user.getUsername())
                 .subject("Confirmação de Conta")
-                .message("Olá, " + userDTO.getName() + " este é o código de confirmação para sua conta " + user.getActivationCode() + ".")
+                .message("Olá, " + user.getName() + " este é o código de confirmação para sua conta " + user.getActivationCode() + ".")
                 .build());
 
-        return modelMapper.map(user, UserDTO.class);
+        return user;
     }
 
-    public UserDTO saveWithInvitation(UserDTO userDTO, String invitationCode) {
+    public User saveWithInvitation(User user, String invitationCode) {
         var invitationOpt = invitationRepository.findOne(
             Example.of(
                 Invitation.builder()
@@ -75,11 +74,9 @@ public class UserService {
         if (invitationOpt.isEmpty()) {
             throw new InvalidInvitationException(invitationCode);
         }
-        var user = modelMapper.map(userDTO, User.class);
         user.setAccount(invitationOpt.get().getUserInvited().getAccount());
         user.setUuid(UUID.randomUUID().toString());
-        user = userRepository.save(user);
-        return modelMapper.map(user, UserDTO.class);
+        return userRepository.save(user);
     }
 
     public UserDTO find(String uuid) {
@@ -102,12 +99,12 @@ public class UserService {
         userRepository.deleteById(user.getId());
     }
 
-    public void activation(UserActivationDTO dto) {
+    public void activation(String email, String activationCode) {
         var user = userRepository.findOne(
             Example.of(
                 User.builder()
-                    .username(dto.getEmail())
-                    .activationCode(dto.getActivationCode())
+                    .username(email)
+                    .activationCode(activationCode)
                     .build())
         ).orElseThrow(EntityNotFoundException::new);
 

@@ -46,35 +46,31 @@ public class WalletService {
     this.recordCreditorRepository = recordCreditorRepository;
   }
 
-  public WalletDTO save(WalletDTO walletDTO) {
+  public Wallet save(Wallet wallet) {
     var account = authenticationService.getUser().getAccount();
-    var wallet = modelMapper.map(walletDTO, Wallet.class);
     wallet.setUuid(UUID.randomUUID().toString());
     wallet.setAccount(account);
-    wallet = walletRepository.save(wallet);
-    return modelMapper.map(wallet, WalletDTO.class);
+    return walletRepository.save(wallet);
   }
 
-  public WalletDTO update(WalletDTO walletDTO) {
+  public Wallet update(Wallet wallet) {
     var walletSaved = walletRepository.findOne(
         Example.of(
             Wallet.builder()
-                .uuid(walletDTO.getUuid())
+                .uuid(wallet.getUuid())
                 .build())
     ).orElseThrow(EntityNotFoundException::new);
-    walletSaved.setTitle(walletDTO.getTitle());
-    walletSaved.setTypeWallet(walletDTO.getTypeWallet());
-    walletSaved = walletRepository.save(walletSaved);
-    return modelMapper.map(walletSaved, WalletDTO.class);
+    walletSaved.setTitle(wallet.getTitle());
+    walletSaved.setTypeWallet(wallet.getTypeWallet());
+    walletSaved.setDayWallet(wallet.getDayWallet());
+    return walletRepository.save(walletSaved);
   }
 
+  //Todo: Melhorar o serviço
   public Page<WalletDTO> findAll(
       final TypeWallet typeWallet,
-      final Integer month,
-      final Integer year,
-      final Pageable pageable) {
-    var firstMonth = LocalDate.now().withMonth(month).withYear(year).withDayOfMonth(1);
-    var lastMonth = LocalDate.now().withMonth(month).withYear(year).withDayOfMonth(firstMonth.lengthOfMonth());
+      final LocalDate firstDate,
+      final LocalDate lastDate) {
     var account = authenticationService.getUser().getAccount();
 
     var wallets = new ArrayList<WalletDTO>();
@@ -88,7 +84,7 @@ public class WalletService {
     }
     if (typeWallet == null || TypeWallet.DEBTOR.equals(typeWallet)) {
       wallets.addAll(
-          walletRepository.findAllTypeDebtorWithTotalValueAndTotalPaidByMonthAndAccount(firstMonth, lastMonth, account.getId())
+          walletRepository.findAllTypeDebtorWithTotalValueAndTotalPaidByMonthAndAccount(firstDate, lastDate, account.getId())
               .stream()
               .map(w -> modelMapper.map(w, WalletDTO.class))
               .collect(Collectors.toList())

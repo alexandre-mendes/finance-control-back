@@ -33,12 +33,18 @@ public class RecordDebtorDTO implements Serializable {
   private BigDecimal value;
 
   @NotNull
-  private String walletUuid;
+  private RecordDebtorDTO._WalletDTO wallet;
 
   @NotNull
-  private BigDecimal installments;
+  private Integer installments;
 
   public static RecordDebtorDTOBuilder builder() {
     return new RecordDebtorDTOBuilder();
+  }
+
+  @lombok.Getter
+  @lombok.Setter
+  public static class _WalletDTO {
+    private String uuid;
   }
 }

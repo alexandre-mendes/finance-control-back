@@ -12,6 +12,8 @@ import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.UUID;
 import java.util.stream.Collectors;
+
+import br.com.financeirojavaspring.specification.RecordCreditorSpecification;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
@@ -38,46 +40,33 @@ public class RecordCreditorService {
     this.modelMapper = modelMapper;
   }
 
-  public RecordCreditorDTO create(RecordCreditorDTO dto) {
+  public RecordCreditor create(RecordCreditor domain) {
 
     var wallet = walletRepository.findOne(
         Example.of(
             Wallet.builder()
-                .uuid(dto.getWalletUuid())
+                .uuid(domain.getWallet().getUuid())
                 .build())
     ).orElseThrow(EntityNotFoundException::new);
 
-    var entity = modelMapper.map(dto, RecordCreditor.class);
-    entity.setUuid(UUID.randomUUID().toString());
-    entity.setWallet(wallet);
-    entity.setTransaction(
+    domain.setUuid(UUID.randomUUID().toString());
+    domain.setWallet(wallet);
+    domain.setTransaction(
             Transaction.builder()
                     .uuid(UUID.randomUUID().toString())
                     .typeTransaction(TypeTransaction.DEPOSIT)
                     .codeTransaction(UUID.randomUUID().toString())
                     .build()
     );
-    entity = repository.save(entity);
-    return modelMapper.map(entity, RecordCreditorDTO.class);
+    return repository.save(domain);
   }
 
-  public Page<RecordCreditorDTO> findAllByMonth(
+  public Page<RecordCreditor> findAll(
       final String uuidWallet,
-      final Integer month,
-      final Integer year,
+      final LocalDate firstDate,
+      final LocalDate lastDate,
       final Pageable pageable) {
-    var firstMonth = LocalDate.now().withMonth(month).withYear(year).withDayOfMonth(1);
-    var lastMonth = LocalDate.now().withMonth(month).withYear(year).withDayOfMonth(firstMonth.lengthOfMonth());
-    var dtos = repository.findAllfindAllByWalletUuidAndDateTransactionBetween(
-        uuidWallet, firstMonth, lastMonth, pageable)
-        .stream()
-        .sorted(Comparator.comparing(RecordCreditor::getId).reversed())
-        .map(entity -> modelMapper.map(entity, RecordCreditorDTO.class))
-        .peek(dto -> {
-          if(!dto.getDateTransaction().isAfter(LocalDate.now())) {
-            dto.setReceived(true);
-          }
-        }).collect(Collectors.toList());
-    return new PageImpl<>(dtos);
+    final var specification = new RecordCreditorSpecification(uuidWallet, firstDate, lastDate);
+    return repository.findAll(specification, pageable);
   }
 }

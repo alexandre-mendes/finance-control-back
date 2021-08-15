@@ -14,6 +14,8 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
+
+import br.com.financeirojavaspring.specification.RecordDebtorSpecification;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
@@ -36,22 +38,22 @@ public class RecordDebtorService {
     this.modelMapper = modelMapper;
   }
 
-  public List<RecordDebtorDTO> create(final RecordDebtorDTO recordDebtorDTO) {
+  public List<RecordDebtor> create(final RecordDebtor domain, final Integer installments) {
     List<RecordDebtor> recordDebtors = new ArrayList<>();
     var wallet = walletRepository.findOne(
         Example.of(
             Wallet.builder()
-                .uuid(recordDebtorDTO.getWalletUuid())
+                .uuid(domain.getWallet().getUuid())
                 .build()))
         .orElseThrow(EntityNotFoundException::new);
     var registrationCode = UUID.randomUUID().toString();
 
-    for (int i = 0; i < recordDebtorDTO.getInstallments().intValue(); i++) {
+    for (int i = 0; i < installments; i++) {
       recordDebtors.add(
           RecordDebtor.builder()
-              .value(recordDebtorDTO.getValue())
-              .title(recordDebtorDTO.getTitle())
-              .dateDeadline(i > 0 ? recordDebtorDTO.getDateDeadline().plusMonths(i) : recordDebtorDTO.getDateDeadline())
+              .value(domain.getValue())
+              .title(domain.getTitle())
+              .dateDeadline(i > 0 ? domain.getDateDeadline().plusMonths(i) : domain.getDateDeadline())
               .registrationCode(registrationCode)
               .wallet(wallet)
               .paid(false)
@@ -59,9 +61,7 @@ public class RecordDebtorService {
               .build()
       );
     }
-    return recordDebtorRepository
-        .saveAll(recordDebtors).stream().map(r -> modelMapper.map(r, RecordDebtorDTO.class))
-        .collect(Collectors.toList());
+    return recordDebtorRepository.saveAll(recordDebtors);
   }
 
   public Page<RecordDebtorDTO> findAllByUuidWallet(final String uuidWallet, final Pageable pageable) {
@@ -81,20 +81,13 @@ public class RecordDebtorService {
     return new PageImpl<>(records);
   }
 
-  public Page<RecordDebtorDTO> findAllByUuidWalletAndDeadlineBetween(
+  public Page<RecordDebtor> findAll(
       final String uuidWallet,
-      final Integer month,
-      final Integer year,
+      final LocalDate firstDate,
+      final LocalDate lastDate,
       final Pageable pageable) {
-    var firstMonth = LocalDate.now().withMonth(month).withYear(year).withDayOfMonth(1);
-    var lastMonth = LocalDate.now().withMonth(month).withYear(year).withDayOfMonth(firstMonth.lengthOfMonth());
-    var records = recordDebtorRepository
-        .findAllfindAllByWalletUuidAndDateDeadlineBetween(uuidWallet, firstMonth, lastMonth, pageable)
-        .stream()
-        .map(r -> modelMapper.map(r, RecordDebtorDTO.class))
-        .sorted(Comparator.comparing(RecordDebtorDTO::getDateDeadline).reversed())
-        .collect(Collectors.toList());
-    return new PageImpl<>(records);
+    final var specification = new RecordDebtorSpecification(uuidWallet, null, firstDate, lastDate);
+    return recordDebtorRepository.findAll(specification, pageable);
   }
 
     public void delete(String registrationCode) {

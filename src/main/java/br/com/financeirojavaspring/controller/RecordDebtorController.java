@@ -2,15 +2,23 @@ package br.com.financeirojavaspring.controller;
 
 
 import br.com.financeirojavaspring.dto.RecordDebtorDTO;
+import br.com.financeirojavaspring.entity.RecordDebtor;
 import br.com.financeirojavaspring.service.RecordDebtorService;
+import br.com.financeirojavaspring.util.PageBuilder;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.Authorization;
+
+import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.validation.Valid;
+
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,38 +29,34 @@ import org.springframework.web.bind.annotation.*;
 public class RecordDebtorController {
 
   private final RecordDebtorService recordService;
+  private final ModelMapper modelMapper;
 
   @Autowired
-  public RecordDebtorController(RecordDebtorService recordDebtorService) {
+  public RecordDebtorController(RecordDebtorService recordDebtorService, ModelMapper modelMapper) {
     this.recordService = recordDebtorService;
+    this.modelMapper = modelMapper;
   }
 
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping
   @ApiOperation(value = "Salva um registro ou varios registros se houver mais de 1 parcela.", authorizations = {@Authorization(value = "Bearer")})
-  public List<RecordDebtorDTO> create(@RequestBody @Valid final RecordDebtorDTO recordDebtorDTO) {
-    return recordService.create(recordDebtorDTO);
+  public List<RecordDebtorDTO> create(@RequestBody @Valid final RecordDebtorDTO dto) {
+    final var domain = modelMapper.map(dto, RecordDebtor.class);
+    return recordService.create(domain, dto.getInstallments()).stream().map(r -> modelMapper.map(r, RecordDebtorDTO.class)).collect(Collectors.toList());
   }
 
-  @ResponseStatus(HttpStatus.OK)
-  @GetMapping(path = "/wallets/{uuidWallet}")
-  @ApiOperation(value = "Obtem os registros de uma carteira a partir de seu UUID.", authorizations = {@Authorization(value = "Bearer")})
-  public Page<RecordDebtorDTO> findAllRecords(@PathVariable final String uuidWallet, final Pageable pageable) {
-    return recordService.findAllByUuidWallet(uuidWallet, pageable);
-  }
-
-  @ResponseStatus(HttpStatus.OK)
-  @GetMapping(path = "/wallets/{uuidWallet}/months/{month}/years/{year}")
-  @ApiOperation(value = "Obtem os registros de uma carteira a partir de seu UUID, mês e ano.", authorizations = {@Authorization(value = "Bearer")})
+  @GetMapping
+  @ApiOperation(value = "Obtem os registros de uma carteira.", authorizations = {@Authorization(value = "Bearer")})
   public Page<RecordDebtorDTO> findAllByMonth(
-      @PathVariable final String uuidWallet,
-      @PathVariable final Integer month,
-      @PathVariable final Integer year,
+      @RequestParam(required = false, name = "uuid-wallet") final String uuidWallet,
+      @RequestParam(required = false, name = "first-date") @DateTimeFormat(pattern = "yyyy-MM-dd") final LocalDate firstDate,
+      @RequestParam(required = false, name = "last-date") @DateTimeFormat(pattern = "yyyy-MM-dd") final LocalDate lastDate,
       final Pageable pageable) {
-    return recordService.findAllByUuidWalletAndDeadlineBetween(uuidWallet, month, year, pageable);
+    final var records = recordService.findAll(uuidWallet, firstDate, lastDate, pageable);
+    return PageBuilder.createPage(records, pageable, r -> modelMapper.map(r, RecordDebtorDTO.class));
   }
 
-  @DeleteMapping(path = "/{registrationCode}")
+  @DeleteMapping(path = "/registration-code/{registrationCode}")
   @ApiOperation(value = "Remove todas as parcelas de um débito.", authorizations = {@Authorization(value = "Bearer")})
   public void delete(@PathVariable(name = "registrationCode") String registrationCode) {
     recordService.delete(registrationCode);

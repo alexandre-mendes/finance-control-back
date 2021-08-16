@@ -8,20 +8,12 @@ import br.com.financeirojavaspring.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.Authorization;
-import javax.validation.Valid;
-
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -31,13 +23,11 @@ public class UserController {
 
     private final UserService userService;
     private final ModelMapper modelMapper;
-    private final SenderMailService mailSender;
 
     @Autowired
     public UserController(UserService userService, ModelMapper modelMapper, SenderMailService mailSender) {
         this.userService = userService;
         this.modelMapper = modelMapper;
-        this.mailSender = mailSender;
     }
 
     @ResponseStatus(HttpStatus.CREATED)

@@ -1,20 +1,12 @@
 package br.com.financeirojavaspring.service;
 
 import br.com.financeirojavaspring.dto.RecordDebtorDTO;
-import br.com.financeirojavaspring.exception.CancellationNotAllowed;
-import br.com.financeirojavaspring.exception.EntityNotFoundException;
 import br.com.financeirojavaspring.entity.RecordDebtor;
 import br.com.financeirojavaspring.entity.Wallet;
+import br.com.financeirojavaspring.exception.CancellationNotAllowed;
+import br.com.financeirojavaspring.exception.EntityNotFoundException;
 import br.com.financeirojavaspring.repository.RecordDebtorRepository;
 import br.com.financeirojavaspring.repository.WalletRepository;
-import java.math.RoundingMode;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.UUID;
-import java.util.stream.Collectors;
-
 import br.com.financeirojavaspring.specification.RecordDebtorSpecification;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Example;
@@ -22,6 +14,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class RecordDebtorService {

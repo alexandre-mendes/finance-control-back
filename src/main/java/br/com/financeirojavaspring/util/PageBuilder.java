@@ -10,7 +10,9 @@ import java.util.stream.Collectors;
 
 public class PageBuilder {
 
-    public static  <T, R> Page<R> createPage(Page page, Pageable pageable, Function<? super T, ? extends R> mapper) {
+    private PageBuilder() {}
+
+    public static  <T, R> Page<R> createPage(Page<T> page, Pageable pageable, Function<? super T, ? extends R> mapper) {
         return new PageImpl<>((List<R>) page.stream().map(mapper).collect(Collectors.toList()), pageable, page.getTotalElements());
     }
 }

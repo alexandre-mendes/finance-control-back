@@ -1,6 +1,5 @@
 package br.com.financeirojavaspring.service;
 
-import br.com.financeirojavaspring.dto.TagDTO;
 import br.com.financeirojavaspring.entity.Tag;
 import br.com.financeirojavaspring.exception.EntityNotFoundException;
 import br.com.financeirojavaspring.repository.TagRepository;

@@ -40,7 +40,7 @@ public class RecordCreditorDTO implements Serializable {
 
   @lombok.Getter
   @lombok.Setter
-  public static class _WalletDTO {
+  public static class _WalletDTO implements Serializable {
     private String uuid;
   }
 }

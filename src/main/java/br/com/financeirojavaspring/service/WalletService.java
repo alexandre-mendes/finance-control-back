@@ -1,45 +1,45 @@
 package br.com.financeirojavaspring.service;
 
-import br.com.financeirojavaspring.dto.WalletDTO;
 import br.com.financeirojavaspring.dto.WalletSummaryDTO;
 import br.com.financeirojavaspring.entity.Wallet;
+import br.com.financeirojavaspring.entity.WalletVW;
 import br.com.financeirojavaspring.enums.TypeWallet;
 import br.com.financeirojavaspring.exception.EntityNotFoundException;
 import br.com.financeirojavaspring.repository.RecordCreditorRepository;
 import br.com.financeirojavaspring.repository.RecordDebtorRepository;
 import br.com.financeirojavaspring.repository.WalletRepository;
+import br.com.financeirojavaspring.repository.WalletVWRepository;
+import br.com.financeirojavaspring.specification.WalletVWSpecification;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.NoSuchElementException;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 public class WalletService {
 
   private final WalletRepository walletRepository;
-  private final ModelMapper modelMapper;
+  private final WalletVWRepository walletVWRepository;
   private final UserAuthenticationService authenticationService;
   private final RecordDebtorRepository recordDebtorRepository;
   private final RecordCreditorRepository recordCreditorRepository;
 
   @Autowired
   public WalletService(WalletRepository walletRepository,
-      ModelMapper modelMapper,
-      UserAuthenticationService authenticationService,
-      RecordDebtorRepository recordDebtorRepository,
-      RecordCreditorRepository recordCreditorRepository) {
+                       WalletVWRepository walletVWRepository, ModelMapper modelMapper,
+                       UserAuthenticationService authenticationService,
+                       RecordDebtorRepository recordDebtorRepository,
+                       RecordCreditorRepository recordCreditorRepository) {
     this.walletRepository = walletRepository;
-    this.modelMapper = modelMapper;
+    this.walletVWRepository = walletVWRepository;
     this.authenticationService = authenticationService;
     this.recordDebtorRepository = recordDebtorRepository;
     this.recordCreditorRepository = recordCreditorRepository;
@@ -65,32 +65,16 @@ public class WalletService {
     return walletRepository.save(walletSaved);
   }
 
-  //Todo: Melhorar o serviço
-  public Page<WalletDTO> findAll(
+  public Page<WalletVW> findAll(
       final TypeWallet typeWallet,
       final LocalDate firstDate,
-      final LocalDate lastDate) {
-    var account = authenticationService.getUser().getAccount();
+      final LocalDate lastDate,
+      final Pageable pageable) {
+    final var account = authenticationService.getUser().getAccount();
 
-    var wallets = new ArrayList<WalletDTO>();
-    if (typeWallet == null || TypeWallet.CREDITOR.equals(typeWallet)) {
-      wallets.addAll(
-          walletRepository.findAllTypeCreditorWithTotalValueByMonthAndAccount(account.getId())
-              .stream()
-              .map(w -> modelMapper.map(w, WalletDTO.class))
-              .collect(Collectors.toList())
-      );
-    }
-    if (typeWallet == null || TypeWallet.DEBTOR.equals(typeWallet)) {
-      wallets.addAll(
-          walletRepository.findAllTypeDebtorWithTotalValueAndTotalPaidByMonthAndAccount(firstDate, lastDate, account.getId())
-              .stream()
-              .map(w -> modelMapper.map(w, WalletDTO.class))
-              .collect(Collectors.toList())
-      );
-    }
+    final var specification = new WalletVWSpecification(account.getId(), firstDate, lastDate, typeWallet);
 
-    return new PageImpl<>(wallets);
+    return walletVWRepository.findAll(specification, pageable);
   }
 
   public WalletSummaryDTO findWalletsSummary(final Integer month, final Integer year) {

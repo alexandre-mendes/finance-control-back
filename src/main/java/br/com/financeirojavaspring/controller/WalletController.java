@@ -5,6 +5,7 @@ import br.com.financeirojavaspring.dto.WalletSummaryDTO;
 import br.com.financeirojavaspring.entity.Wallet;
 import br.com.financeirojavaspring.enums.TypeWallet;
 import br.com.financeirojavaspring.service.WalletService;
+import br.com.financeirojavaspring.util.PageBuilder;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.Authorization;
@@ -67,8 +68,10 @@ public class WalletController {
   public Page<WalletDTO> findAllWallets(
       @RequestParam(required = false, name = "type-wallet") final TypeWallet typeWallet,
       @RequestParam(required = false, name = "first-date") final LocalDate firstDate,
-      @RequestParam(required = false, name = "last-date") final LocalDate lastDate) {
-    return walletService.findAll(typeWallet, firstDate, lastDate);
+      @RequestParam(required = false, name = "last-date") final LocalDate lastDate,
+      final Pageable pageable) {
+    final var wallets = walletService.findAll(typeWallet, firstDate, lastDate, pageable);
+    return PageBuilder.createPage(wallets, pageable, w -> modelMapper.map(w, WalletDTO.class));
   }
 
   @ResponseStatus(HttpStatus.OK)

@@ -1,5 +1,6 @@
 package br.com.financeirojavaspring.builder;
 
+import br.com.financeirojavaspring.entity.RecordCreditor;
 import br.com.financeirojavaspring.enums.TypeWallet;
 import br.com.financeirojavaspring.entity.Account;
 import br.com.financeirojavaspring.entity.RecordDebtor;
@@ -13,10 +14,11 @@ public class WalletBuilder implements Builder {
   private String title;
   private TypeWallet typeWallet;
   private List<RecordDebtor> recordDebtor;
-  private List<RecordDebtor> recordCreditor;
+  private List<RecordCreditor> recordCreditor;
   private Integer dayWallet;
   private Account account;
-  private BigDecimal total;
+  private BigDecimal value;
+  private BigDecimal valuePaid;
 
   public WalletBuilder id(Long id) {
     this.id = id;
@@ -43,7 +45,7 @@ public class WalletBuilder implements Builder {
     return this;
   }
 
-  public WalletBuilder recordCreditor(List<RecordDebtor> recordCreditor) {
+  public WalletBuilder recordCreditor(List<RecordCreditor> recordCreditor) {
     this.recordCreditor = recordCreditor;
     return this;
   }
@@ -58,13 +60,18 @@ public class WalletBuilder implements Builder {
     return this;
   }
 
-  public WalletBuilder total(BigDecimal total) {
-    this.total = total;
+  public WalletBuilder value(BigDecimal value) {
+    this.value = value;
+    return this;
+  }
+
+  public WalletBuilder valuePaid(BigDecimal valuePaid) {
+    this.valuePaid = valuePaid;
     return this;
   }
 
   @Override
   public Wallet build() {
-    return new Wallet(id, uuid, title, typeWallet, recordDebtor, recordCreditor, dayWallet, account, total);
+    return new Wallet(id, uuid, title, typeWallet, recordDebtor, recordCreditor, dayWallet, account, value, valuePaid);
   }
 }

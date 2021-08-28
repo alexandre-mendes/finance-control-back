@@ -36,7 +36,7 @@ public class Wallet implements Serializable {
     private List<RecordDebtor> recordsDebtor;
 
     @OneToMany(mappedBy = "wallet")
-    private List<RecordDebtor> recordsCreditor;
+    private List<RecordCreditor> recordsCreditor;
 
     private Integer dayWallet;
 
@@ -45,7 +45,10 @@ public class Wallet implements Serializable {
     private Account account;
 
     @Transient
-    private BigDecimal total;
+    private BigDecimal value;
+
+    @Transient
+    private BigDecimal valuePaid;
 
     public static WalletBuilder builder() {
         return new WalletBuilder();

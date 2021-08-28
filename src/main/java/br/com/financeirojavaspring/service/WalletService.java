@@ -2,44 +2,38 @@ package br.com.financeirojavaspring.service;
 
 import br.com.financeirojavaspring.dto.WalletSummaryDTO;
 import br.com.financeirojavaspring.entity.Wallet;
-import br.com.financeirojavaspring.entity.WalletVW;
 import br.com.financeirojavaspring.enums.TypeWallet;
 import br.com.financeirojavaspring.exception.EntityNotFoundException;
 import br.com.financeirojavaspring.repository.RecordCreditorRepository;
 import br.com.financeirojavaspring.repository.RecordDebtorRepository;
 import br.com.financeirojavaspring.repository.WalletRepository;
-import br.com.financeirojavaspring.repository.WalletVWRepository;
-import br.com.financeirojavaspring.specification.WalletVWSpecification;
-import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
+import br.com.financeirojavaspring.specification.WalletSpecification;
+import br.com.financeirojavaspring.util.DateConverter;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.NoSuchElementException;
 import java.util.UUID;
 
+import static br.com.financeirojavaspring.util.DateConverter.toDate;
+
 @Service
 public class WalletService {
 
   private final WalletRepository walletRepository;
-  private final WalletVWRepository walletVWRepository;
   private final UserAuthenticationService authenticationService;
   private final RecordDebtorRepository recordDebtorRepository;
   private final RecordCreditorRepository recordCreditorRepository;
 
-  @Autowired
   public WalletService(WalletRepository walletRepository,
-                       WalletVWRepository walletVWRepository, ModelMapper modelMapper,
                        UserAuthenticationService authenticationService,
                        RecordDebtorRepository recordDebtorRepository,
                        RecordCreditorRepository recordCreditorRepository) {
     this.walletRepository = walletRepository;
-    this.walletVWRepository = walletVWRepository;
     this.authenticationService = authenticationService;
     this.recordDebtorRepository = recordDebtorRepository;
     this.recordCreditorRepository = recordCreditorRepository;
@@ -65,16 +59,24 @@ public class WalletService {
     return walletRepository.save(walletSaved);
   }
 
-  public Page<WalletVW> findAll(
+  public Page<Wallet> findAll(
       final TypeWallet typeWallet,
       final LocalDate firstDate,
       final LocalDate lastDate,
       final Pageable pageable) {
     final var account = authenticationService.getUser().getAccount();
 
-    final var specification = new WalletVWSpecification(account.getId(), firstDate, lastDate, typeWallet);
+    var wallets = walletRepository.findAll(
+            Example.of(Wallet.builder()
+                              .typeWallet(typeWallet)
+                              .account(account)
+                              .build()), pageable);
 
-    return walletVWRepository.findAll(specification, pageable);
+    wallets.forEach(w -> {
+
+    });
+
+    return wallets;
   }
 
   public WalletSummaryDTO findWalletsSummary(final Integer month, final Integer year) {

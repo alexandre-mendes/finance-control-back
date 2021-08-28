@@ -2,6 +2,8 @@ package br.com.financeirojavaspring.controller;
 
 import br.com.financeirojavaspring.dto.WalletDTO;
 import br.com.financeirojavaspring.dto.WalletSummaryDTO;
+import br.com.financeirojavaspring.entity.RecordCreditor;
+import br.com.financeirojavaspring.entity.RecordDebtor;
 import br.com.financeirojavaspring.entity.Wallet;
 import br.com.financeirojavaspring.enums.TypeWallet;
 import br.com.financeirojavaspring.service.WalletService;
@@ -9,25 +11,20 @@ import br.com.financeirojavaspring.util.PageBuilder;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.Authorization;
-import javax.validation.Valid;
-
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import java.math.BigDecimal;
 import java.time.LocalDate;
+
+import static br.com.financeirojavaspring.enums.TypeWallet.CREDITOR;
+import static br.com.financeirojavaspring.util.DateConverter.toDate;
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -67,8 +64,8 @@ public class WalletController {
   @ApiOperation(value = "Obtem todas as carteiras vinculadas a conta do usuário", authorizations = {@Authorization(value = "Bearer")})
   public Page<WalletDTO> findAllWallets(
       @RequestParam(required = false, name = "type-wallet") final TypeWallet typeWallet,
-      @RequestParam(required = false, name = "first-date") final LocalDate firstDate,
-      @RequestParam(required = false, name = "last-date") final LocalDate lastDate,
+      @RequestParam(required = false, name = "first-date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)final LocalDate firstDate,
+      @RequestParam(required = false, name = "last-date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) final LocalDate lastDate,
       final Pageable pageable) {
     final var wallets = walletService.findAll(typeWallet, firstDate, lastDate, pageable);
     return PageBuilder.createPage(wallets, pageable, w -> modelMapper.map(w, WalletDTO.class));

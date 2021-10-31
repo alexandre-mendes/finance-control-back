@@ -2,8 +2,6 @@ package br.com.financeirojavaspring.controller;
 
 import br.com.financeirojavaspring.dto.WalletDTO;
 import br.com.financeirojavaspring.dto.WalletSummaryDTO;
-import br.com.financeirojavaspring.entity.RecordCreditor;
-import br.com.financeirojavaspring.entity.RecordDebtor;
 import br.com.financeirojavaspring.entity.Wallet;
 import br.com.financeirojavaspring.enums.TypeWallet;
 import br.com.financeirojavaspring.service.WalletService;
@@ -12,7 +10,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.Authorization;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -20,11 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.math.BigDecimal;
 import java.time.LocalDate;
-
-import static br.com.financeirojavaspring.enums.TypeWallet.CREDITOR;
-import static br.com.financeirojavaspring.util.DateConverter.toDate;
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -35,7 +28,6 @@ public class WalletController {
   private final WalletService walletService;
   private final ModelMapper modelMapper;
 
-  @Autowired
   public WalletController(WalletService walletService, ModelMapper modelMapper) {
     this.walletService = walletService;
     this.modelMapper = modelMapper;
@@ -44,7 +36,7 @@ public class WalletController {
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping
   @ApiOperation(value = "Salva uma carteira", authorizations = {@Authorization(value = "Bearer")})
-  public WalletDTO createWallet(@RequestBody @Valid WalletDTO dto) {
+  public WalletDTO createWallet(@RequestBody @Valid final WalletDTO dto) {
     var domain = modelMapper.map(dto, Wallet.class);
     domain = walletService.save(domain);
     return modelMapper.map(domain, WalletDTO.class);
@@ -69,6 +61,12 @@ public class WalletController {
       final Pageable pageable) {
     final var wallets = walletService.findAll(typeWallet, firstDate, lastDate, pageable);
     return PageBuilder.createPage(wallets, pageable, w -> modelMapper.map(w, WalletDTO.class));
+  }
+
+  @DeleteMapping(value = "/{uuid}")
+  @ApiOperation(value = "Exclui uma carteira.", authorizations = {@Authorization(value = "Bearer")})
+  public void remove(final String uuid) {
+    walletService.remove(uuid);
   }
 
   @ResponseStatus(HttpStatus.OK)

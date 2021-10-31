@@ -7,19 +7,16 @@ import br.com.financeirojavaspring.exception.EntityNotFoundException;
 import br.com.financeirojavaspring.repository.RecordCreditorRepository;
 import br.com.financeirojavaspring.repository.RecordDebtorRepository;
 import br.com.financeirojavaspring.repository.WalletRepository;
-import br.com.financeirojavaspring.specification.WalletSpecification;
-import br.com.financeirojavaspring.util.DateConverter;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.NoSuchElementException;
 import java.util.UUID;
-
-import static br.com.financeirojavaspring.util.DateConverter.toDate;
 
 @Service
 public class WalletService {
@@ -114,4 +111,10 @@ public class WalletService {
         .percentagePaid(porcentagePaid)
         .build();
   }
+
+    public void remove(final String uuid) {
+      final Wallet wallet = walletRepository.findOne(Example.of(Wallet.builder().uuid(uuid).build()))
+              .orElseThrow(EntityNotFoundException::new);
+      walletRepository.deleteById(wallet.getId());
+    }
 }

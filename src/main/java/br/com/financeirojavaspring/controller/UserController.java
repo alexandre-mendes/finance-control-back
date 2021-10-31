@@ -40,14 +40,14 @@ public class UserController {
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping(path = "/uuid/{uuid}")
+    @GetMapping(path = "/{uuid}")
     @ApiOperation(value = "Obtem usuário por UUID", authorizations = {@Authorization(value = "Bearer")})
     public UserDTO findUser(@PathVariable String uuid) {
         return userService.find(uuid);
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @DeleteMapping(path = "/uuid/{uuid}")
+    @DeleteMapping(path = "/{uuid}")
     @ApiOperation(value = "Deleta usuário por UUID", authorizations = {@Authorization(value = "Bearer")})
     public void deleteUser(@PathVariable String uuid) {
         userService.delete(uuid);

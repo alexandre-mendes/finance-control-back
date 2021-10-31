@@ -36,4 +36,10 @@ public class TagService {
     public Page<Tag> findAll(Pageable pageable) {
         return tagRepository.findAll(pageable);
     }
+
+    public void remove(final String uuid) {
+        final Tag tag = tagRepository.findOne(Example.of(Tag.builder().uuid(uuid).build()))
+                .orElseThrow(EntityNotFoundException::new);
+        tagRepository.deleteById(tag.getId());
+    }
 }

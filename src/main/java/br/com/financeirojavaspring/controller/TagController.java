@@ -55,4 +55,10 @@ public class TagController {
         final var dtos = tags.stream().map(tag -> modelMapper.map(tag, TagDTO.class)).collect(Collectors.toList());
         return new PageImpl<>(dtos, pageable, tags.getTotalElements());
     }
+
+    @DeleteMapping(value = "/{uuid}")
+    @ApiOperation(value = "Deleta uma tag.", authorizations = {@Authorization(value = "Bearer")})
+    public void remove(@PathVariable(name = "uuid") final String uuid) {
+        tagService.remove(uuid);
+    }
 }

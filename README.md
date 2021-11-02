@@ -24,4 +24,4 @@ export FINANCE_EMAIL_PASSWORD=value
 
 export FINANCE_JWT_EXPIRATION=value
 
-export FINANCE_JWT_SECRET=value```
+export FINANCE_JWT_SECRET=value

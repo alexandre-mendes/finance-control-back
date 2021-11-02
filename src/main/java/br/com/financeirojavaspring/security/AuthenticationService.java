@@ -1,4 +1,4 @@
-package br.com.financeirojavaspring.service;
+package br.com.financeirojavaspring.security;
 
 import br.com.financeirojavaspring.entity.User;
 import br.com.financeirojavaspring.repository.UserRepository;
@@ -11,25 +11,20 @@ import org.springframework.stereotype.Service;
 
 
 @Service
-public class UserAuthenticationService implements UserDetailsService {
+public class AuthenticationService implements UserDetailsService {
 	
 	private final UserRepository userRepository;
 	private User user;
 
-	@Autowired
-	public UserAuthenticationService(
+	public AuthenticationService(
 			UserRepository userRepository) {
 		this.userRepository = userRepository;
 	}
 
 	@Override
-	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		user = userRepository.findOne(Example.of(
-        User.builder()
-						.username(username)
-						.active(true)
-						.build())
-		).orElseThrow(() -> new UsernameNotFoundException(String.format("User %s not found.", username)));
+	public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {
+		user = userRepository.findByUsername(username)
+				.orElseThrow(() -> new UsernameNotFoundException(String.format("User %s not found.", username)));
 		return user;
 	}
 

@@ -1,5 +1,6 @@
 package br.com.financeirojavaspring.service;
 
+import br.com.financeirojavaspring.security.AuthenticationService;
 import br.com.financeirojavaspring.dto.WalletSummaryDTO;
 import br.com.financeirojavaspring.entity.Wallet;
 import br.com.financeirojavaspring.enums.TypeWallet;
@@ -22,12 +23,12 @@ import java.util.UUID;
 public class WalletService {
 
   private final WalletRepository walletRepository;
-  private final UserAuthenticationService authenticationService;
+  private final AuthenticationService authenticationService;
   private final RecordDebtorRepository recordDebtorRepository;
   private final RecordCreditorRepository recordCreditorRepository;
 
   public WalletService(WalletRepository walletRepository,
-                       UserAuthenticationService authenticationService,
+                       AuthenticationService authenticationService,
                        RecordDebtorRepository recordDebtorRepository,
                        RecordCreditorRepository recordCreditorRepository) {
     this.walletRepository = walletRepository;

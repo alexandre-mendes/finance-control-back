@@ -1,5 +1,6 @@
 package br.com.financeirojavaspring.service;
 
+import br.com.financeirojavaspring.security.AuthenticationService;
 import br.com.financeirojavaspring.entity.RecordCreditor;
 import br.com.financeirojavaspring.entity.Transaction;
 import br.com.financeirojavaspring.entity.Wallet;
@@ -27,7 +28,7 @@ public class RecordCreditorService {
   public RecordCreditorService(
       RecordCreditorRepository repository,
       WalletRepository walletRepository,
-      UserAuthenticationService userAuthenticationService) {
+      AuthenticationService userAuthenticationService) {
     this.repository = repository;
     this.walletRepository = walletRepository;
   }

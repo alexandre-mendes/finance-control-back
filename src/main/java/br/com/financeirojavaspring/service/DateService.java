@@ -1,5 +1,6 @@
 package br.com.financeirojavaspring.service;
 
+import br.com.financeirojavaspring.security.AuthenticationService;
 import br.com.financeirojavaspring.repository.RecordDebtorRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -14,9 +15,9 @@ import java.util.Collections;
 public class DateService {
 
     private final RecordDebtorRepository recordDebtorRepository;
-    private final UserAuthenticationService authenticationService;
+    private final AuthenticationService authenticationService;
 
-    public DateService(RecordDebtorRepository recordDebtorRepository, UserAuthenticationService authenticationService) {
+    public DateService(RecordDebtorRepository recordDebtorRepository, AuthenticationService authenticationService) {
         this.recordDebtorRepository = recordDebtorRepository;
         this.authenticationService = authenticationService;
     }

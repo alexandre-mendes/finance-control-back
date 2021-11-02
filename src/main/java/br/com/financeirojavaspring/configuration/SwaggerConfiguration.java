@@ -1,4 +1,4 @@
-package br.com.financeirojavaspring.config;
+package br.com.financeirojavaspring.configuration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,7 +14,7 @@ import java.util.ArrayList;
 
 @Configuration
 @EnableSwagger2
-public class SwaggerConfig {
+public class SwaggerConfiguration {
 
     @Bean
     public Docket productApi() {

@@ -12,7 +12,8 @@ Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para ma
 
 As informações sensíveis tais como credenciais do banco, credenciais de e-mail da aplicação, chave secreta para geração do token JWT e etc, são configuradas através de variáveis de ambiente, segue abaixo as variáveis necessárias.
 
-```export FINANCE_DB_URL=value
+```
+export FINANCE_DB_URL=value
 
 export FINANCE_DB_USERNAME=value
 
@@ -25,3 +26,10 @@ export FINANCE_EMAIL_PASSWORD=value
 export FINANCE_JWT_EXPIRATION=value
 
 export FINANCE_JWT_SECRET=value
+```
+
+Para utilizar a aplicação com profile de desenvolvimento utilize o VM argument abaixo.
+
+```
+-Dspring.profile.active=dev
+```

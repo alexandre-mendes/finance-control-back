@@ -1,5 +1,6 @@
 package br.com.financeirojavaspring.service;
 
+import br.com.financeirojavaspring.repository.RecordDebtorCriteriaRepository;
 import br.com.financeirojavaspring.security.AuthenticationService;
 import br.com.financeirojavaspring.repository.RecordDebtorRepository;
 import org.springframework.data.domain.Page;
@@ -15,16 +16,18 @@ import java.util.Collections;
 public class DateService {
 
     private final RecordDebtorRepository recordDebtorRepository;
+    private final RecordDebtorCriteriaRepository recordDebtorCriteriaRepository;
     private final AuthenticationService authenticationService;
 
-    public DateService(RecordDebtorRepository recordDebtorRepository, AuthenticationService authenticationService) {
+    public DateService(RecordDebtorRepository recordDebtorRepository, RecordDebtorCriteriaRepository recordDebtorCriteriaRepository, AuthenticationService authenticationService) {
         this.recordDebtorRepository = recordDebtorRepository;
+        this.recordDebtorCriteriaRepository = recordDebtorCriteriaRepository;
         this.authenticationService = authenticationService;
     }
 
 
     public Page<Integer> findAllYears(Pageable pageable) {
-        final var yers = recordDebtorRepository.findAllYears(pageable);
+        final var yers = recordDebtorCriteriaRepository.findAllYears(pageable);
         return yers.isEmpty() ? new PageImpl<>(Collections.singletonList(LocalDate.now().getYear())) : new PageImpl<>(yers);
     }
 
@@ -39,9 +42,8 @@ public class DateService {
     private boolean existsDebitBalanceInCurrenthDate() {
         var firstMonth = LocalDate.now().withDayOfMonth(1);
         var lastMonth = LocalDate.now().withDayOfMonth(firstMonth.lengthOfMonth());
-        var totalPaid = recordDebtorRepository.findTotalPaidByMonth(firstMonth, lastMonth, authenticationService.getUser().getAccount());
-        var totalDebtor = recordDebtorRepository
-                .findTotalByMonth(firstMonth, lastMonth, authenticationService.getUser().getAccount());
+        var totalPaid = recordDebtorCriteriaRepository.findTotalPaid(firstMonth, lastMonth, authenticationService.getUser().getAccount());
+        var totalDebtor = recordDebtorCriteriaRepository.findTotal(firstMonth, lastMonth, authenticationService.getUser().getAccount());
 
         return totalDebtor.orElse(BigDecimal.ZERO).subtract(totalPaid.orElse(BigDecimal.ZERO)).compareTo(BigDecimal.ZERO) > 0;
     }

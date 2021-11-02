@@ -1,13 +1,14 @@
 package br.com.financeirojavaspring.service;
 
-import br.com.financeirojavaspring.security.AuthenticationService;
 import br.com.financeirojavaspring.dto.WalletSummaryDTO;
+import br.com.financeirojavaspring.entity.Account;
 import br.com.financeirojavaspring.entity.Wallet;
 import br.com.financeirojavaspring.enums.TypeWallet;
 import br.com.financeirojavaspring.exception.EntityNotFoundException;
-import br.com.financeirojavaspring.repository.RecordCreditorRepository;
-import br.com.financeirojavaspring.repository.RecordDebtorRepository;
+import br.com.financeirojavaspring.repository.RecordCreditorCriteriaRepository;
+import br.com.financeirojavaspring.repository.RecordDebtorCriteriaRepository;
 import br.com.financeirojavaspring.repository.WalletRepository;
+import br.com.financeirojavaspring.security.AuthenticationService;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -24,17 +25,17 @@ public class WalletService {
 
   private final WalletRepository walletRepository;
   private final AuthenticationService authenticationService;
-  private final RecordDebtorRepository recordDebtorRepository;
-  private final RecordCreditorRepository recordCreditorRepository;
+  private final RecordDebtorCriteriaRepository recordDebtorCriteriaRepository;
+  private final RecordCreditorCriteriaRepository recordCreditorCriteriaRepository;
 
   public WalletService(WalletRepository walletRepository,
                        AuthenticationService authenticationService,
-                       RecordDebtorRepository recordDebtorRepository,
-                       RecordCreditorRepository recordCreditorRepository) {
+                       RecordDebtorCriteriaRepository recordDebtorCriteriaRepository,
+                       RecordCreditorCriteriaRepository recordCreditorCriteriaRepository) {
     this.walletRepository = walletRepository;
     this.authenticationService = authenticationService;
-    this.recordDebtorRepository = recordDebtorRepository;
-    this.recordCreditorRepository = recordCreditorRepository;
+    this.recordDebtorCriteriaRepository = recordDebtorCriteriaRepository;
+    this.recordCreditorCriteriaRepository = recordCreditorCriteriaRepository;
   }
 
   public Wallet save(Wallet wallet) {
@@ -78,14 +79,13 @@ public class WalletService {
   }
 
   public WalletSummaryDTO findWalletsSummary(final Integer month, final Integer year) {
-    var firstMonth = LocalDate.now().withMonth(month).withYear(year).withDayOfMonth(1);
-    var lastMonth = LocalDate.now().withMonth(month).withYear(year).withDayOfMonth(firstMonth.lengthOfMonth());
-    var totalPaid = recordDebtorRepository.findTotalPaidByMonth(firstMonth, lastMonth, authenticationService.getUser().getAccount());
+    final var account = authenticationService.getUser().getAccount();
+    final var firstMonth = LocalDate.now().withMonth(month).withYear(year).withDayOfMonth(1);
+    final var lastMonth = LocalDate.now().withMonth(month).withYear(year).withDayOfMonth(firstMonth.lengthOfMonth());
+    final var totalPaid = recordDebtorCriteriaRepository.findTotalPaid(firstMonth, lastMonth, account);
 
-    var totalDebtor = recordDebtorRepository
-        .findTotalByMonth(firstMonth, lastMonth, authenticationService.getUser().getAccount());
-    var totalCreditor = recordCreditorRepository
-        .findTotalByTypeWalletAndMonth(authenticationService.getUser().getAccount());
+    final var totalDebtor = recordDebtorCriteriaRepository.findTotal(firstMonth, lastMonth, account);
+    final var totalCreditor = recordCreditorCriteriaRepository.findTotal(account);
     BigDecimal percentageCommitted;
     BigDecimal porcentagePaid;
 

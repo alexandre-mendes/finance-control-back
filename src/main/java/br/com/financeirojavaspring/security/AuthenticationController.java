@@ -2,6 +2,7 @@ package br.com.financeirojavaspring.security;
 
 import br.com.financeirojavaspring.exception.InvalidCredentialsException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -9,6 +10,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@CrossOrigin(origins = "*")
 @RequestMapping("/auth")
 public class AuthenticationController {
 
@@ -21,7 +23,7 @@ public class AuthenticationController {
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @PostMapping
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public TokenDTO authenticate(@RequestBody final FormLogin formLogin) {
         final UsernamePasswordAuthenticationToken login = formLogin.converter();
 

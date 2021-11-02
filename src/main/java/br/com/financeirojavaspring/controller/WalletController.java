@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.time.LocalDate;
 
+import static java.util.Objects.isNull;
+
 @RestController
 @CrossOrigin(origins = "*")
 @RequestMapping("/wallets")
@@ -70,9 +72,13 @@ public class WalletController {
   }
 
   @ResponseStatus(HttpStatus.OK)
-  @GetMapping(path = "/summarys/months/{month}/years/{year}")
+  @GetMapping(path = "/summary")
   @ApiOperation(value = "Obtem um resumo das carteiras no mês atual", authorizations = {@Authorization(value = "Bearer")})
-  public WalletSummaryDTO findWalletsSummary(@PathVariable final Integer month, @PathVariable final Integer year) {
-    return walletService.findWalletsSummary(month, year);
+  public WalletSummaryDTO findWalletsSummary(
+          @RequestParam(name = "month", required = false) final Integer month,
+          @RequestParam(name = "year", required = false) final Integer year) {
+    final LocalDate date = LocalDate.now();
+    return walletService.findWalletsSummary(
+            isNull(month) ? date.getMonthValue() : month, isNull(year) ? date.getYear() : year);
   }
 }

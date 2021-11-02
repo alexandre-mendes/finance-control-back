@@ -1,4 +1,4 @@
-package br.com.financeirojavaspring.dto;
+package br.com.financeirojavaspring.exception.intercept;
 
 import java.io.Serializable;
 import java.time.Instant;
@@ -7,7 +7,7 @@ import java.time.Instant;
 @lombok.Setter
 @lombok.AllArgsConstructor
 @lombok.NoArgsConstructor
-public class StandardErrorDTO implements Serializable {
+public class StandardError implements Serializable {
 
     private static final long serialVersionUID = 2030290299038420508L;
 

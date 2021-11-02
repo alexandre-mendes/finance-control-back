@@ -1,4 +1,4 @@
-package br.com.financeirojavaspring.exception;
+package br.com.financeirojavaspring.exception.intercept;
 
 import org.springframework.http.HttpStatus;
 

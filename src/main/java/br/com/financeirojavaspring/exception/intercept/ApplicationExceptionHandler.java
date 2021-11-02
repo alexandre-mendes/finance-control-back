@@ -1,7 +1,5 @@
-package br.com.financeirojavaspring.controller;
+package br.com.financeirojavaspring.exception.intercept;
 
-import br.com.financeirojavaspring.dto.StandardErrorDTO;
-import br.com.financeirojavaspring.exception.ApplicationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -11,13 +9,13 @@ import javax.servlet.http.HttpServletRequest;
 import java.time.Instant;
 
 @ControllerAdvice
-public class AplicationExceptionHandler extends ResponseEntityExceptionHandler {
+public class ApplicationExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<StandardErrorDTO> handleException(Exception e, HttpServletRequest request) {
+    public ResponseEntity<StandardError> handleException(Exception e, HttpServletRequest request) {
 
         if (e instanceof ApplicationException) {
-            StandardErrorDTO standardError = new StandardErrorDTO(Instant.now(),
+            StandardError standardError = new StandardError(Instant.now(),
                     ((ApplicationException) e).getHttpStatus().value(),
                     e.getLocalizedMessage(),
                     e.getMessage(),
@@ -25,7 +23,7 @@ public class AplicationExceptionHandler extends ResponseEntityExceptionHandler {
             return ResponseEntity.status(standardError.getStatus()).body(standardError);
         }
 
-        StandardErrorDTO standardError = new StandardErrorDTO(Instant.now(),
+        StandardError standardError = new StandardError(Instant.now(),
                 500,
                 e.getLocalizedMessage(),
                 "Ocorreu um erro inesperado!",

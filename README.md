@@ -31,5 +31,5 @@ export FINANCE_JWT_SECRET=value
 Para utilizar a aplicação com profile de desenvolvimento utilize o VM argument abaixo.
 
 ```
--Dspring.profile.active=dev
+-Dspring.profiles.active=dev
 ```

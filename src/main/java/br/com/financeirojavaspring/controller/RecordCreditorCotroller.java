@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 
 @RestController
-@CrossOrigin(origins = "*")
 @RequestMapping("/records-creditor")
 @Api(value = "Record Creditor Controller")
 public class RecordCreditorCotroller {

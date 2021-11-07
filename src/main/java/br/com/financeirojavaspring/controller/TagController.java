@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.stream.Collectors;
 
 @RestController
-@CrossOrigin(origins = "*")
 @RequestMapping("/tags")
 @Api(value = "Tag Controller")
 public class TagController {

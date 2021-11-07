@@ -8,12 +8,6 @@ import br.com.financeirojavaspring.util.PageBuilder;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.Authorization;
-
-import java.time.LocalDate;
-import java.util.List;
-import java.util.stream.Collectors;
-import javax.validation.Valid;
-
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -22,8 +16,12 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import java.time.LocalDate;
+import java.util.List;
+import java.util.stream.Collectors;
+
 @RestController
-@CrossOrigin(origins = "*")
 @RequestMapping("/records-debtor")
 @Api(value = "Record Debtor Controller")
 public class RecordDebtorController {

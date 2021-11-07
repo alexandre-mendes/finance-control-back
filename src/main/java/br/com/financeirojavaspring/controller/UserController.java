@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @RestController
-@CrossOrigin(origins = "*")
 @RequestMapping("/users")
 @Api(value = "User Controller")
 public class UserController {

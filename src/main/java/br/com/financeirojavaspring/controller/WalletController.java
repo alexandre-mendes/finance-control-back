@@ -22,7 +22,6 @@ import java.time.LocalDate;
 import static java.util.Objects.isNull;
 
 @RestController
-@CrossOrigin(origins = "*")
 @RequestMapping("/wallets")
 @Api(value = "Wallet Controller")
 public class WalletController {

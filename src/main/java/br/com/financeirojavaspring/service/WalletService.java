@@ -1,14 +1,15 @@
 package br.com.financeirojavaspring.service;
 
 import br.com.financeirojavaspring.dto.WalletSummaryDTO;
-import br.com.financeirojavaspring.entity.Account;
 import br.com.financeirojavaspring.entity.Wallet;
 import br.com.financeirojavaspring.enums.TypeWallet;
 import br.com.financeirojavaspring.exception.EntityNotFoundException;
+import br.com.financeirojavaspring.exception.ExclusionNotAllowedException;
 import br.com.financeirojavaspring.repository.RecordCreditorCriteriaRepository;
 import br.com.financeirojavaspring.repository.RecordDebtorCriteriaRepository;
 import br.com.financeirojavaspring.repository.WalletRepository;
 import br.com.financeirojavaspring.security.AuthenticationService;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -116,6 +117,10 @@ public class WalletService {
     public void remove(final String uuid) {
       final Wallet wallet = walletRepository.findOne(Example.of(Wallet.builder().uuid(uuid).build()))
               .orElseThrow(EntityNotFoundException::new);
-      walletRepository.deleteById(wallet.getId());
+      try {
+        walletRepository.deleteById(wallet.getId());
+      } catch (DataIntegrityViolationException ex) {
+        throw new ExclusionNotAllowedException("Não é possível excluir a carteira pois encontra-se em uso.");
+      }
     }
 }

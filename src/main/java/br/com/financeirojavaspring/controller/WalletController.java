@@ -66,7 +66,7 @@ public class WalletController {
 
   @DeleteMapping(value = "/{uuid}")
   @ApiOperation(value = "Exclui uma carteira.", authorizations = {@Authorization(value = "Bearer")})
-  public void remove(final String uuid) {
+  public void remove(@PathVariable final String uuid) {
     walletService.remove(uuid);
   }
 

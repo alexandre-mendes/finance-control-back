@@ -9,6 +9,7 @@ import br.com.financeirojavaspring.repository.RecordDebtorRepository;
 import br.com.financeirojavaspring.repository.TagRepository;
 import br.com.financeirojavaspring.repository.WalletRepository;
 import br.com.financeirojavaspring.specification.RecordDebtorSpecification;
+import br.com.financeirojavaspring.util.Preconditions;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
@@ -21,6 +22,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
+
+import static java.util.Objects.isNull;
+import static java.util.Objects.nonNull;
 
 @Service
 public class RecordDebtorService {
@@ -42,10 +46,11 @@ public class RecordDebtorService {
 
   public List<RecordDebtor> create(final RecordDebtor domain, final Integer installments) {
     List<RecordDebtor> recordDebtors = new ArrayList<>();
+
     var wallet = walletRepository.findByUuid(domain.getWallet().getUuid())
             .orElseThrow(EntityNotFoundException::new);
 
-    var tag = tagRepository.findByUuid(domain.getTag().getUuid())
+    var tag = isNull(domain.getTag()) ? null : tagRepository.findByUuid(domain.getTag().getUuid())
             .orElseThrow(EntityNotFoundException::new);
 
     var registrationCode = UUID.randomUUID().toString();

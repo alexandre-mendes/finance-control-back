@@ -12,5 +12,5 @@ public class TagDTO implements Serializable {
     private static final long serialVersionUID = 4141267503031460885L;
 
     private String uuid;
-    private String titulo;
+    private String title;
 }

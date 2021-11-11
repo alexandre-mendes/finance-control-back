@@ -6,6 +6,7 @@ import br.com.financeirojavaspring.entity.Wallet;
 import br.com.financeirojavaspring.exception.CancellationNotAllowed;
 import br.com.financeirojavaspring.exception.EntityNotFoundException;
 import br.com.financeirojavaspring.repository.RecordDebtorRepository;
+import br.com.financeirojavaspring.repository.TagRepository;
 import br.com.financeirojavaspring.repository.WalletRepository;
 import br.com.financeirojavaspring.specification.RecordDebtorSpecification;
 import org.modelmapper.ModelMapper;
@@ -26,24 +27,27 @@ public class RecordDebtorService {
 
   private final RecordDebtorRepository recordDebtorRepository;
   private final WalletRepository walletRepository;
+  private final TagRepository tagRepository;
   private final ModelMapper modelMapper;
 
   public RecordDebtorService(RecordDebtorRepository recordDebtorRepository,
-      WalletRepository walletRepository,
-      ModelMapper modelMapper) {
+                             WalletRepository walletRepository,
+                             TagRepository tagRepository,
+                             ModelMapper modelMapper) {
     this.recordDebtorRepository = recordDebtorRepository;
     this.walletRepository = walletRepository;
+    this.tagRepository = tagRepository;
     this.modelMapper = modelMapper;
   }
 
   public List<RecordDebtor> create(final RecordDebtor domain, final Integer installments) {
     List<RecordDebtor> recordDebtors = new ArrayList<>();
-    var wallet = walletRepository.findOne(
-        Example.of(
-            Wallet.builder()
-                .uuid(domain.getWallet().getUuid())
-                .build()))
-        .orElseThrow(EntityNotFoundException::new);
+    var wallet = walletRepository.findByUuid(domain.getWallet().getUuid())
+            .orElseThrow(EntityNotFoundException::new);
+
+    var tag = tagRepository.findByUuid(domain.getTag().getUuid())
+            .orElseThrow(EntityNotFoundException::new);
+
     var registrationCode = UUID.randomUUID().toString();
 
     for (int i = 0; i < installments; i++) {
@@ -54,29 +58,13 @@ public class RecordDebtorService {
               .dateDeadline(i > 0 ? domain.getDateDeadline().plusMonths(i) : domain.getDateDeadline())
               .registrationCode(registrationCode)
               .wallet(wallet)
+              .tag(tag)
               .paid(false)
               .uuid(UUID.randomUUID().toString())
               .build()
       );
     }
     return recordDebtorRepository.saveAll(recordDebtors);
-  }
-
-  public Page<RecordDebtorDTO> findAllByUuidWallet(final String uuidWallet, final Pageable pageable) {
-    var record = RecordDebtor.builder()
-        .wallet(
-            Wallet.builder()
-                .uuid(uuidWallet)
-                .build()
-        ).build();
-
-    var records = recordDebtorRepository.findAll(
-        Example.of(record),
-        pageable
-    ).stream()
-        .map(r -> modelMapper.map(r, RecordDebtorDTO.class))
-        .collect(Collectors.toList());
-    return new PageImpl<>(records);
   }
 
   public Page<RecordDebtor> findAll(

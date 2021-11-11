@@ -18,5 +18,7 @@ import javax.persistence.EntityManager;
 public interface WalletRepository extends JpaRepository<Wallet, Long>, JpaSpecificationExecutor<Wallet> {
 
   @Query(value = "select * from vw_wallet_creditor where uuid = :uuid", nativeQuery = true)
-  Optional<VWWalletCreditorProjection> findByUUID(@Param(value = "uuid") final String uuid);
+  Optional<VWWalletCreditorProjection> findWalletCreditorProjection(@Param(value = "uuid") final String uuid);
+
+  Optional<Wallet> findByUuid(final String uuid);
 }

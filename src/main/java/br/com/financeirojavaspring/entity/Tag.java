@@ -23,7 +23,7 @@ public class Tag implements Serializable {
     @Column(unique = true)
     private String uuid;
 
-    private String titulo;
+    private String title;
 
     @ManyToOne
     @JoinColumn(name = "id_account")

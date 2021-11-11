@@ -2,6 +2,7 @@ package br.com.financeirojavaspring.builder;
 
 import br.com.financeirojavaspring.entity.RecordCreditor;
 import br.com.financeirojavaspring.entity.RecordDebtor;
+import br.com.financeirojavaspring.entity.Tag;
 import br.com.financeirojavaspring.entity.Wallet;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -16,6 +17,7 @@ public class RecordDebtorBuilder implements Builder {
   private BigDecimal value;
   private Boolean paid;
   private RecordCreditor payerRecord;
+  private Tag tag;
   private Wallet wallet;
 
   public RecordDebtorBuilder id(Long id) {
@@ -53,6 +55,11 @@ public class RecordDebtorBuilder implements Builder {
     return this;
   }
 
+  public RecordDebtorBuilder tag(Tag tag) {
+    this.tag = tag;
+    return this;
+  }
+
   public RecordDebtorBuilder payerRecord(RecordCreditor payerRecord) {
     this.payerRecord = payerRecord;
     return this;
@@ -65,6 +72,6 @@ public class RecordDebtorBuilder implements Builder {
 
   @Override
   public RecordDebtor build() {
-    return new RecordDebtor(id, uuid, registrationCode, title, dateDeadline, value, paid, payerRecord, wallet);
+    return new RecordDebtor(id, uuid, registrationCode, title, dateDeadline, value, paid, tag, payerRecord, wallet);
   }
 }

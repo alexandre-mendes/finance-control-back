@@ -35,6 +35,8 @@ public class RecordDebtorDTO implements Serializable {
   @NotNull
   private RecordDebtorDTO._WalletDTO wallet;
 
+  private RecordDebtorDTO._TagDTO tag;
+
   @NotNull
   private Integer installments;
 
@@ -45,6 +47,12 @@ public class RecordDebtorDTO implements Serializable {
   @lombok.Getter
   @lombok.Setter
   public static class _WalletDTO implements Serializable {
+    private String uuid;
+  }
+
+  @lombok.Getter
+  @lombok.Setter
+  public static class _TagDTO implements Serializable {
     private String uuid;
   }
 }

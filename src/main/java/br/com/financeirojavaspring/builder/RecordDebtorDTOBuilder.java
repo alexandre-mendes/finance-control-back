@@ -13,6 +13,7 @@ public class RecordDebtorDTOBuilder implements Builder {
   private Boolean paid;
   private BigDecimal value;
   private RecordDebtorDTO._WalletDTO wallet;
+  private RecordDebtorDTO._TagDTO tag;
   private Integer installments;
 
   public RecordDebtorDTOBuilder setUuid(String uuid) {
@@ -50,6 +51,11 @@ public class RecordDebtorDTOBuilder implements Builder {
     return this;
   }
 
+  public RecordDebtorDTOBuilder tag(RecordDebtorDTO._TagDTO tag) {
+    this.tag = tag;
+    return this;
+  }
+
   public RecordDebtorDTOBuilder installments(Integer installments) {
     this.installments = installments;
     return this;
@@ -57,6 +63,6 @@ public class RecordDebtorDTOBuilder implements Builder {
 
   public RecordDebtorDTO build() {
     return new RecordDebtorDTO(uuid, registrationCode, title, deadline, paid, value, wallet,
-        installments);
+            tag, installments);
   }
 }

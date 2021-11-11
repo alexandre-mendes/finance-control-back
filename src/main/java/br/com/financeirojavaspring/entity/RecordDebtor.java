@@ -44,6 +44,10 @@ public class RecordDebtor implements Serializable {
   private Boolean paid;
 
   @ManyToOne
+  @JoinColumn(name = "id_tag")
+  private Tag tag;
+
+  @ManyToOne
   @JoinColumn(name = "id_record_creditor")
   private RecordCreditor payerRecord;
 

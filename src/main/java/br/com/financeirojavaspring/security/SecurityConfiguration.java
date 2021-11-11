@@ -51,8 +51,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.cors().and()
                 .authorizeRequests()
                 .antMatchers(HttpMethod.POST, "/auth").permitAll()
-                .antMatchers("/user",
-        "/user/activation",
+                .antMatchers("/users",
+        "/users/activation",
         "/v2/api-docs",
         "/configuration/ui",
         "/swagger-resources/**",

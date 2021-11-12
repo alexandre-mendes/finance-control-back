@@ -41,6 +41,8 @@ public class WalletSpecification implements Specification<Wallet> {
             predicates.add(criteriaBuilder.equal(root.get("typeWallet"), typeWallet));
         }
 
+
+
         return andToGether(criteriaBuilder, predicates);
     }
 

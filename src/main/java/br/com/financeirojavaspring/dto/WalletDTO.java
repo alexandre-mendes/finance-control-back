@@ -22,8 +22,6 @@ public class WalletDTO implements Serializable {
   @NotNull
   private TypeWallet typeWallet;
 
-  private TagDTO tag;
-
   private Integer dayWallet;
 
   private BigDecimal value;

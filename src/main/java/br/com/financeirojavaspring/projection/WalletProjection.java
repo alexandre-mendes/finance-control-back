@@ -1,14 +1,19 @@
 package br.com.financeirojavaspring.projection;
 
+import br.com.financeirojavaspring.dto.TagDTO;
 import br.com.financeirojavaspring.enums.TypeWallet;
+
 import java.math.BigDecimal;
 
-public interface WalletProjection {
+@lombok.AllArgsConstructor
+@lombok.Getter
+@lombok.Setter
+public class WalletProjection {
 
-  String getUuid();
-  String getTitle();
-  TypeWallet getTypeWallet();
-  Integer getDayWallet();
-  BigDecimal getValue();
-  BigDecimal getValuePaid();
+    private String uuid;
+    private String title;
+    private TypeWallet typeWallet;
+    private Integer dayWallet;
+    private BigDecimal value;
+    private BigDecimal valuePaid;
 }

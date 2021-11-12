@@ -5,8 +5,10 @@ import br.com.financeirojavaspring.entity.Wallet;
 import br.com.financeirojavaspring.enums.TypeWallet;
 import br.com.financeirojavaspring.exception.EntityNotFoundException;
 import br.com.financeirojavaspring.exception.ExclusionNotAllowedException;
+import br.com.financeirojavaspring.projection.WalletProjection;
 import br.com.financeirojavaspring.repository.RecordCreditorCriteriaRepository;
 import br.com.financeirojavaspring.repository.RecordDebtorCriteriaRepository;
+import br.com.financeirojavaspring.repository.WalletCriteriaRepository;
 import br.com.financeirojavaspring.repository.WalletRepository;
 import br.com.financeirojavaspring.security.AuthenticationService;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -25,15 +27,17 @@ import java.util.UUID;
 public class WalletService {
 
   private final WalletRepository walletRepository;
+  private final WalletCriteriaRepository walletCriteriaRepository;
   private final AuthenticationService authenticationService;
   private final RecordDebtorCriteriaRepository recordDebtorCriteriaRepository;
   private final RecordCreditorCriteriaRepository recordCreditorCriteriaRepository;
 
   public WalletService(WalletRepository walletRepository,
-                       AuthenticationService authenticationService,
+                       WalletCriteriaRepository walletCriteriaRepository, AuthenticationService authenticationService,
                        RecordDebtorCriteriaRepository recordDebtorCriteriaRepository,
                        RecordCreditorCriteriaRepository recordCreditorCriteriaRepository) {
     this.walletRepository = walletRepository;
+    this.walletCriteriaRepository = walletCriteriaRepository;
     this.authenticationService = authenticationService;
     this.recordDebtorCriteriaRepository = recordDebtorCriteriaRepository;
     this.recordCreditorCriteriaRepository = recordCreditorCriteriaRepository;
@@ -59,24 +63,14 @@ public class WalletService {
     return walletRepository.save(walletSaved);
   }
 
-  public Page<Wallet> findAll(
+  public Page<WalletProjection> findAll(
       final TypeWallet typeWallet,
       final LocalDate firstDate,
       final LocalDate lastDate,
       final Pageable pageable) {
     final var account = authenticationService.getUser().getAccount();
 
-    var wallets = walletRepository.findAll(
-            Example.of(Wallet.builder()
-                              .typeWallet(typeWallet)
-                              .account(account)
-                              .build()), pageable);
-
-    wallets.forEach(w -> {
-
-    });
-
-    return wallets;
+    return walletCriteriaRepository.findAll(account, typeWallet, firstDate, lastDate, pageable);
   }
 
   public WalletSummaryDTO findWalletsSummary(final Integer month, final Integer year) {

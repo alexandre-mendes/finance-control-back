@@ -10,12 +10,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
+
 import javax.persistence.EntityManager;
 import javax.persistence.criteria.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static java.util.Objects.nonNull;
 
@@ -40,7 +42,18 @@ public class WalletCriteriaRepository {
         final Join<Wallet, RecordCreditor> joinCreditor = root.join("recordsCreditor", JoinType.LEFT);
         final Join<Wallet, RecordDebtor> joinDebtor = root.join("recordsDebtor", JoinType.LEFT);
 
+        if (nonNull(firstDate) && nonNull(lastDate)) {
+            joinCreditor.on(
+                    criteriaBuilder.and(criteriaBuilder.equal(joinCreditor.get("wallet"), root),
+                            criteriaBuilder.between(joinCreditor.get("dateTransaction"), firstDate, lastDate)));
+
+            joinDebtor.on(criteriaBuilder.and(
+                    criteriaBuilder.and(criteriaBuilder.equal(joinCreditor.get("wallet"), root),
+                            criteriaBuilder.between(joinDebtor.get("dateDeadline"), firstDate, lastDate))));
+        }
+
         query.select(criteriaBuilder.construct(WalletProjection.class,
+                root.get("id"),
                 root.get("uuid"),
                 root.get("title"),
                 root.get("typeWallet"),
@@ -58,17 +71,9 @@ public class WalletCriteriaRepository {
 
         if (nonNull(typeWallet)) predicates.add(criteriaBuilder.equal(root.get("typeWallet"), typeWallet));
 
-        if (nonNull(firstDate) && nonNull(lastDate)) {
-            predicates.add(criteriaBuilder.or(
-                    criteriaBuilder.between(joinCreditor.get("dateTransaction"), firstDate, lastDate),
-                    criteriaBuilder.between(joinDebtor.get("dateDeadline"), firstDate, lastDate)
-            ));
-        }
-
         query.where(criteriaBuilder.and(predicates.toArray(new Predicate[0])));
 
         query.groupBy(root.get("id"));
-
 
         final List<WalletProjection> wallets = entityManager.createQuery(query)
                 .setMaxResults(pageable.getPageSize())
@@ -77,5 +82,32 @@ public class WalletCriteriaRepository {
 
         //TODO usar um count para adicionar o total
         return new PageImpl<>(wallets, pageable, 0);
+    }
+
+    public Optional<WalletProjection> findWalletCreditor(final String uuid) {
+        final CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        final CriteriaQuery<WalletProjection> query = criteriaBuilder.createQuery(WalletProjection.class);
+        final Root<Wallet> root = query.from(Wallet.class);
+        final Join<Wallet, RecordCreditor> joinCreditor = root.join("recordsCreditor", JoinType.LEFT);
+
+        query.select(criteriaBuilder.construct(WalletProjection.class,
+                root.get("id"),
+                root.get("uuid"),
+                root.get("title"),
+                root.get("typeWallet"),
+                root.get("dayWallet"),
+                criteriaBuilder.sum(
+                        criteriaBuilder.coalesce(joinCreditor.get("value"),
+                        criteriaBuilder.literal(BigDecimal.ZERO))
+                ),
+                criteriaBuilder.literal(BigDecimal.ZERO)));
+
+        query.where(criteriaBuilder.equal(root.get("uuid"), uuid));
+
+        query.groupBy(root.get("id"));
+
+        final WalletProjection wallet = entityManager.createQuery(query).getSingleResult();
+
+        return Optional.ofNullable(wallet);
     }
 }

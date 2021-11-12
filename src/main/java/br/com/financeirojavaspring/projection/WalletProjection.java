@@ -1,6 +1,5 @@
 package br.com.financeirojavaspring.projection;
 
-import br.com.financeirojavaspring.dto.TagDTO;
 import br.com.financeirojavaspring.enums.TypeWallet;
 
 import java.math.BigDecimal;
@@ -10,6 +9,7 @@ import java.math.BigDecimal;
 @lombok.Setter
 public class WalletProjection {
 
+    private Long id;
     private String uuid;
     private String title;
     private TypeWallet typeWallet;

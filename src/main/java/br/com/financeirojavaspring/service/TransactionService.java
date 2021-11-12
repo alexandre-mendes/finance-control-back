@@ -12,7 +12,7 @@ import br.com.financeirojavaspring.exception.InsufficientFundsException;
 import br.com.financeirojavaspring.exception.NonExistentDebtorException;
 import br.com.financeirojavaspring.repository.RecordCreditorRepository;
 import br.com.financeirojavaspring.repository.RecordDebtorRepository;
-import br.com.financeirojavaspring.repository.WalletRepository;
+import br.com.financeirojavaspring.repository.WalletCriteriaRepository;
 import br.com.financeirojavaspring.service.strategy.Canceller;
 import br.com.financeirojavaspring.specification.RecordDebtorSpecification;
 import br.com.financeirojavaspring.util.Preconditions;
@@ -32,17 +32,18 @@ public class TransactionService {
 
   private final RecordDebtorRepository recordDebtorRepository;
   private final RecordCreditorRepository recordCreditorRepository;
-  private final WalletRepository walletRepository;
+  private final WalletCriteriaRepository walletCriteriaRepository;
   private final Map<String, Canceller> cancellersCreditor;
 
   @Autowired
   public TransactionService(
           RecordDebtorRepository recordDebtorRepository,
           RecordCreditorRepository recordCreditorRepository,
-          WalletRepository walletRepository, Map<String, Canceller> cancellersCreditor) {
+          WalletCriteriaRepository walletCriteriaRepository,
+          Map<String, Canceller> cancellersCreditor) {
     this.recordDebtorRepository = recordDebtorRepository;
     this.recordCreditorRepository = recordCreditorRepository;
-    this.walletRepository = walletRepository;
+    this.walletCriteriaRepository = walletCriteriaRepository;
     this.cancellersCreditor = cancellersCreditor;
   }
 
@@ -54,7 +55,7 @@ public class TransactionService {
                 .build())
     ).orElseThrow(EntityNotFoundException::new);
 
-    final var walletCreditor = walletRepository.findWalletCreditorProjection(dto.getUuidWalletCreditor())
+    final var walletCreditor = walletCriteriaRepository.findWalletCreditor(dto.getUuidWalletCreditor())
         .orElseThrow(EntityNotFoundException::new);
 
     Preconditions.checkTrue(walletCreditor.getValue().equals(recordDebtor.getValue())
@@ -73,7 +74,7 @@ public class TransactionService {
                         .codeTransaction(UUID.randomUUID().toString())
                         .build()
         ).debtorsPayd(Collections.singletonList(recordDebtor))
-        .wallet(Wallet.builder().id(walletCreditor.getIdWallet()).build())
+        .wallet(Wallet.builder().id(walletCreditor.getId()).build())
         .build();
 
     final var recordSaved = recordCreditorRepository.save(newRecordCreditor);
@@ -83,9 +84,9 @@ public class TransactionService {
   }
 
   public void transfer(TransferDTO dto) {
-    final var walletOrigin = walletRepository.findWalletCreditorProjection(dto.getUuidOrigin()).orElseThrow(EntityNotFoundException::new);
+    final var walletOrigin = walletCriteriaRepository.findWalletCreditor(dto.getUuidOrigin()).orElseThrow(EntityNotFoundException::new);
 
-    final var walletDestiny = walletRepository.findWalletCreditorProjection(dto.getUuidDestiny()).orElseThrow(EntityNotFoundException::new);
+    final var walletDestiny = walletCriteriaRepository.findWalletCreditor(dto.getUuidDestiny()).orElseThrow(EntityNotFoundException::new);
 
     Preconditions.checkTrue(walletOrigin.getValue().compareTo(dto.getValueTransfer()) == 0
           || walletOrigin.getValue().compareTo(dto.getValueTransfer()) > 0)
@@ -107,7 +108,7 @@ public class TransactionService {
                                 .codeTransaction(codeTransaction)
                                 .build()
                 )
-                .wallet(Wallet.builder().id(walletOrigin.getIdWallet()).build())
+                .wallet(Wallet.builder().id(walletOrigin.getId()).build())
                 .build(),
             RecordCreditor.builder()
                 .uuid(UUID.randomUUID().toString())
@@ -121,7 +122,7 @@ public class TransactionService {
                                 .codeTransaction(codeTransaction)
                                 .build()
                 )
-                .wallet(Wallet.builder().id(walletDestiny.getIdWallet()).build())
+                .wallet(Wallet.builder().id(walletDestiny.getId()).build())
                 .build()));
   }
 
@@ -140,7 +141,7 @@ public class TransactionService {
     final var firstDate = LocalDate.now().withMonth(month).withYear(year).withDayOfMonth(1);
     final var lastDate = LocalDate.now().withMonth(month).withYear(year).withDayOfMonth(firstDate.lengthOfMonth());
 
-    final var walletCreditor = walletRepository.findWalletCreditorProjection(uuidWalletCreditor)
+    final var walletCreditor = walletCriteriaRepository.findWalletCreditor(uuidWalletCreditor)
             .orElseThrow(EntityNotFoundException::new);
 
     final var recordsDebtor = recordDebtorRepository.findAll(new RecordDebtorSpecification(uuidWalletDebtor, false, firstDate, lastDate));
@@ -166,7 +167,7 @@ public class TransactionService {
                             .codeTransaction(UUID.randomUUID().toString())
                             .build()
             ).debtorsPayd(recordsDebtor)
-            .wallet(Wallet.builder().id(walletCreditor.getIdWallet()).build())
+            .wallet(Wallet.builder().id(walletCreditor.getId()).build())
             .build();
 
     final var recordSaved = recordCreditorRepository.save(newRecordCreditor);

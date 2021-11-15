@@ -44,12 +44,14 @@ public class WalletCriteriaRepository {
 
         if (nonNull(firstDate) && nonNull(lastDate)) {
             joinCreditor.on(
-                    criteriaBuilder.and(criteriaBuilder.equal(joinCreditor.get("wallet"), root),
+                    criteriaBuilder.and(
+                            criteriaBuilder.equal(joinCreditor.get("wallet"), root.get("id")),
                             criteriaBuilder.between(joinCreditor.get("dateTransaction"), firstDate, lastDate)));
 
-            joinDebtor.on(criteriaBuilder.and(
-                    criteriaBuilder.and(criteriaBuilder.equal(joinCreditor.get("wallet"), root),
-                            criteriaBuilder.between(joinDebtor.get("dateDeadline"), firstDate, lastDate))));
+            joinDebtor.on(
+                    criteriaBuilder.and(
+                            criteriaBuilder.equal(joinDebtor.get("wallet"), root.get("id")),
+                            criteriaBuilder.between(joinDebtor.get("dateDeadline"), firstDate, lastDate)));
         }
 
         query.select(criteriaBuilder.construct(WalletProjection.class,

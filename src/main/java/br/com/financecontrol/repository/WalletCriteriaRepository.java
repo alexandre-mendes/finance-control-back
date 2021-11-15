@@ -43,11 +43,6 @@ public class WalletCriteriaRepository {
         final Join<Wallet, RecordDebtor> joinDebtor = root.join("recordsDebtor", JoinType.LEFT);
 
         if (nonNull(firstDate) && nonNull(lastDate)) {
-            joinCreditor.on(
-                    criteriaBuilder.and(
-                            criteriaBuilder.equal(joinCreditor.get("wallet"), root.get("id")),
-                            criteriaBuilder.between(joinCreditor.get("dateTransaction"), firstDate, lastDate)));
-
             joinDebtor.on(
                     criteriaBuilder.and(
                             criteriaBuilder.equal(joinDebtor.get("wallet"), root.get("id")),

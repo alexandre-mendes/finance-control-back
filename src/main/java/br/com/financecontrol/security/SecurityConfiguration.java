@@ -1,6 +1,7 @@
 package br.com.financecontrol.security;
 
 import br.com.financecontrol.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -23,6 +24,8 @@ import java.util.Arrays;
 @Configuration
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
+    @Value(value = "${finance.cors.origin}")
+    private String ORIGIN;
     private final AuthenticationService authenticationService;
     private final TokenService tokenService;
     private final UserRepository userRepository;
@@ -78,7 +81,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         corsConfiguration.addAllowedHeader("*");
         corsConfiguration.addAllowedMethod("*");
         corsConfiguration.setMaxAge(3600L);
-        corsConfiguration.setAllowedOrigins(Arrays.asList("https://app-financeiro-spring.herokuapp.com", "http://localhost:4200"));
+        corsConfiguration.addAllowedOrigin(ORIGIN);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", corsConfiguration);

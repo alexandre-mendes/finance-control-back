@@ -81,7 +81,7 @@ public class WalletCriteriaRepository {
         return new PageImpl<>(wallets, pageable, 0);
     }
 
-    public Optional<WalletProjection> findWalletCreditor(final String uuid) {
+    public Optional<WalletProjection> findWalletCreditorWithTotal(final String uuid) {
         final CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         final CriteriaQuery<WalletProjection> query = criteriaBuilder.createQuery(WalletProjection.class);
         final Root<Wallet> root = query.from(Wallet.class);

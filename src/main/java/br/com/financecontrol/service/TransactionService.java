@@ -55,7 +55,7 @@ public class TransactionService {
                 .build())
     ).orElseThrow(EntityNotFoundException::new);
 
-    final var walletCreditor = walletCriteriaRepository.findWalletCreditor(dto.getUuidWalletCreditor())
+    final var walletCreditor = walletCriteriaRepository.findWalletCreditorWithTotal(dto.getUuidWalletCreditor())
         .orElseThrow(EntityNotFoundException::new);
 
     Preconditions.checkTrue(walletCreditor.getValue().equals(recordDebtor.getValue())
@@ -84,9 +84,9 @@ public class TransactionService {
   }
 
   public void transfer(TransferDTO dto) {
-    final var walletOrigin = walletCriteriaRepository.findWalletCreditor(dto.getUuidOrigin()).orElseThrow(EntityNotFoundException::new);
+    final var walletOrigin = walletCriteriaRepository.findWalletCreditorWithTotal(dto.getUuidOrigin()).orElseThrow(EntityNotFoundException::new);
 
-    final var walletDestiny = walletCriteriaRepository.findWalletCreditor(dto.getUuidDestiny()).orElseThrow(EntityNotFoundException::new);
+    final var walletDestiny = walletCriteriaRepository.findWalletCreditorWithTotal(dto.getUuidDestiny()).orElseThrow(EntityNotFoundException::new);
 
     Preconditions.checkTrue(walletOrigin.getValue().compareTo(dto.getValueTransfer()) == 0
           || walletOrigin.getValue().compareTo(dto.getValueTransfer()) > 0)
@@ -141,7 +141,7 @@ public class TransactionService {
     final var firstDate = LocalDate.now().withMonth(month).withYear(year).withDayOfMonth(1);
     final var lastDate = LocalDate.now().withMonth(month).withYear(year).withDayOfMonth(firstDate.lengthOfMonth());
 
-    final var walletCreditor = walletCriteriaRepository.findWalletCreditor(uuidWalletCreditor)
+    final var walletCreditor = walletCriteriaRepository.findWalletCreditorWithTotal(uuidWalletCreditor)
             .orElseThrow(EntityNotFoundException::new);
 
     final var recordsDebtor = recordDebtorRepository.findAll(new RecordDebtorSpecification(uuidWalletDebtor, false, firstDate, lastDate));

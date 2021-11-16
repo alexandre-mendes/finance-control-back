@@ -12,8 +12,8 @@ public class PaymentDTO implements Serializable {
 
   private static final long serialVersionUID = 5035205799947430904L;
 
-  private String uuidRecordDebtor;
-  private String uuidWalletCreditor;
+  private String idRecordDebtor;
+  private String idWalletCreditor;
 
   public static PaymentDTOBuilder builder() {
     return new PaymentDTOBuilder();

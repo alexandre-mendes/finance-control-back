@@ -10,8 +10,7 @@ import java.util.List;
 
 public class RecordCreditorBuilder implements Builder {
 
-  private Long id;
-  private String uuid;
+  private String id;
   private String title;
   private LocalDate dateTransaction;
   private BigDecimal value;
@@ -19,13 +18,8 @@ public class RecordCreditorBuilder implements Builder {
   private List<RecordDebtor> debtorsPayd;
   private Wallet wallet;
 
-  public RecordCreditorBuilder id(Long id) {
+  public RecordCreditorBuilder id(String id) {
     this.id = id;
-    return this;
-  }
-
-  public RecordCreditorBuilder uuid(String uuid) {
-    this.uuid = uuid;
     return this;
   }
 
@@ -61,6 +55,6 @@ public class RecordCreditorBuilder implements Builder {
 
   @Override
   public RecordCreditor build() {
-    return new RecordCreditor(id, uuid, title, dateTransaction, value, transaction, debtorsPayd, wallet);
+    return new RecordCreditor(id, title, dateTransaction, value, transaction, debtorsPayd, wallet);
   }
 }

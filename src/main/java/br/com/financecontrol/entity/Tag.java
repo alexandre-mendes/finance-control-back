@@ -1,6 +1,7 @@
 package br.com.financecontrol.entity;
 
 import br.com.financecontrol.builder.TagBuilder;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -17,11 +18,9 @@ public class Tag implements Serializable {
     private static final long serialVersionUID = -7351211972245308981L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "tag_seq")
-    private Long id;
-
-    @Column(unique = true)
-    private String uuid;
+    @GeneratedValue(generator = "uuid")
+    @GenericGenerator(name = "uuid", strategy = "uuid2")
+    private String id;
 
     private String title;
 

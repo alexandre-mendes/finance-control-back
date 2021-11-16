@@ -9,8 +9,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.UUID;
-
 @Service
 public class TagService {
 
@@ -22,14 +20,10 @@ public class TagService {
     }
 
     public Tag save(final Tag tag) {
-        tag.setUuid(UUID.randomUUID().toString());
         return tagRepository.save(tag);
     }
 
     public Tag update(final Tag tag) {
-        final var tagSaved = tagRepository.findOne(Example.of(Tag.builder().uuid(tag.getUuid()).build()))
-                .orElseThrow(EntityNotFoundException::new);
-        tag.setId(tagSaved.getId());
         return tagRepository.save(tag);
     }
 
@@ -37,9 +31,7 @@ public class TagService {
         return tagRepository.findAll(pageable);
     }
 
-    public void remove(final String uuid) {
-        final Tag tag = tagRepository.findOne(Example.of(Tag.builder().uuid(uuid).build()))
-                .orElseThrow(EntityNotFoundException::new);
-        tagRepository.deleteById(tag.getId());
+    public void remove(final String id) {
+        tagRepository.deleteById(id);
     }
 }

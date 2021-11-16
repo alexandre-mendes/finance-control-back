@@ -6,4 +6,4 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface RecordDebtorRepository extends JpaRepository<RecordDebtor, Long>, JpaSpecificationExecutor<RecordDebtor> {}
+public interface RecordDebtorRepository extends JpaRepository<RecordDebtor, String>, JpaSpecificationExecutor<RecordDebtor> {}

@@ -1,6 +1,7 @@
 package br.com.financecontrol.entity;
 
 import br.com.financecontrol.builder.RecordCreditorBuilder;
+import org.hibernate.annotations.GenericGenerator;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -20,12 +21,9 @@ public class RecordCreditor implements Serializable {
   private static final long serialVersionUID = -5587978344103430294L;
 
   @Id
-  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "record_creditor_seq")
-  @Column(name = "id_record_creditor")
-  private Long id;
-
-  @Column(unique = true)
-  private String uuid;
+  @GeneratedValue(generator = "uuid")
+  @GenericGenerator(name = "uuid", strategy = "uuid2")
+  private String id;
 
   private String title;
 

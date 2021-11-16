@@ -25,15 +25,10 @@ public class InvitationService {
     }
 
     public Invitation createInvitation(String idUser) {
-        var user = userRepository.findOne(
-            Example.of(
-                User.builder()
-                    .uuid(idUser)
-                    .build())
-        ).orElseThrow(EntityNotFoundException::new);
+        var user = userRepository.findById(idUser)
+                .orElseThrow(EntityNotFoundException::new);
         return invitationRepository.save(
             Invitation.builder()
-                .uuid(UUID.randomUUID().toString())
                 .userInvited(user)
                 .build());
     }

@@ -1,6 +1,8 @@
 package br.com.financecontrol.entity;
 
 import br.com.financecontrol.builder.AccountBuilder;
+import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -16,11 +18,9 @@ public class Account implements Serializable {
     private static final long serialVersionUID = 2017880951855917024L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "account_seq")
-    @Column(name = "id_account")
-    private Long id;
-    @Column(unique = true)
-    private String uuid;
+    @GeneratedValue(generator = "uuid")
+    @GenericGenerator(name = "uuid", strategy = "uuid2")
+    private String id;
 
     public static AccountBuilder builder() {
         return new AccountBuilder();

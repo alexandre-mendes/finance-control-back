@@ -41,10 +41,10 @@ public class RecordDebtorService {
   public List<RecordDebtor> create(final RecordDebtor domain, final Integer installments) {
     List<RecordDebtor> recordDebtors = new ArrayList<>();
 
-    var wallet = walletRepository.findByUuid(domain.getWallet().getUuid())
+    var wallet = walletRepository.findById(domain.getWallet().getId())
             .orElseThrow(EntityNotFoundException::new);
 
-    var tag = isNull(domain.getTag()) ? null : tagRepository.findByUuid(domain.getTag().getUuid())
+    var tag = isNull(domain.getTag()) ? null : tagRepository.findById(domain.getTag().getId())
             .orElseThrow(EntityNotFoundException::new);
 
     var registrationCode = UUID.randomUUID().toString();
@@ -59,7 +59,6 @@ public class RecordDebtorService {
               .wallet(wallet)
               .tag(tag)
               .paid(false)
-              .uuid(UUID.randomUUID().toString())
               .build()
       );
     }

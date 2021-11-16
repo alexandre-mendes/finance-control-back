@@ -5,9 +5,8 @@ import br.com.financecontrol.entity.User;
 
 public class UserBuilder implements Builder {
 
+  private String id;
   private String username;
-  private Long id;
-  private String uuid;
   private String passwd;
   private String name;
   private String activationCode;
@@ -19,13 +18,8 @@ public class UserBuilder implements Builder {
     return this;
   }
 
-  public UserBuilder id(Long id) {
+  public UserBuilder id(String id) {
     this.id = id;
-    return this;
-  }
-
-  public UserBuilder uuid(String uuid) {
-    this.uuid = uuid;
     return this;
   }
 
@@ -56,6 +50,6 @@ public class UserBuilder implements Builder {
 
   @Override
   public User build() {
-    return new User(id, uuid, username, passwd, name, activationCode, active, account);
+    return new User(id, username, passwd, name, activationCode, active, account);
   }
 }

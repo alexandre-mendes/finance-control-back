@@ -26,7 +26,7 @@ public class TokenService {
         final Date expirationDate = new Date(today.getTime() + Long.parseLong(expiration));
         return Jwts.builder()
                 .setIssuer("FINANCE_CONTROL")
-                .setSubject(user.getUuid())
+                .setSubject(user.getId())
                 .setIssuedAt(today)
                 .setExpiration(expirationDate)
                 .signWith(SignatureAlgorithm.HS256, secret)

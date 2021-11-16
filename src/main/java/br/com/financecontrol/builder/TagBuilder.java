@@ -4,18 +4,12 @@ import br.com.financecontrol.entity.Account;
 import br.com.financecontrol.entity.Tag;
 
 public class TagBuilder implements Builder {
-    private Long id;
-    private String uuid;
+    private String id;
     private String titulo;
     private Account account;
 
-    public TagBuilder id(Long id) {
+    public TagBuilder id(String id) {
         this.id = id;
-        return this;
-    }
-
-    public TagBuilder uuid(String uuid) {
-        this.uuid = uuid;
         return this;
     }
 
@@ -31,6 +25,6 @@ public class TagBuilder implements Builder {
 
     @Override
     public Tag build() {
-        return new Tag(id, uuid, titulo, account);
+        return new Tag(id, titulo, account);
     }
 }

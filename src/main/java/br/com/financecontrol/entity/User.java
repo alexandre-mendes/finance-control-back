@@ -1,6 +1,7 @@
 package br.com.financecontrol.entity;
 
 import br.com.financecontrol.builder.UserBuilder;
+import org.hibernate.annotations.GenericGenerator;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -21,11 +22,9 @@ public class User implements UserDetails, Serializable {
     private static final long serialVersionUID = -4878255163214716317L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_seq")
-    @Column(name = "id_user")
-    private Long id;
-    @Column(unique = true)
-    private String uuid;
+    @GeneratedValue(generator = "uuid")
+    @GenericGenerator(name = "uuid", strategy = "uuid2")
+    private String id;
     private String username;
     private String passwd;
     @Column(unique = true)

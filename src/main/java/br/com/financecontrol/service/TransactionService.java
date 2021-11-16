@@ -51,11 +51,11 @@ public class TransactionService {
     final var recordDebtor = recordDebtorRepository.findOne(
         Example.of(
             RecordDebtor.builder()
-                .uuid(dto.getUuidRecordDebtor())
+                .id(dto.getIdRecordDebtor())
                 .build())
     ).orElseThrow(EntityNotFoundException::new);
 
-    final var walletCreditor = walletCriteriaRepository.findWalletCreditorWithTotal(dto.getUuidWalletCreditor())
+    final var walletCreditor = walletCriteriaRepository.findWalletCreditorWithTotal(dto.getIdWalletCreditor())
         .orElseThrow(EntityNotFoundException::new);
 
     Preconditions.checkTrue(walletCreditor.getValue().equals(recordDebtor.getValue())
@@ -64,12 +64,10 @@ public class TransactionService {
 
 
     final var newRecordCreditor = RecordCreditor.builder()
-        .uuid(UUID.randomUUID().toString())
         .title("Pagamento para a carteira " + recordDebtor.getWallet().getTitle() + "/" + recordDebtor.getTitle())
         .dateTransaction(LocalDate.now()).value(recordDebtor.getValue().negate())
         .transaction(
                 Transaction.builder()
-                        .uuid(UUID.randomUUID().toString())
                         .typeTransaction(TypeTransaction.PAYMENT)
                         .codeTransaction(UUID.randomUUID().toString())
                         .build()
@@ -97,13 +95,11 @@ public class TransactionService {
     recordCreditorRepository.saveAll(
         Arrays.asList(
             RecordCreditor.builder()
-                .uuid(UUID.randomUUID().toString())
                 .dateTransaction(LocalDate.now())
                 .value(dto.getValueTransfer().negate())
                 .title("Transferência para a carteira " + walletDestiny.getTitle())
                 .transaction(
                         Transaction.builder()
-                                .uuid(UUID.randomUUID().toString())
                                 .typeTransaction(TypeTransaction.TRANSFER)
                                 .codeTransaction(codeTransaction)
                                 .build()
@@ -111,13 +107,11 @@ public class TransactionService {
                 .wallet(Wallet.builder().id(walletOrigin.getId()).build())
                 .build(),
             RecordCreditor.builder()
-                .uuid(UUID.randomUUID().toString())
                 .dateTransaction(LocalDate.now())
                 .value(dto.getValueTransfer())
                 .title("Transferência recebida da carteira " + walletOrigin.getTitle())
                 .transaction(
                         Transaction.builder()
-                                .uuid(UUID.randomUUID().toString())
                                 .typeTransaction(TypeTransaction.TRANSFER)
                                 .codeTransaction(codeTransaction)
                                 .build()
@@ -130,7 +124,7 @@ public class TransactionService {
     final var record = recordCreditorRepository.findOne(
             Example.of(
                     RecordCreditor.builder()
-                            .uuid(uuidCreditor)
+                            .id(uuidCreditor)
                             .build())
     ).orElseThrow(EntityNotFoundException::new);
 
@@ -156,13 +150,11 @@ public class TransactionService {
             .orElseThrow(InsufficientFundsException::new);
 
     final var newRecordCreditor = RecordCreditor.builder()
-            .uuid(UUID.randomUUID().toString())
             .title("Pagamento total da carteira " + recordsDebtor.get(0).getWallet().getTitle())
             .dateTransaction(LocalDate.now())
             .value(totalDebtor.negate())
             .transaction(
                     Transaction.builder()
-                            .uuid(UUID.randomUUID().toString())
                             .typeTransaction(TypeTransaction.PAYMENT)
                             .codeTransaction(UUID.randomUUID().toString())
                             .build()

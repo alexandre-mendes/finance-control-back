@@ -2,21 +2,21 @@ package br.com.financecontrol.service;
 
 import br.com.financecontrol.dto.MailSenderDTO;
 import br.com.financecontrol.dto.UserDTO;
-import br.com.financecontrol.exception.EntityNotFoundException;
-import br.com.financecontrol.exception.InvalidInvitationException;
 import br.com.financecontrol.entity.Account;
 import br.com.financecontrol.entity.Invitation;
 import br.com.financecontrol.entity.User;
+import br.com.financecontrol.exception.EntityNotFoundException;
+import br.com.financecontrol.exception.InvalidInvitationException;
 import br.com.financecontrol.repository.AccountRepository;
 import br.com.financecontrol.repository.InvitationRepository;
 import br.com.financecontrol.repository.UserRepository;
-import java.util.UUID;
-import java.util.concurrent.ThreadLocalRandom;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.concurrent.ThreadLocalRandom;
 
 @Service
 public class UserService {
@@ -41,13 +41,8 @@ public class UserService {
     }
 
     public User save(User user) {
-        var account = accountRepository.save(
-            Account.builder()
-                .uuid(UUID.randomUUID().toString())
-                .build()
-        );
+        var account = accountRepository.save(new Account());
 
-        user.setUuid(UUID.randomUUID().toString());
         user.setPasswd(new BCryptPasswordEncoder().encode(user.getPasswd()));
         user.setAccount(account);
         user.setActivationCode(String.valueOf(ThreadLocalRandom.current().nextInt(12345678, 87654321)));
@@ -67,35 +62,24 @@ public class UserService {
         var invitationOpt = invitationRepository.findOne(
             Example.of(
                 Invitation.builder()
-                    .uuid(invitationCode)
+                    .id(invitationCode)
                     .build()));
 
         if (invitationOpt.isEmpty()) {
             throw new InvalidInvitationException(invitationCode);
         }
         user.setAccount(invitationOpt.get().getUserInvited().getAccount());
-        user.setUuid(UUID.randomUUID().toString());
         return userRepository.save(user);
     }
 
-    public UserDTO find(String uuid) {
-        var user = userRepository.findOne(
-            Example.of(
-                User.builder()
-                    .uuid(uuid)
-                    .build())
-        ).orElseThrow(EntityNotFoundException::new);
+    public UserDTO find(String id) {
+        var user = userRepository.findById(id)
+                .orElseThrow(EntityNotFoundException::new);
         return modelMapper.map(user, UserDTO.class);
     }
 
-    public void delete(String uuid) {
-        var user = userRepository.findOne(
-            Example.of(
-                User.builder()
-                    .uuid(uuid)
-                    .build())
-        ).orElseThrow(EntityNotFoundException::new);
-        userRepository.deleteById(user.getId());
+    public void delete(String id) {
+        userRepository.deleteById(id);
     }
 
     public void activation(String email, String activationCode) {

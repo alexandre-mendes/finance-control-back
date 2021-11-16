@@ -81,7 +81,7 @@ public class WalletCriteriaRepository {
         return new PageImpl<>(wallets, pageable, 0);
     }
 
-    public Optional<WalletProjection> findWalletCreditorWithTotal(final String uuid) {
+    public Optional<WalletProjection> findWalletCreditorWithTotal(final String id) {
         final CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         final CriteriaQuery<WalletProjection> query = criteriaBuilder.createQuery(WalletProjection.class);
         final Root<Wallet> root = query.from(Wallet.class);
@@ -89,7 +89,6 @@ public class WalletCriteriaRepository {
 
         query.select(criteriaBuilder.construct(WalletProjection.class,
                 root.get("id"),
-                root.get("uuid"),
                 root.get("title"),
                 root.get("typeWallet"),
                 root.get("dayWallet"),
@@ -99,7 +98,7 @@ public class WalletCriteriaRepository {
                 ),
                 criteriaBuilder.literal(BigDecimal.ZERO)));
 
-        query.where(criteriaBuilder.equal(root.get("uuid"), uuid));
+        query.where(criteriaBuilder.equal(root.get("id"), id));
 
         query.groupBy(root.get("id"));
 

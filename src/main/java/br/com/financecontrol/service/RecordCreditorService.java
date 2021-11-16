@@ -27,26 +27,19 @@ public class RecordCreditorService {
   @Autowired
   public RecordCreditorService(
       RecordCreditorRepository repository,
-      WalletRepository walletRepository,
-      AuthenticationService userAuthenticationService) {
+      WalletRepository walletRepository) {
     this.repository = repository;
     this.walletRepository = walletRepository;
   }
 
   public RecordCreditor create(RecordCreditor domain) {
 
-    var wallet = walletRepository.findOne(
-        Example.of(
-            Wallet.builder()
-                .uuid(domain.getWallet().getUuid())
-                .build())
-    ).orElseThrow(EntityNotFoundException::new);
+    var wallet = walletRepository.findById(domain.getWallet().getId())
+            .orElseThrow(EntityNotFoundException::new);
 
-    domain.setUuid(UUID.randomUUID().toString());
     domain.setWallet(wallet);
     domain.setTransaction(
             Transaction.builder()
-                    .uuid(UUID.randomUUID().toString())
                     .typeTransaction(TypeTransaction.DEPOSIT)
                     .codeTransaction(UUID.randomUUID().toString())
                     .build()

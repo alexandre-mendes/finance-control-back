@@ -9,8 +9,7 @@ import java.math.BigDecimal;
 @lombok.Setter
 public class WalletProjection {
 
-    private Long id;
-    private String uuid;
+    private String id;
     private String title;
     private TypeWallet typeWallet;
     private Integer dayWallet;

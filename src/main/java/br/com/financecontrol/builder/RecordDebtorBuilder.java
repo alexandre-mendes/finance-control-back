@@ -4,13 +4,13 @@ import br.com.financecontrol.entity.RecordCreditor;
 import br.com.financecontrol.entity.RecordDebtor;
 import br.com.financecontrol.entity.Tag;
 import br.com.financecontrol.entity.Wallet;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
 public class RecordDebtorBuilder implements Builder {
 
-  private Long id;
-  private String uuid;
+  private String id;
   private String registrationCode;
   private String title;
   private LocalDate dateDeadline;
@@ -20,13 +20,8 @@ public class RecordDebtorBuilder implements Builder {
   private Tag tag;
   private Wallet wallet;
 
-  public RecordDebtorBuilder id(Long id) {
+  public RecordDebtorBuilder id(String id) {
     this.id = id;
-    return this;
-  }
-
-  public RecordDebtorBuilder uuid(String uuid) {
-    this.uuid = uuid;
     return this;
   }
 
@@ -72,6 +67,6 @@ public class RecordDebtorBuilder implements Builder {
 
   @Override
   public RecordDebtor build() {
-    return new RecordDebtor(id, uuid, registrationCode, title, dateDeadline, value, paid, tag, payerRecord, wallet);
+    return new RecordDebtor(id, registrationCode, title, dateDeadline, value, paid, tag, payerRecord, wallet);
   }
 }

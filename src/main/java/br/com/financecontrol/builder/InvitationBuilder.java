@@ -5,17 +5,11 @@ import br.com.financecontrol.entity.User;
 
 public class InvitationBuilder implements Builder {
 
-  private Long id;
-  private String uuid;
+  private String id;
   private User userInvited;
 
-  public InvitationBuilder id(Long id) {
+  public InvitationBuilder id(String id) {
     this.id = id;
-    return this;
-  }
-
-  public InvitationBuilder uuid(String uuid) {
-    this.uuid = uuid;
     return this;
   }
 
@@ -25,6 +19,6 @@ public class InvitationBuilder implements Builder {
   }
 
   public Invitation build() {
-    return new Invitation(id, uuid, userInvited);
+    return new Invitation(id, userInvited);
   }
 }

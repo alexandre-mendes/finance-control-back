@@ -1,18 +1,12 @@
 package br.com.financecontrol.entity;
 
 import br.com.financecontrol.builder.RecordDebtorBuilder;
+import org.hibernate.annotations.GenericGenerator;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
 
 @lombok.Getter
 @lombok.Setter
@@ -26,12 +20,9 @@ public class RecordDebtor implements Serializable {
   private static final long serialVersionUID = -4643213106340314847L;
 
   @Id
-  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "record_debtor_seq")
-  @Column(name = "id_record_debtor")
-  private Long id;
-
-  @Column(unique = true)
-  private String uuid;
+  @GeneratedValue(generator = "uuid")
+  @GenericGenerator(name = "uuid", strategy = "uuid2")
+  private String id;
 
   private String registrationCode;
 

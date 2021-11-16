@@ -9,8 +9,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 public class WalletBuilder implements Builder {
-  private Long id;
-  private String uuid;
+  private String id;
   private String title;
   private TypeWallet typeWallet;
   private List<RecordDebtor> recordDebtor;
@@ -20,13 +19,8 @@ public class WalletBuilder implements Builder {
   private BigDecimal value;
   private BigDecimal valuePaid;
 
-  public WalletBuilder id(Long id) {
+  public WalletBuilder id(String id) {
     this.id = id;
-    return this;
-  }
-
-  public WalletBuilder uuid(String uuid) {
-    this.uuid = uuid;
     return this;
   }
 
@@ -72,6 +66,6 @@ public class WalletBuilder implements Builder {
 
   @Override
   public Wallet build() {
-    return new Wallet(id, uuid, title, typeWallet, recordDebtor, recordCreditor, dayWallet, account, value, valuePaid);
+    return new Wallet(id, title, typeWallet, recordDebtor, recordCreditor, dayWallet, account, value, valuePaid);
   }
 }

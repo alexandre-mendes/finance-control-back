@@ -5,18 +5,12 @@ import br.com.financecontrol.enums.TypeTransaction;
 
 public class TransactionBuilder implements Builder {
 
-    private Long id;
-    private String uuid;
+    private String id;
     private String codeTransaction;
     private TypeTransaction typeTransaction;
 
-    private TransactionBuilder id(Long id) {
+    private TransactionBuilder id(String id) {
         this.id = id;
-        return this;
-    }
-
-    public TransactionBuilder uuid(String uuid) {
-        this.uuid = uuid;
         return this;
     }
 
@@ -32,6 +26,6 @@ public class TransactionBuilder implements Builder {
 
     @Override
     public Transaction build() {
-        return new Transaction(id, uuid, codeTransaction, typeTransaction);
+        return new Transaction(id, codeTransaction, typeTransaction);
     }
 }

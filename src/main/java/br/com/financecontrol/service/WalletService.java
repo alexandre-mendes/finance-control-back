@@ -21,7 +21,6 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.NoSuchElementException;
-import java.util.UUID;
 
 @Service
 public class WalletService {
@@ -45,18 +44,13 @@ public class WalletService {
 
   public Wallet save(Wallet wallet) {
     var account = authenticationService.getUser().getAccount();
-    wallet.setUuid(UUID.randomUUID().toString());
     wallet.setAccount(account);
     return walletRepository.save(wallet);
   }
 
   public Wallet update(Wallet wallet) {
-    var walletSaved = walletRepository.findOne(
-        Example.of(
-            Wallet.builder()
-                .uuid(wallet.getUuid())
-                .build())
-    ).orElseThrow(EntityNotFoundException::new);
+    var walletSaved = walletRepository.findById(wallet.getId())
+            .orElseThrow(EntityNotFoundException::new);
     walletSaved.setTitle(wallet.getTitle());
     walletSaved.setTypeWallet(wallet.getTypeWallet());
     walletSaved.setDayWallet(wallet.getDayWallet());
@@ -108,8 +102,8 @@ public class WalletService {
         .build();
   }
 
-    public void remove(final String uuid) {
-      final Wallet wallet = walletRepository.findOne(Example.of(Wallet.builder().uuid(uuid).build()))
+    public void remove(final String id) {
+      final Wallet wallet = walletRepository.findById(id)
               .orElseThrow(EntityNotFoundException::new);
       try {
         walletRepository.deleteById(wallet.getId());

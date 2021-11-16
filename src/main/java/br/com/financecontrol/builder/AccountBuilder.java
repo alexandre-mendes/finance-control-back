@@ -4,21 +4,15 @@ import br.com.financecontrol.entity.Account;
 
 public class AccountBuilder implements Builder {
 
-  private Long id;
-  private String uuid;
+  private String id;
 
-  public AccountBuilder id(Long id) {
+  public AccountBuilder id(String id) {
     this.id = id;
-    return this;
-  }
-
-  public AccountBuilder uuid(String uuid) {
-    this.uuid = uuid;
     return this;
   }
 
   @Override
   public Account build() {
-    return new Account(id, uuid);
+    return new Account(id);
   }
 }

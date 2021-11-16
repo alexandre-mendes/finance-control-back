@@ -2,10 +2,11 @@ package br.com.financecontrol.entity;
 
 import br.com.financecontrol.builder.WalletBuilder;
 import br.com.financecontrol.enums.TypeWallet;
+import org.hibernate.annotations.GenericGenerator;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import javax.persistence.*;
 import java.util.List;
 
 @lombok.Getter
@@ -20,12 +21,9 @@ public class Wallet implements Serializable {
     private static final long serialVersionUID = -747807130742436193L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "wallet_seq")
-    @Column(name = "id_wallet")
-    private Long id;
-
-    @Column(unique = true)
-    private String uuid;
+    @GeneratedValue(generator = "uuid")
+    @GenericGenerator(name = "uuid", strategy = "uuid2")
+    private String id;
 
     private String title;
 

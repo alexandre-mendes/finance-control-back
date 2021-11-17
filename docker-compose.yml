@@ -1,0 +1,37 @@
+version: "3.3"
+services:
+  finance-control-back:
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      FINANCE_DB_URL: ${FINANCE_DB_URL}
+      FINANCE_DB_USERNAME: ${FINANCE_DB_USERNAME}
+      FINANCE_DB_PASSWORD: ${FINANCE_DB_PASSWORD}
+      FINANCE_EMAIL_USERNAME: ${FINANCE_EMAIL_USERNAME}
+      FINANCE_EMAIL_PASSWORD: ${FINANCE_EMAIL_PASSWORD}
+      FINANCE_JWT_EXPIRATION: ${FINANCE_JWT_EXPIRATION}
+      FINANCE_JWT_SECRET: ${FINANCE_JWT_SECRET}
+      FINANCE_CORS_ORIGIN: ${FINANCE_CORS_ORIGIN}
+    depends_on:
+      - postgres
+    networks:
+      - finance-control-networt
+    entrypoint: ["java", "-jar", "/app.jar"]
+  postgres:
+    image: postgres
+    volumes:
+      - postgres-volume
+    environment:
+      POSTGRES_DB: FINANCE_POSTGRES
+      POSTGRES_USER: FINANCE_POSTGRES
+      POSTGRES_PASSWORD: FINANCE_POSTGRES
+    networks:
+      - finance-control-networt
+networks:
+  finance-control-networt:
+    driver: bridge
+
+volumes:
+  postgres-volume:
+

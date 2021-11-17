@@ -16,13 +16,13 @@ public class RecordDebtorSpecification implements Specification<RecordDebtor> {
 
     private static final long serialVersionUID = -6430654961954898653L;
 
-    private final String uuidWalletDebtor;
+    private final String walletDebtorId;
     private final Boolean paid;
     private final LocalDate firstDate;
     private final LocalDate lastDate;
 
-    public RecordDebtorSpecification(String uuidWalletDebtor, Boolean paid, LocalDate firstDate, LocalDate lastDate) {
-        this.uuidWalletDebtor = uuidWalletDebtor;
+    public RecordDebtorSpecification(String walletDebtorId, Boolean paid, LocalDate firstDate, LocalDate lastDate) {
+        this.walletDebtorId = walletDebtorId;
         this.paid = paid;
         this.firstDate = firstDate;
         this.lastDate = lastDate;
@@ -37,8 +37,8 @@ public class RecordDebtorSpecification implements Specification<RecordDebtor> {
 
         Join<RecordDebtor, Wallet> join = root.join("wallet");
 
-        if (nonNull(uuidWalletDebtor)) {
-            predicates.add(criteriaBuilder.equal(join.get("uuid"), uuidWalletDebtor));
+        if (nonNull(walletDebtorId)) {
+            predicates.add(criteriaBuilder.equal(join.get("id"), walletDebtorId));
         }
 
         if (nonNull(paid)) {

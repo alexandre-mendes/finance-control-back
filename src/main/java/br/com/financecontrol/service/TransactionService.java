@@ -82,9 +82,9 @@ public class TransactionService {
   }
 
   public void transfer(TransferDTO dto) {
-    final var walletOrigin = walletCriteriaRepository.findWalletCreditorWithTotal(dto.getUuidOrigin()).orElseThrow(EntityNotFoundException::new);
+    final var walletOrigin = walletCriteriaRepository.findWalletCreditorWithTotal(dto.getIdOrigin()).orElseThrow(EntityNotFoundException::new);
 
-    final var walletDestiny = walletCriteriaRepository.findWalletCreditorWithTotal(dto.getUuidDestiny()).orElseThrow(EntityNotFoundException::new);
+    final var walletDestiny = walletCriteriaRepository.findWalletCreditorWithTotal(dto.getIdDestiny()).orElseThrow(EntityNotFoundException::new);
 
     Preconditions.checkTrue(walletOrigin.getValue().compareTo(dto.getValueTransfer()) == 0
           || walletOrigin.getValue().compareTo(dto.getValueTransfer()) > 0)
@@ -120,25 +120,25 @@ public class TransactionService {
                 .build()));
   }
 
-  public void calcelPayment(final String uuidCreditor) {
+  public void calcelPayment(final String idCreditor) {
     final var record = recordCreditorRepository.findOne(
             Example.of(
                     RecordCreditor.builder()
-                            .id(uuidCreditor)
+                            .id(idCreditor)
                             .build())
     ).orElseThrow(EntityNotFoundException::new);
 
     this.cancellersCreditor.get(record.getTransaction().getTypeTransaction().name()).cancel(record);
   }
 
-  public void payAll(final String uuidWalletDebtor, final String uuidWalletCreditor, final Integer month, final Integer year) {
+  public void payAll(final String walletDebtorId, final String walletCreditorId, final Integer month, final Integer year) {
     final var firstDate = LocalDate.now().withMonth(month).withYear(year).withDayOfMonth(1);
     final var lastDate = LocalDate.now().withMonth(month).withYear(year).withDayOfMonth(firstDate.lengthOfMonth());
 
-    final var walletCreditor = walletCriteriaRepository.findWalletCreditorWithTotal(uuidWalletCreditor)
+    final var walletCreditor = walletCriteriaRepository.findWalletCreditorWithTotal(walletCreditorId)
             .orElseThrow(EntityNotFoundException::new);
 
-    final var recordsDebtor = recordDebtorRepository.findAll(new RecordDebtorSpecification(uuidWalletDebtor, false, firstDate, lastDate));
+    final var recordsDebtor = recordDebtorRepository.findAll(new RecordDebtorSpecification(walletDebtorId, false, firstDate, lastDate));
 
     final var totalDebtor = recordsDebtor.stream().map(RecordDebtor::getValue).reduce(BigDecimal.ZERO, BigDecimal::add);
 

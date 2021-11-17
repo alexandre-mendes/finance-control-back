@@ -48,11 +48,11 @@ public class RecordCreditorService {
   }
 
   public Page<RecordCreditor> findAll(
-      final String uuidWallet,
+      final String idWallet,
       final LocalDate firstDate,
       final LocalDate lastDate,
       final Pageable pageable) {
-    final var specification = new RecordCreditorSpecification(uuidWallet, firstDate, lastDate);
+    final var specification = new RecordCreditorSpecification(idWallet, firstDate, lastDate);
     return repository.findAll(specification, pageable);
   }
 }

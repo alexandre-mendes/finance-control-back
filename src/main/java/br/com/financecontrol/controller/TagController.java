@@ -55,9 +55,9 @@ public class TagController {
         return new PageImpl<>(dtos, pageable, tags.getTotalElements());
     }
 
-    @DeleteMapping(value = "/{uuid}")
+    @DeleteMapping(value = "/{id}")
     @ApiOperation(value = "Deleta uma tag.", authorizations = {@Authorization(value = "Bearer")})
-    public void remove(@PathVariable(name = "uuid") final String uuid) {
-        tagService.remove(uuid);
+    public void remove(@PathVariable(name = "id") final String id) {
+        tagService.remove(id);
     }
 }

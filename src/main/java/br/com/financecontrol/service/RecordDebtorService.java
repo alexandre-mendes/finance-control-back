@@ -66,11 +66,11 @@ public class RecordDebtorService {
   }
 
   public Page<RecordDebtor> findAll(
-      final String uuidWallet,
+      final String walletId,
       final LocalDate firstDate,
       final LocalDate lastDate,
       final Pageable pageable) {
-    final var specification = new RecordDebtorSpecification(uuidWallet, null, firstDate, lastDate);
+    final var specification = new RecordDebtorSpecification(walletId, null, firstDate, lastDate);
     return recordDebtorRepository.findAll(specification, pageable);
   }
 

@@ -42,7 +42,7 @@ public class TokenService {
         }
     }
 
-    public String getUuidUser(final String token) {
+    public String getIdUser(final String token) {
         final Claims claims = Jwts.parser().setSigningKey(this.secret).parseClaimsJws(token).getBody();
         return claims.getSubject();
     }

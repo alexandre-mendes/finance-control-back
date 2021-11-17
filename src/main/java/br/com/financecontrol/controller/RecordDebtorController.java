@@ -46,11 +46,11 @@ public class RecordDebtorController {
   @GetMapping
   @ApiOperation(value = "Obtem os registros de uma carteira.", authorizations = {@Authorization(value = "Bearer")})
   public Page<RecordDebtorDTO> findAllByMonth(
-      @RequestParam(required = false, name = "uuid-wallet") final String uuidWallet,
+      @RequestParam(required = false, name = "wallet-id") final String walletId,
       @RequestParam(required = false, name = "first-date") @DateTimeFormat(pattern = "yyyy-MM-dd") final LocalDate firstDate,
       @RequestParam(required = false, name = "last-date") @DateTimeFormat(pattern = "yyyy-MM-dd") final LocalDate lastDate,
       final Pageable pageable) {
-    final var records = recordService.findAll(uuidWallet, firstDate, lastDate, pageable);
+    final var records = recordService.findAll(walletId, firstDate, lastDate, pageable);
     return PageBuilder.createPage(records, pageable, r -> modelMapper.map(r, RecordDebtorDTO.class));
   }
 

@@ -3,13 +3,13 @@ package br.com.financecontrol.builder;
 import br.com.financecontrol.dto.UserDTO;
 
 public class UserDTOBuilder implements Builder {
-  private String uuid;
+  private String id;
   private String username;
   private String passwd;
   private String name;
 
-  public UserDTOBuilder uuid(String uuid) {
-    this.uuid = uuid;
+  public UserDTOBuilder id(String id) {
+    this.id = id;
     return this;
   }
 
@@ -30,6 +30,6 @@ public class UserDTOBuilder implements Builder {
 
   @Override
   public UserDTO build() {
-    return new UserDTO(uuid, username, passwd, name);
+    return new UserDTO(id, username, passwd, name);
   }
 }

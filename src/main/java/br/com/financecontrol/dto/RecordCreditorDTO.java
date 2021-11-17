@@ -17,7 +17,7 @@ public class RecordCreditorDTO implements Serializable {
 
   private static final long serialVersionUID = -1627812282904815159L;
 
-  private String uuid;
+  private String id;
 
   @NotNull
   @NotBlank
@@ -41,6 +41,6 @@ public class RecordCreditorDTO implements Serializable {
   @lombok.Getter
   @lombok.Setter
   public static class _WalletDTO implements Serializable {
-    private String uuid;
+    private String id;
   }
 }

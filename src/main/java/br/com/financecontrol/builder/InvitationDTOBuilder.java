@@ -4,15 +4,15 @@ import br.com.financecontrol.dto.InvitationDTO;
 
 public class InvitationDTOBuilder implements Builder {
 
-  private String uuid;
+  private String id;
 
-  public InvitationDTOBuilder uuid(String uuid) {
-    this.uuid = uuid;
+  public InvitationDTOBuilder id(String id) {
+    this.id = id;
     return this;
   }
 
   @Override
   public InvitationDTO build() {
-    return new InvitationDTO(uuid);
+    return new InvitationDTO(id);
   }
 }

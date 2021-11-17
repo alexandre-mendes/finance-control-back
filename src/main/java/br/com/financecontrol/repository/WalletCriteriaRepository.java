@@ -51,7 +51,6 @@ public class WalletCriteriaRepository {
 
         query.select(criteriaBuilder.construct(WalletProjection.class,
                 root.get("id"),
-                root.get("uuid"),
                 root.get("title"),
                 root.get("typeWallet"),
                 root.get("dayWallet"),

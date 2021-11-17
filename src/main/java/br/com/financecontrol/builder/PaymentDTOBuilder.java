@@ -4,21 +4,21 @@ import br.com.financecontrol.dto.PaymentDTO;
 
 public class PaymentDTOBuilder implements Builder {
 
-  private String uuidDebtor;
-  private String uuidCreditor;
+  private String idDebtor;
+  private String idCreditor;
 
-  public PaymentDTOBuilder uuidDebtor(String uuidDebtor) {
-    this.uuidDebtor = uuidDebtor;
+  public PaymentDTOBuilder idDebtor(String idDebtor) {
+    this.idDebtor = idDebtor;
     return this;
   }
 
-  public PaymentDTOBuilder uuidCreditor(String uuidCreditor) {
-    this.uuidCreditor = uuidCreditor;
+  public PaymentDTOBuilder idCreditor(String idCreditor) {
+    this.idCreditor = idCreditor;
     return this;
   }
 
   @Override
   public PaymentDTO build() {
-    return new PaymentDTO(uuidDebtor, uuidCreditor);
+    return new PaymentDTO(idDebtor, idCreditor);
   }
 }

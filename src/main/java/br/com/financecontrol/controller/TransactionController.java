@@ -39,16 +39,16 @@ public class TransactionController {
   }
 
   @ResponseStatus(HttpStatus.ACCEPTED)
-  @PostMapping(path = "/record-creditor/{uuidCreditor}/cancel")
+  @PostMapping(path = "/record-creditor/{creditorId}/cancel")
   @ApiOperation(value = "Cancela uma transação.", authorizations = {@Authorization(value = "Bearer")})
-  public void cancelPayment(@PathVariable(name = "uuidCreditor") final String uuidCreditor) {
-    service.calcelPayment(uuidCreditor);
+  public void cancelPayment(@PathVariable(name = "creditorId") final String creditorId) {
+    service.calcelPayment(creditorId);
   }
 
   @ResponseStatus(HttpStatus.ACCEPTED)
   @PostMapping(path = "/pay-all")
   @ApiOperation(value = "Realiza o pagamento de todos os registros de um determinado mês..", authorizations = {@Authorization(value = "Bearer")})
   public void payAll(@RequestBody @Valid final PaymentAllDTO dto) {
-    service.payAll(dto.getUuidWalletDebtor(), dto.getUuidWalletCreditor(), dto.getMonth(), dto.getYear());
+    service.payAll(dto.getIdWalletDebtor(), dto.getIdWalletCreditor(), dto.getMonth(), dto.getYear());
   }
 }

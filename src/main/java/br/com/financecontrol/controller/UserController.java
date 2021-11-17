@@ -39,17 +39,17 @@ public class UserController {
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping(path = "/{uuid}")
-    @ApiOperation(value = "Obtem usuário por UUID", authorizations = {@Authorization(value = "Bearer")})
-    public UserDTO findUser(@PathVariable String uuid) {
-        return userService.find(uuid);
+    @GetMapping(path = "/{id}")
+    @ApiOperation(value = "Obtem usuário por id", authorizations = {@Authorization(value = "Bearer")})
+    public UserDTO findUser(@PathVariable String id) {
+        return userService.find(id);
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @DeleteMapping(path = "/{uuid}")
-    @ApiOperation(value = "Deleta usuário por UUID", authorizations = {@Authorization(value = "Bearer")})
-    public void deleteUser(@PathVariable String uuid) {
-        userService.delete(uuid);
+    @DeleteMapping(path = "/{id}")
+    @ApiOperation(value = "Deleta usuário por id", authorizations = {@Authorization(value = "Bearer")})
+    public void deleteUser(@PathVariable String id) {
+        userService.delete(id);
     }
 
     @ResponseStatus(HttpStatus.CREATED)

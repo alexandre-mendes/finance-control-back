@@ -1,12 +1,13 @@
 package br.com.financecontrol.builder;
 
 import br.com.financecontrol.dto.RecordDebtorDTO;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
 public class RecordDebtorDTOBuilder implements Builder {
 
-  private String uuid;
+  private String id;
   private String registrationCode;
   private String title;
   private LocalDate deadline;
@@ -16,8 +17,8 @@ public class RecordDebtorDTOBuilder implements Builder {
   private RecordDebtorDTO._TagDTO tag;
   private Integer installments;
 
-  public RecordDebtorDTOBuilder setUuid(String uuid) {
-    this.uuid = uuid;
+  public RecordDebtorDTOBuilder setId(String id) {
+    this.id = id;
     return this;
   }
 
@@ -62,7 +63,7 @@ public class RecordDebtorDTOBuilder implements Builder {
   }
 
   public RecordDebtorDTO build() {
-    return new RecordDebtorDTO(uuid, registrationCode, title, deadline, paid, value, wallet,
+    return new RecordDebtorDTO(id, registrationCode, title, deadline, paid, value, wallet,
             tag, installments);
   }
 }

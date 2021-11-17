@@ -16,7 +16,7 @@ public class RecordDebtorDTO implements Serializable {
 
   private static final long serialVersionUID = 7287342681482925095L;
 
-  private String uuid;
+  private String id;
 
   private String registrationCode;
 
@@ -47,12 +47,12 @@ public class RecordDebtorDTO implements Serializable {
   @lombok.Getter
   @lombok.Setter
   public static class _WalletDTO implements Serializable {
-    private String uuid;
+    private String id;
   }
 
   @lombok.Getter
   @lombok.Setter
   public static class _TagDTO implements Serializable {
-    private String uuid;
+    private String id;
   }
 }

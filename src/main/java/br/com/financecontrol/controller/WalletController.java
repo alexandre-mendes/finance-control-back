@@ -64,10 +64,10 @@ public class WalletController {
     return PageBuilder.createPage(wallets, pageable, w -> modelMapper.map(w, WalletDTO.class));
   }
 
-  @DeleteMapping(value = "/{uuid}")
+  @DeleteMapping(value = "/{id}")
   @ApiOperation(value = "Exclui uma carteira.", authorizations = {@Authorization(value = "Bearer")})
-  public void remove(@PathVariable final String uuid) {
-    walletService.remove(uuid);
+  public void remove(@PathVariable final String id) {
+    walletService.remove(id);
   }
 
   @ResponseStatus(HttpStatus.OK)

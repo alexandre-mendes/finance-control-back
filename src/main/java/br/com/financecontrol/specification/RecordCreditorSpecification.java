@@ -16,7 +16,7 @@ public class RecordCreditorSpecification implements Specification<RecordCreditor
 
     private static final long serialVersionUID = 5322484802166887178L;
 
-    private String uuidWallet;
+    private String walletId;
     private LocalDate firstDate;
     private LocalDate lastDate;
 
@@ -27,8 +27,8 @@ public class RecordCreditorSpecification implements Specification<RecordCreditor
         final List<Predicate> predicates = new ArrayList<>();
         query.orderBy(criteriaBuilder.desc(root.get("id")));
 
-        if (nonNull(uuidWallet)) {
-            predicates.add(criteriaBuilder.equal(wallet.get("uuid"), uuidWallet));
+        if (nonNull(walletId)) {
+            predicates.add(criteriaBuilder.equal(wallet.get("id"), walletId));
         }
 
         if (nonNull(firstDate) && nonNull(lastDate)) {

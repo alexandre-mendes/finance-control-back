@@ -13,10 +13,10 @@ public class PaymentAllDTO implements Serializable {
     private static final long serialVersionUID = 9080374664658533546L;
 
     @NotNull
-    private String uuidWalletDebtor;
+    private String idWalletDebtor;
 
     @NotNull
-    private String uuidWalletCreditor;
+    private String idWalletCreditor;
 
     @NotNull
     private Integer month;

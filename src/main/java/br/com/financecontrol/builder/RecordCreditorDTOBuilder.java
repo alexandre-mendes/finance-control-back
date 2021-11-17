@@ -1,20 +1,21 @@
 package br.com.financecontrol.builder;
 
 import br.com.financecontrol.dto.RecordCreditorDTO;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
 public class RecordCreditorDTOBuilder implements Builder {
 
-  private String uuid;
+  private String id;
   private String title;
   private LocalDate dateTransaction;
   private BigDecimal value;
   private boolean received;
   private RecordCreditorDTO._WalletDTO wallet;
 
-  public RecordCreditorDTOBuilder uuid(String uuid) {
-    this.uuid = uuid;
+  public RecordCreditorDTOBuilder id(String id) {
+    this.id = id;
     return this;
   }
 
@@ -45,6 +46,6 @@ public class RecordCreditorDTOBuilder implements Builder {
 
   @Override
   public RecordCreditorDTO build() {
-    return new RecordCreditorDTO(uuid, title, dateTransaction, value, wallet, received);
+    return new RecordCreditorDTO(id, title, dateTransaction, value, wallet, received);
   }
 }

@@ -12,7 +12,7 @@ public class TransferDTO implements Serializable {
 
   private static final long serialVersionUID = -3236063067362694926L;
 
-  private String uuidOrigin;
-  private String uuidDestiny;
+  private String idOrigin;
+  private String idDestiny;
   private BigDecimal valueTransfer;
 }

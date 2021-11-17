@@ -82,9 +82,9 @@ public class TransactionService {
   }
 
   public void transfer(TransferDTO dto) {
-    final var walletOrigin = walletCriteriaRepository.findWalletCreditorWithTotal(dto.getIdOrigin()).orElseThrow(EntityNotFoundException::new);
+    final var walletOrigin = walletCriteriaRepository.findWalletCreditorWithTotal(dto.getOriginId()).orElseThrow(EntityNotFoundException::new);
 
-    final var walletDestiny = walletCriteriaRepository.findWalletCreditorWithTotal(dto.getIdDestiny()).orElseThrow(EntityNotFoundException::new);
+    final var walletDestiny = walletCriteriaRepository.findWalletCreditorWithTotal(dto.getDestinyId()).orElseThrow(EntityNotFoundException::new);
 
     Preconditions.checkTrue(walletOrigin.getValue().compareTo(dto.getValueTransfer()) == 0
           || walletOrigin.getValue().compareTo(dto.getValueTransfer()) > 0)

@@ -51,11 +51,11 @@ public class TransactionService {
     final var recordDebtor = recordDebtorRepository.findOne(
         Example.of(
             RecordDebtor.builder()
-                .id(dto.getIdRecordDebtor())
+                .id(dto.getRecordDebtorId())
                 .build())
     ).orElseThrow(EntityNotFoundException::new);
 
-    final var walletCreditor = walletCriteriaRepository.findWalletCreditorWithTotal(dto.getIdWalletCreditor())
+    final var walletCreditor = walletCriteriaRepository.findWalletCreditorWithTotal(dto.getWalletCreditorId())
         .orElseThrow(EntityNotFoundException::new);
 
     Preconditions.checkTrue(walletCreditor.getValue().equals(recordDebtor.getValue())

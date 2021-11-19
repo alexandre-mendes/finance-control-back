@@ -1,6 +1,5 @@
 package br.com.financecontrol.entity;
 
-import br.com.financecontrol.builder.InvitationBuilder;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -11,6 +10,7 @@ import java.io.Serializable;
 @lombok.NoArgsConstructor
 @lombok.EqualsAndHashCode
 @lombok.AllArgsConstructor
+@lombok.Builder
 @Entity
 @Table(name = "financeiro_invitation")
 public class Invitation implements Serializable {

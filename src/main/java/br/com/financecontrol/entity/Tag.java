@@ -1,6 +1,5 @@
 package br.com.financecontrol.entity;
 
-import br.com.financecontrol.builder.TagBuilder;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -11,6 +10,7 @@ import java.io.Serializable;
 @lombok.AllArgsConstructor
 @lombok.NoArgsConstructor
 @lombok.EqualsAndHashCode
+@lombok.Builder
 @Entity
 @Table(name = "financeiro_tag")
 public class Tag implements Serializable {

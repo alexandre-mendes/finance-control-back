@@ -1,19 +1,19 @@
 package br.com.financecontrol.entity;
 
-import br.com.financecontrol.builder.RecordCreditorBuilder;
 import org.hibernate.annotations.GenericGenerator;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
-import javax.persistence.*;
 
 @lombok.Getter
 @lombok.Setter
 @lombok.NoArgsConstructor
 @lombok.EqualsAndHashCode
 @lombok.AllArgsConstructor
+@lombok.Builder
 @Entity
 @Table(name = "financeiro_record_creditor")
 public class RecordCreditor implements Serializable {

@@ -1,7 +1,5 @@
 package br.com.financecontrol.dto;
 
-import br.com.financecontrol.builder.RecordCreditorDTOBuilder;
-
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
@@ -13,6 +11,7 @@ import java.time.LocalDate;
 @lombok.NoArgsConstructor
 @lombok.EqualsAndHashCode
 @lombok.AllArgsConstructor
+@lombok.Builder
 public class RecordCreditorDTO implements Serializable {
 
   private static final long serialVersionUID = -1627812282904815159L;

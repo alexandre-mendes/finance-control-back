@@ -1,6 +1,5 @@
 package br.com.financecontrol.entity;
 
-import br.com.financecontrol.builder.TransactionBuilder;
 import br.com.financecontrol.enums.TypeTransaction;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -12,6 +11,7 @@ import java.io.Serializable;
 @lombok.AllArgsConstructor
 @lombok.NoArgsConstructor
 @lombok.EqualsAndHashCode
+@lombok.Builder
 @Entity
 @Table(name = "financeiro_transaction")
 public class Transaction implements Serializable {

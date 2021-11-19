@@ -1,17 +1,17 @@
 package br.com.financecontrol.dto;
 
-import br.com.financecontrol.builder.RecordDebtorDTOBuilder;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 
 @lombok.Setter
 @lombok.Getter
 @lombok.NoArgsConstructor
 @lombok.EqualsAndHashCode
 @lombok.AllArgsConstructor
+@lombok.Builder
 public class RecordDebtorDTO implements Serializable {
 
   private static final long serialVersionUID = 7287342681482925095L;

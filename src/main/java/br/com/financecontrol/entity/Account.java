@@ -1,9 +1,11 @@
 package br.com.financecontrol.entity;
 
-import br.com.financecontrol.builder.AccountBuilder;
 import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.io.Serializable;
 
 @lombok.Getter
@@ -11,6 +13,7 @@ import java.io.Serializable;
 @lombok.NoArgsConstructor
 @lombok.EqualsAndHashCode
 @lombok.AllArgsConstructor
+@lombok.Builder
 @Entity
 @Table(name = "financeiro_account")
 public class Account implements Serializable {

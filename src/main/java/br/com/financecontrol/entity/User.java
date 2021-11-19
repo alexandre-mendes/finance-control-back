@@ -1,6 +1,5 @@
 package br.com.financecontrol.entity;
 
-import br.com.financecontrol.builder.UserBuilder;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -15,6 +14,7 @@ import java.util.Collection;
 @lombok.NoArgsConstructor
 @lombok.EqualsAndHashCode
 @lombok.AllArgsConstructor
+@lombok.Builder
 @Entity
 @Table(name = "financeiro_user")
 public class User implements UserDetails, Serializable {

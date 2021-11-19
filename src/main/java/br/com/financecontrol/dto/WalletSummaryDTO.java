@@ -1,6 +1,5 @@
 package br.com.financecontrol.dto;
 
-import br.com.financecontrol.builder.WalletSummaryDTOBuilder;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
@@ -9,6 +8,7 @@ import java.math.BigDecimal;
 @lombok.NoArgsConstructor
 @lombok.EqualsAndHashCode
 @lombok.AllArgsConstructor
+@lombok.Builder
 public class WalletSummaryDTO implements Serializable {
 
   private static final long serialVersionUID = -2260833294875353894L;

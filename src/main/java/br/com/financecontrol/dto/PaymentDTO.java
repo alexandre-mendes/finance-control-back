@@ -1,6 +1,5 @@
 package br.com.financecontrol.dto;
 
-import br.com.financecontrol.builder.PaymentDTOBuilder;
 import java.io.Serializable;
 
 @lombok.Setter
@@ -8,6 +7,7 @@ import java.io.Serializable;
 @lombok.NoArgsConstructor
 @lombok.EqualsAndHashCode
 @lombok.AllArgsConstructor
+@lombok.Builder
 public class PaymentDTO implements Serializable {
 
   private static final long serialVersionUID = 5035205799947430904L;

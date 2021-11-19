@@ -1,6 +1,5 @@
 package br.com.financecontrol.entity;
 
-import br.com.financecontrol.builder.WalletBuilder;
 import br.com.financecontrol.enums.TypeWallet;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -14,6 +13,7 @@ import java.util.List;
 @lombok.NoArgsConstructor
 @lombok.EqualsAndHashCode
 @lombok.AllArgsConstructor
+@lombok.Builder
 @Entity
 @Table(name = "financeiro_wallet")
 public class Wallet implements Serializable {

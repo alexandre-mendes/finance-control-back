@@ -1,6 +1,5 @@
 package br.com.financecontrol.entity;
 
-import br.com.financecontrol.builder.RecordDebtorBuilder;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -13,6 +12,7 @@ import java.time.LocalDate;
 @lombok.NoArgsConstructor
 @lombok.EqualsAndHashCode
 @lombok.AllArgsConstructor
+@lombok.Builder
 @Entity
 @Table(name = "financeiro_record_debtor")
 public class RecordDebtor implements Serializable {
@@ -33,6 +33,10 @@ public class RecordDebtor implements Serializable {
   private BigDecimal value;
 
   private Boolean paid;
+
+  @ManyToOne
+  @JoinColumn(name = "id_proof_payment")
+  private ProofPayment proofPayment;
 
   @ManyToOne
   @JoinColumn(name = "id_tag")

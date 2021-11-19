@@ -7,6 +7,7 @@ import javax.persistence.*;
 @lombok.Setter
 @lombok.Getter
 @lombok.AllArgsConstructor
+@lombok.NoArgsConstructor
 @Entity
 @Table(name = "financeiro_proof_payment")
 public class ProofPayment {

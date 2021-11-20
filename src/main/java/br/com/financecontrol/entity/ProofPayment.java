@@ -9,7 +9,7 @@ import javax.persistence.*;
 @lombok.AllArgsConstructor
 @lombok.NoArgsConstructor
 @Entity
-@Table(name = "financeiro_proof_payment")
+@Table(name = "proof_payment")
 public class ProofPayment {
 
     @Id

@@ -15,7 +15,7 @@ import java.util.List;
 @lombok.AllArgsConstructor
 @lombok.Builder
 @Entity
-@Table(name = "financeiro_record_creditor")
+@Table(name = "record_creditor")
 public class RecordCreditor implements Serializable {
 
   private static final long serialVersionUID = -5587978344103430294L;

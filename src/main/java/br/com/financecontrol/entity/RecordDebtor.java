@@ -14,7 +14,7 @@ import java.time.LocalDate;
 @lombok.AllArgsConstructor
 @lombok.Builder
 @Entity
-@Table(name = "financeiro_record_debtor")
+@Table(name = "record_debtor")
 public class RecordDebtor implements Serializable {
 
   private static final long serialVersionUID = -4643213106340314847L;

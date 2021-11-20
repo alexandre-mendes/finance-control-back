@@ -13,7 +13,7 @@ import java.io.Serializable;
 @lombok.EqualsAndHashCode
 @lombok.Builder
 @Entity
-@Table(name = "financeiro_transaction")
+@Table(name = "transaction")
 public class Transaction implements Serializable {
 
     private static final long serialVersionUID = 864739280148743163L;

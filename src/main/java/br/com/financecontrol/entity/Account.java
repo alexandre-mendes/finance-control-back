@@ -15,7 +15,7 @@ import java.io.Serializable;
 @lombok.AllArgsConstructor
 @lombok.Builder
 @Entity
-@Table(name = "financeiro_account")
+@Table(name = "account")
 public class Account implements Serializable {
 
     private static final long serialVersionUID = 2017880951855917024L;

@@ -12,7 +12,7 @@ import java.io.Serializable;
 @lombok.AllArgsConstructor
 @lombok.Builder
 @Entity
-@Table(name = "financeiro_invitation")
+@Table(name = "invitation")
 public class Invitation implements Serializable {
 
     private static final long serialVersionUID = -986073004038590811L;

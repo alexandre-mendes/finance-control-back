@@ -15,7 +15,7 @@ import java.util.List;
 @lombok.AllArgsConstructor
 @lombok.Builder
 @Entity
-@Table(name = "financeiro_wallet")
+@Table(name = "wallet")
 public class Wallet implements Serializable {
 
     private static final long serialVersionUID = -747807130742436193L;

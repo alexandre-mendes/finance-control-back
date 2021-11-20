@@ -12,7 +12,6 @@ import br.com.financecontrol.repository.WalletCriteriaRepository;
 import br.com.financecontrol.repository.WalletRepository;
 import br.com.financecontrol.security.AuthenticationService;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -103,12 +102,10 @@ public class WalletService {
   }
 
     public void remove(final String id) {
-      final Wallet wallet = walletRepository.findById(id)
-              .orElseThrow(EntityNotFoundException::new);
       try {
-        walletRepository.deleteById(wallet.getId());
+        walletRepository.deleteById(id);
       } catch (DataIntegrityViolationException ex) {
-        throw new ExclusionNotAllowedException("Não é possível excluir a carteira pois encontra-se em uso.");
+        throw new ExclusionNotAllowedException("Não é possível excluir uma carteira em uso.");
       }
     }
 }

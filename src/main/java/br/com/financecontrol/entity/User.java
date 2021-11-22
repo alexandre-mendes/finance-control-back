@@ -16,7 +16,7 @@ import java.util.Collection;
 @lombok.AllArgsConstructor
 @lombok.Builder
 @Entity
-@Table(name = "user")
+@Table(name = "users")
 public class User implements UserDetails, Serializable {
 
     private static final long serialVersionUID = -4878255163214716317L;

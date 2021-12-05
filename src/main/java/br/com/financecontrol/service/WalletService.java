@@ -78,7 +78,7 @@ public class WalletService {
     final var lastMonth = createLocalDate(month, year, LAST_DAY_MONTH);
     final var totalPaid = recordDebtorCriteriaRepository.findTotalPaid(firstMonth, lastMonth, account);
 
-    final var totalDebtor = recordDebtorCriteriaRepository.findTotal(firstMonth, lastMonth, account);
+    final var totalDebtor = recordDebtorCriteriaRepository.findTotal(firstMonth, lastMonth, account, null);
     final var totalCreditor = recordCreditorCriteriaRepository.findTotal(account, null);
     BigDecimal percentageCommitted;
     BigDecimal porcentagePaid;

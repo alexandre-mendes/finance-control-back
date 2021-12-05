@@ -15,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -48,6 +49,15 @@ public class RecordDebtorController {
       final Pageable pageable) {
     final var records = recordService.findAll(walletId, month, year, pageable);
     return PageBuilder.createPage(records, pageable, r -> modelMapper.map(r, RecordDebtorDTO.class));
+  }
+
+  @GetMapping("/total")
+  @ApiOperation(value = "Obtem o saldo total do(s) passivo(s).", authorizations = {@Authorization(value = "Bearer")})
+  public BigDecimal total(
+          @RequestParam(name = "wallet-id", required = false) final String walletId,
+          @RequestParam(name = "month", required = false) final Integer month,
+          @RequestParam(name = "year", required = false) final Integer year) {
+    return recordService.findTotal(month, year, walletId);
   }
 
   @DeleteMapping(path = "/registration-code/{registrationCode}")

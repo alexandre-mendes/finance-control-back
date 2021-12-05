@@ -55,7 +55,7 @@ public class RecordCreditorCotroller {
 
   @ResponseStatus(HttpStatus.OK)
   @GetMapping("/total")
-  @ApiOperation(value = "Obtem o saldo total da(s) carteira(s).", authorizations = {@Authorization(value = "Bearer")})
+  @ApiOperation(value = "Obtem o saldo total do(s) ativo(s).", authorizations = {@Authorization(value = "Bearer")})
   public BigDecimal total(@RequestParam(name = "wallet-id", required = false) final String walletId) {
     return service.findTotal(walletId);
   }

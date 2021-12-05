@@ -1,41 +1,49 @@
 package br.com.financecontrol.service;
 
+import br.com.financecontrol.entity.Account;
 import br.com.financecontrol.entity.RecordDebtor;
+import br.com.financecontrol.enums.TypeDay;
 import br.com.financecontrol.exception.CancellationNotAllowed;
 import br.com.financecontrol.exception.EntityNotFoundException;
+import br.com.financecontrol.repository.RecordDebtorCriteriaRepository;
 import br.com.financecontrol.repository.RecordDebtorRepository;
 import br.com.financecontrol.repository.TagRepository;
 import br.com.financecontrol.repository.WalletRepository;
+import br.com.financecontrol.security.AuthenticationService;
 import br.com.financecontrol.specification.RecordDebtorSpecification;
-import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import static br.com.financecontrol.util.DateCreator.createLocalDate;
 import static java.util.Objects.isNull;
 
 @Service
 public class RecordDebtorService {
 
   private final RecordDebtorRepository recordDebtorRepository;
+  private final RecordDebtorCriteriaRepository criteriaRepository;
   private final WalletRepository walletRepository;
   private final TagRepository tagRepository;
-  private final ModelMapper modelMapper;
+  private final AuthenticationService authenticationService;
 
   public RecordDebtorService(RecordDebtorRepository recordDebtorRepository,
+                             RecordDebtorCriteriaRepository criteriaRepository,
                              WalletRepository walletRepository,
                              TagRepository tagRepository,
-                             ModelMapper modelMapper) {
+                             AuthenticationService authenticationService) {
     this.recordDebtorRepository = recordDebtorRepository;
+    this.criteriaRepository = criteriaRepository;
     this.walletRepository = walletRepository;
     this.tagRepository = tagRepository;
-    this.modelMapper = modelMapper;
+    this.authenticationService = authenticationService;
   }
 
   public List<RecordDebtor> create(final RecordDebtor domain, final Integer installments) {
@@ -79,13 +87,25 @@ public class RecordDebtorService {
     return recordDebtorRepository.findAll(specification, pageable);
   }
 
-    public void delete(String registrationCode) {
-      final var records = recordDebtorRepository.findAll(Example.of(RecordDebtor.builder().registrationCode(registrationCode).build()));
-      records.forEach(record -> {
-        if (record.getPaid()) {
-          throw new CancellationNotAllowed("Não é possível remover um débito com parcelas pagas.");
-        }
-      });
-      recordDebtorRepository.deleteAll(records);
-    }
+  public void delete(final String registrationCode) {
+    final var records = recordDebtorRepository.findAll(Example.of(RecordDebtor.builder().registrationCode(registrationCode).build()));
+    records.forEach(record -> {
+      if (record.getPaid()) {
+        throw new CancellationNotAllowed("Não é possível remover um débito com parcelas pagas.");
+      }
+    });
+    recordDebtorRepository.deleteAll(records);
+  }
+
+  public BigDecimal findTotal(
+          final Integer month,
+          final Integer year,
+          final String walletId) {
+    final Account account = authenticationService.getUser().getAccount();
+    return criteriaRepository.findTotal(
+            createLocalDate(month, year, TypeDay.FIRST_DAY_MONTH),
+            createLocalDate(month, year, TypeDay.LAST_DAY_MONTH),
+            account,
+            walletId).orElse(BigDecimal.ZERO);
+  }
 }

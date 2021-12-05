@@ -43,7 +43,7 @@ public class DateService {
         var firstMonth = LocalDate.now().withDayOfMonth(1);
         var lastMonth = LocalDate.now().withDayOfMonth(firstMonth.lengthOfMonth());
         var totalPaid = recordDebtorCriteriaRepository.findTotalPaid(firstMonth, lastMonth, authenticationService.getUser().getAccount());
-        var totalDebtor = recordDebtorCriteriaRepository.findTotal(firstMonth, lastMonth, authenticationService.getUser().getAccount());
+        var totalDebtor = recordDebtorCriteriaRepository.findTotal(firstMonth, lastMonth, authenticationService.getUser().getAccount(), null);
 
         return totalDebtor.orElse(BigDecimal.ZERO).subtract(totalPaid.orElse(BigDecimal.ZERO)).compareTo(BigDecimal.ZERO) > 0;
     }

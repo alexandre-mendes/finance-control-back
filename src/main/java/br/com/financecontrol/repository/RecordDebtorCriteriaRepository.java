@@ -10,8 +10,11 @@ import javax.persistence.EntityManager;
 import javax.persistence.criteria.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+import static java.util.Objects.nonNull;
 
 @Repository
 public class RecordDebtorCriteriaRepository {
@@ -38,16 +41,23 @@ public class RecordDebtorCriteriaRepository {
         return Optional.ofNullable(totalPaid);
     }
 
-    public Optional<BigDecimal> findTotal(final LocalDate firstDate, final LocalDate lastDate, final Account account) {
+    public Optional<BigDecimal> findTotal(final LocalDate firstDate, final LocalDate lastDate, final Account account, final String walletId) {
+        final List<Predicate> predicates = new ArrayList<>();
         final CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         final CriteriaQuery<BigDecimal> query = criteriaBuilder.createQuery(BigDecimal.class);
         final Root<RecordDebtor> root = query.from(RecordDebtor.class);
         final Join<RecordDebtor, Wallet> walletJoin = root.join("wallet");
 
-        query.select(criteriaBuilder.sum(root.get("value")))
-                .where(criteriaBuilder.and(
-                        criteriaBuilder.between(root.get("dateDeadline"), firstDate, lastDate),
-                        criteriaBuilder.equal(walletJoin.get("account"), account)));
+        if (nonNull(firstDate) && nonNull(lastDate))
+            predicates.add(criteriaBuilder.between(root.get("dateDeadline"), firstDate, lastDate));
+
+        if (nonNull(walletId))
+            predicates.add(criteriaBuilder.equal(walletJoin.get("id"), walletId));
+        else
+            predicates.add(criteriaBuilder.equal(walletJoin.get("account"), account));
+
+        query.select(criteriaBuilder.sum(root.get("value")));
+        query.where(criteriaBuilder.and(predicates.toArray(new Predicate[0])));
 
         final BigDecimal total = entityManager.createQuery(query).getSingleResult();
         return Optional.ofNullable(total);

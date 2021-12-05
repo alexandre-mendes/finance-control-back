@@ -5,21 +5,24 @@ import br.com.financecontrol.entity.Wallet;
 import br.com.financecontrol.enums.TypeWallet;
 import br.com.financecontrol.exception.EntityNotFoundException;
 import br.com.financecontrol.exception.ExclusionNotAllowedException;
-import br.com.financecontrol.projection.WalletProjection;
 import br.com.financecontrol.repository.RecordCreditorCriteriaRepository;
 import br.com.financecontrol.repository.RecordDebtorCriteriaRepository;
 import br.com.financecontrol.repository.WalletCriteriaRepository;
 import br.com.financecontrol.repository.WalletRepository;
 import br.com.financecontrol.security.AuthenticationService;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.time.LocalDate;
 import java.util.NoSuchElementException;
+
+import static br.com.financecontrol.enums.TypeDay.FIRST_DAY_MONTH;
+import static br.com.financecontrol.enums.TypeDay.LAST_DAY_MONTH;
+import static br.com.financecontrol.util.DateCreator.createLocalDate;
 
 @Service
 public class WalletService {
@@ -56,24 +59,27 @@ public class WalletService {
     return walletRepository.save(walletSaved);
   }
 
-  public Page<WalletProjection> findAll(
-      final TypeWallet typeWallet,
-      final LocalDate firstDate,
-      final LocalDate lastDate,
-      final Pageable pageable) {
+  public Page<Wallet> findAll(
+          final TypeWallet typeWallet,
+          final Pageable pageable) {
     final var account = authenticationService.getUser().getAccount();
 
-    return walletCriteriaRepository.findAll(account, typeWallet, firstDate, lastDate, pageable);
+    return walletRepository.findAll(
+            Example.of(
+                    Wallet.builder()
+                            .account(account)
+                            .typeWallet(typeWallet)
+                            .build()), pageable);
   }
 
   public WalletSummaryDTO findWalletsSummary(final Integer month, final Integer year) {
     final var account = authenticationService.getUser().getAccount();
-    final var firstMonth = LocalDate.now().withMonth(month).withYear(year).withDayOfMonth(1);
-    final var lastMonth = LocalDate.now().withMonth(month).withYear(year).withDayOfMonth(firstMonth.lengthOfMonth());
+    final var firstMonth = createLocalDate(month, year, FIRST_DAY_MONTH);
+    final var lastMonth = createLocalDate(month, year, LAST_DAY_MONTH);
     final var totalPaid = recordDebtorCriteriaRepository.findTotalPaid(firstMonth, lastMonth, account);
 
     final var totalDebtor = recordDebtorCriteriaRepository.findTotal(firstMonth, lastMonth, account);
-    final var totalCreditor = recordCreditorCriteriaRepository.findTotal(account);
+    final var totalCreditor = recordCreditorCriteriaRepository.findTotal(account, null);
     BigDecimal percentageCommitted;
     BigDecimal porcentagePaid;
 

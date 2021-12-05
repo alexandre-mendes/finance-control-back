@@ -33,13 +33,11 @@ public class RecordCreditorDTO implements Serializable {
 
   private boolean received;
 
-  public static RecordCreditorDTOBuilder builder() {
-     return new RecordCreditorDTOBuilder();
-  }
-
   @lombok.Getter
   @lombok.Setter
   public static class _WalletDTO implements Serializable {
+
+    @NotNull
     private String id;
   }
 }

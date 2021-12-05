@@ -13,7 +13,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -39,21 +39,22 @@ public class RecordDebtorService {
   }
 
   public List<RecordDebtor> create(final RecordDebtor domain, final Integer installments) {
-    List<RecordDebtor> recordDebtors = new ArrayList<>();
+    final List<RecordDebtor> recordDebtors = new ArrayList<>();
 
-    var wallet = walletRepository.findById(domain.getWallet().getId())
+    final var wallet = walletRepository.findById(domain.getWallet().getId())
             .orElseThrow(EntityNotFoundException::new);
 
-    var tag = isNull(domain.getTag()) ? null : tagRepository.findById(domain.getTag().getId())
+    final var tag = isNull(domain.getTag()) ? null : tagRepository.findById(domain.getTag().getId())
             .orElseThrow(EntityNotFoundException::new);
 
-    var registrationCode = UUID.randomUUID().toString();
+    final var registrationCode = UUID.randomUUID().toString();
 
     for (int i = 0; i < installments; i++) {
       recordDebtors.add(
           RecordDebtor.builder()
               .value(domain.getValue())
               .title(domain.getTitle())
+              .createDate(LocalDateTime.now())
               .dateDeadline(i > 0 ? domain.getDateDeadline().plusMonths(i) : domain.getDateDeadline())
               .registrationCode(registrationCode)
               .wallet(wallet)
@@ -66,11 +67,15 @@ public class RecordDebtorService {
   }
 
   public Page<RecordDebtor> findAll(
-      final String walletId,
-      final LocalDate firstDate,
-      final LocalDate lastDate,
-      final Pageable pageable) {
-    final var specification = new RecordDebtorSpecification(walletId, null, firstDate, lastDate);
+          final String walletId,
+          final Integer month,
+          final Integer year,
+          final Pageable pageable) {
+    final var specification = RecordDebtorSpecification.builder()
+            .walletId(walletId)
+            .month(month)
+            .year(year)
+            .build();
     return recordDebtorRepository.findAll(specification, pageable);
   }
 

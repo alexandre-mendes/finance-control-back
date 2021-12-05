@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Map;
@@ -64,7 +65,7 @@ public class TransactionService {
 
 
     final var newRecordCreditor = RecordCreditor.builder()
-        .title("Pagamento para a carteira " + recordDebtor.getWallet().getTitle() + "/" + recordDebtor.getTitle())
+        .title("Pagamento | Carteira: " + recordDebtor.getWallet().getTitle() + " Débito: " + recordDebtor.getTitle())
         .dateTransaction(LocalDate.now()).value(recordDebtor.getValue().negate())
         .transaction(
                 Transaction.builder()
@@ -82,12 +83,12 @@ public class TransactionService {
   }
 
   public void transfer(TransferDTO dto) {
-    final var walletOrigin = walletCriteriaRepository.findWalletCreditorWithTotal(dto.getOriginId()).orElseThrow(EntityNotFoundException::new);
+    final var walletOrigin = walletCriteriaRepository.findWalletCreditorWithTotal(dto.getWalletOriginId()).orElseThrow(EntityNotFoundException::new);
 
-    final var walletDestiny = walletCriteriaRepository.findWalletCreditorWithTotal(dto.getDestinyId()).orElseThrow(EntityNotFoundException::new);
+    final var walletDestiny = walletCriteriaRepository.findWalletCreditorWithTotal(dto.getWalletDestinyId()).orElseThrow(EntityNotFoundException::new);
 
-    Preconditions.checkTrue(walletOrigin.getValue().compareTo(dto.getValueTransfer()) == 0
-          || walletOrigin.getValue().compareTo(dto.getValueTransfer()) > 0)
+    Preconditions.checkTrue(walletOrigin.getValue().compareTo(dto.getValue()) == 0
+          || walletOrigin.getValue().compareTo(dto.getValue()) > 0)
         .orElseThrow(InsufficientFundsException::new);
 
     final var codeTransaction = UUID.randomUUID().toString();
@@ -95,9 +96,10 @@ public class TransactionService {
     recordCreditorRepository.saveAll(
         Arrays.asList(
             RecordCreditor.builder()
+                .createDate(LocalDateTime.now())
                 .dateTransaction(LocalDate.now())
-                .value(dto.getValueTransfer().negate())
-                .title("Transferência para a carteira " + walletDestiny.getTitle())
+                .value(dto.getValue().negate())
+                .title("Transferência Enviada | Carteira Destino: " + walletDestiny.getTitle())
                 .transaction(
                         Transaction.builder()
                                 .typeTransaction(TypeTransaction.TRANSFER)
@@ -107,9 +109,10 @@ public class TransactionService {
                 .wallet(Wallet.builder().id(walletOrigin.getId()).build())
                 .build(),
             RecordCreditor.builder()
+                .createDate(LocalDateTime.now())
                 .dateTransaction(LocalDate.now())
-                .value(dto.getValueTransfer())
-                .title("Transferência recebida da carteira " + walletOrigin.getTitle())
+                .value(dto.getValue())
+                .title("Transferência Recebida | Carteira Origem: " + walletOrigin.getTitle())
                 .transaction(
                         Transaction.builder()
                                 .typeTransaction(TypeTransaction.TRANSFER)
@@ -131,14 +134,21 @@ public class TransactionService {
     this.cancellersCreditor.get(record.getTransaction().getTypeTransaction().name()).cancel(record);
   }
 
-  public void payAll(final String walletDebtorId, final String walletCreditorId, final Integer month, final Integer year) {
-    final var firstDate = LocalDate.now().withMonth(month).withYear(year).withDayOfMonth(1);
-    final var lastDate = LocalDate.now().withMonth(month).withYear(year).withDayOfMonth(firstDate.lengthOfMonth());
-
+  public void payAll(
+          final String walletDebtorId,
+          final String walletCreditorId,
+          final Integer month,
+          final Integer year) {
     final var walletCreditor = walletCriteriaRepository.findWalletCreditorWithTotal(walletCreditorId)
             .orElseThrow(EntityNotFoundException::new);
 
-    final var recordsDebtor = recordDebtorRepository.findAll(new RecordDebtorSpecification(walletDebtorId, false, firstDate, lastDate));
+    final var recordsDebtor = recordDebtorRepository.findAll(
+            RecordDebtorSpecification.builder()
+                    .walletId(walletDebtorId)
+                    .paid(false)
+                    .month(month)
+                    .year(year)
+                    .build());
 
     final var totalDebtor = recordsDebtor.stream().map(RecordDebtor::getValue).reduce(BigDecimal.ZERO, BigDecimal::add);
 
@@ -150,7 +160,8 @@ public class TransactionService {
             .orElseThrow(InsufficientFundsException::new);
 
     final var newRecordCreditor = RecordCreditor.builder()
-            .title("Pagamento total da carteira " + recordsDebtor.get(0).getWallet().getTitle())
+            .title("Pagamento Total | Carteira: " + recordsDebtor.get(0).getWallet().getTitle())
+            .createDate(LocalDateTime.now())
             .dateTransaction(LocalDate.now())
             .value(totalDebtor.negate())
             .transaction(

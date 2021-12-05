@@ -15,6 +15,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @RestController
@@ -25,7 +27,6 @@ public class RecordCreditorCotroller {
   private final RecordCreditorService service;
   private final ModelMapper modelMapper;
 
-  @Autowired
   public RecordCreditorCotroller(RecordCreditorService service, ModelMapper modelMapper) {
     this.service = service;
     this.modelMapper = modelMapper;
@@ -34,7 +35,7 @@ public class RecordCreditorCotroller {
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping
   @ApiOperation(value = "Salva um registro de crédito.", authorizations = {@Authorization(value = "Bearer")})
-  public RecordCreditorDTO create(@RequestBody final RecordCreditorDTO dto) {
+  public RecordCreditorDTO create(@RequestBody @Valid final RecordCreditorDTO dto) {
     var domain = modelMapper.map(dto, RecordCreditor.class);
     domain = service.create(domain);
     return modelMapper.map(domain, RecordCreditorDTO.class);
@@ -45,10 +46,17 @@ public class RecordCreditorCotroller {
   @ApiOperation(value = "Obtem os registros de credito.", authorizations = {@Authorization(value = "Bearer")})
   public Page<RecordCreditorDTO> findAll(
       @RequestParam(required = false, name = "wallet-id") final String walletId,
-      @RequestParam(required = false, name = "first-date") @DateTimeFormat(pattern = "yyyy-MM-dd") final LocalDate firstDate,
-      @RequestParam(required = false, name = "last-date") @DateTimeFormat(pattern = "yyyy-MM-dd") final LocalDate lastDate,
+      @RequestParam(required = false, name = "month") final Integer month,
+      @RequestParam(required = false, name = "year") final Integer year,
       final Pageable pageable) {
-    final var records = service.findAll(walletId, firstDate, lastDate, pageable);
+    final var records = service.findAll(walletId, month, year, pageable);
     return PageBuilder.createPage(records, pageable, r -> modelMapper.map(r, RecordCreditorDTO.class));
+  }
+
+  @ResponseStatus(HttpStatus.OK)
+  @GetMapping("/total")
+  @ApiOperation(value = "Obtem o saldo total da(s) carteira(s).", authorizations = {@Authorization(value = "Bearer")})
+  public BigDecimal total(@RequestParam(name = "wallet-id", required = false) final String walletId) {
+    return service.findTotal(walletId);
   }
 }

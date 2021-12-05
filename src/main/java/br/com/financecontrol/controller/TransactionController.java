@@ -7,7 +7,6 @@ import br.com.financecontrol.service.TransactionService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.Authorization;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
@@ -19,7 +18,6 @@ public class TransactionController {
 
   private final TransactionService service;
 
-  @Autowired
   public TransactionController(TransactionService service) {
     this.service = service;
   }
@@ -49,6 +47,6 @@ public class TransactionController {
   @PostMapping(path = "/pay-all")
   @ApiOperation(value = "Realiza o pagamento de todos os registros de um determinado mês..", authorizations = {@Authorization(value = "Bearer")})
   public void payAll(@RequestBody @Valid final PaymentAllDTO dto) {
-    service.payAll(dto.getIdWalletDebtor(), dto.getIdWalletCreditor(), dto.getMonth(), dto.getYear());
+    service.payAll(dto.getWalletDebtorId(), dto.getWalletCreditorId(), dto.getMonth(), dto.getYear());
   }
 }

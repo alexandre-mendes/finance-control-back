@@ -6,47 +6,47 @@ import org.springframework.data.jpa.domain.Specification;
 
 import javax.persistence.criteria.*;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import static br.com.financecontrol.enums.TypeDay.FIRST_DAY_MONTH;
+import static br.com.financecontrol.enums.TypeDay.LAST_DAY_MONTH;
+import static br.com.financecontrol.util.DateCreator.createLocalDate;
 import static java.util.Objects.nonNull;
 
+@lombok.Builder
 public class RecordDebtorSpecification implements Specification<RecordDebtor> {
 
     private static final long serialVersionUID = -6430654961954898653L;
 
-    private final String walletDebtorId;
-    private final Boolean paid;
-    private final LocalDate firstDate;
-    private final LocalDate lastDate;
-
-    public RecordDebtorSpecification(String walletDebtorId, Boolean paid, LocalDate firstDate, LocalDate lastDate) {
-        this.walletDebtorId = walletDebtorId;
-        this.paid = paid;
-        this.firstDate = firstDate;
-        this.lastDate = lastDate;
-    }
+    private String walletId;
+    private Boolean paid;
+    private Integer month;
+    private Integer year;
 
     @Override
     public Predicate toPredicate(
             @NotNull Root<RecordDebtor> root,
             @NotNull CriteriaQuery<?> query,
             @NotNull CriteriaBuilder criteriaBuilder) {
-        List<Predicate> predicates = new ArrayList<>();
+        final List<Predicate> predicates = new ArrayList<>();
+        final Join<RecordDebtor, Wallet> join = root.join("wallet");
+        query.orderBy(criteriaBuilder.desc(root.get("createDate")));
 
-        Join<RecordDebtor, Wallet> join = root.join("wallet");
-
-        if (nonNull(walletDebtorId)) {
-            predicates.add(criteriaBuilder.equal(join.get("id"), walletDebtorId));
+        if (nonNull(walletId)) {
+            predicates.add(criteriaBuilder.equal(join.get("id"), walletId));
         }
 
         if (nonNull(paid)) {
             predicates.add(criteriaBuilder.equal(root.get("paid"), paid));
         }
 
-        if (nonNull(firstDate) && nonNull(lastDate)) {
-            predicates.add(criteriaBuilder.between(root.get("dateDeadline"), firstDate, lastDate));
+        if (nonNull(month) && nonNull(year)) {
+            predicates.add(
+                    criteriaBuilder.between(
+                            root.get("dateDeadline"),
+                            createLocalDate(month, year, FIRST_DAY_MONTH),
+                            createLocalDate(month, year, LAST_DAY_MONTH)));
         }
 
         return andToGether(criteriaBuilder, predicates);

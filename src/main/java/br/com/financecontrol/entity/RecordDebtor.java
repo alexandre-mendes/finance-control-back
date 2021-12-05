@@ -6,6 +6,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @lombok.Getter
 @lombok.Setter
@@ -29,6 +30,8 @@ public class RecordDebtor implements Serializable {
   private String title;
 
   private LocalDate dateDeadline;
+
+  private LocalDateTime createDate = LocalDateTime.now();
 
   private BigDecimal value;
 

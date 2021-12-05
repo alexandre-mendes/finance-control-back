@@ -3,6 +3,7 @@ package br.com.financecontrol.controller;
 import br.com.financecontrol.dto.WalletDTO;
 import br.com.financecontrol.dto.WalletSummaryDTO;
 import br.com.financecontrol.entity.Wallet;
+import br.com.financecontrol.enums.Month;
 import br.com.financecontrol.enums.TypeWallet;
 import br.com.financecontrol.service.WalletService;
 import br.com.financecontrol.util.PageBuilder;
@@ -56,11 +57,11 @@ public class WalletController {
   @GetMapping
   @ApiOperation(value = "Obtem todas as carteiras vinculadas a conta do usuário", authorizations = {@Authorization(value = "Bearer")})
   public Page<WalletDTO> findAllWallets(
-      @RequestParam(required = false, name = "type-wallet") final TypeWallet typeWallet,
-      @RequestParam(required = false, name = "first-date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)final LocalDate firstDate,
-      @RequestParam(required = false, name = "last-date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) final LocalDate lastDate,
-      final Pageable pageable) {
-    final var wallets = walletService.findAll(typeWallet, firstDate, lastDate, pageable);
+          @RequestParam(required = false, name = "type-wallet") final TypeWallet typeWallet,
+          @RequestParam(required = false, name = "month") final Integer month,
+          @RequestParam(required = false, name = "year") final Integer year,
+          final Pageable pageable) {
+    final var wallets = walletService.findAll(typeWallet, pageable);
     return PageBuilder.createPage(wallets, pageable, w -> modelMapper.map(w, WalletDTO.class));
   }
 

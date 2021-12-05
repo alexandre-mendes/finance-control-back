@@ -6,6 +6,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @lombok.Getter
@@ -28,6 +29,8 @@ public class RecordCreditor implements Serializable {
   private String title;
 
   private LocalDate dateTransaction;
+
+  private LocalDateTime createDate = LocalDateTime.now();
 
   private BigDecimal value;
 
